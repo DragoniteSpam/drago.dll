@@ -1,4 +1,5 @@
 #include "drago.h"
+#include "spriteatlas.h"
 
 // not everything in here is used
 
@@ -153,4 +154,4 @@ LRESULT WINAPI MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
         return CallWindowProc((WNDPROC)window_original, hWnd, msg, wParam, lParam);
     }
     }
-}
+} 
