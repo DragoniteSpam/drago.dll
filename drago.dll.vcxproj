@@ -24,6 +24,7 @@
     <ProjectGuid>{1f7b4b54-fcf1-4e1d-93f5-297f65fda5c3}</ProjectGuid>
     <RootNamespace>dragodll</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>drago</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
