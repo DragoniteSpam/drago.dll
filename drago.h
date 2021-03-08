@@ -35,3 +35,5 @@ ex double init(HWND, double);
 ex double file_drop_count();
 ex char* file_drop_get(double n);
 ex double file_drop_flush();
+
+ex double pack_textures(int*, double, double);

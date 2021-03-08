@@ -111,6 +111,10 @@ ex double file_drop_flush() {
     return 0.0;
 }
 
+ex double pack_textures(int* sprite_data, double length, double padding) {
+    return sprite_atlas::pack(sprite_data, (int)length, (int)padding);
+}
+
 // internal stuff
 
 LRESULT WINAPI MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
@@ -154,4 +158,4 @@ LRESULT WINAPI MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
         return CallWindowProc((WNDPROC)window_original, hWnd, msg, wParam, lParam);
     }
     }
-} 
+}
