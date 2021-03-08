@@ -21,9 +21,18 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="spriteatlas.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="drago.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="spriteatlas.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
