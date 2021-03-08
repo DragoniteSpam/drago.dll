@@ -154,6 +154,10 @@ LRESULT WINAPI MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
         DragFinish(hdr);
         break;
     }
+    default: {
+        return CallWindowProc((WNDPROC)window_original, hWnd, msg, wParam, lParam);
     }
-    return CallWindowProc((WNDPROC)window_original, hWnd, msg, wParam, lParam);
+    }
+
+    return (LRESULT)0;
 }
