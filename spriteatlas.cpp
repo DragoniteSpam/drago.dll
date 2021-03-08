@@ -31,8 +31,8 @@ namespace sprite_atlas {
 				}
 			}
 
-			maxx = (int)fmax((double)maxx, (double)(*(sprite_data + i + SPRITE_DATA_X) + ww + PADDING));
-			maxy = (int)fmax((double)maxy, (double)(*(sprite_data + i + SPRITE_DATA_Y) + hh + PADDING));
+			maxx = (int)fmax((double)maxx, (double)(*(sprite_data + i + SPRITE_DATA_X)) + (double)ww + (double)PADDING);
+			maxy = (int)fmax((double)maxy, (double)(*(sprite_data + i + SPRITE_DATA_Y)) + (double)hh + (double)PADDING);
 		}
 
 		maxx = 1 << ((int)ceil(log2((double)maxx)));

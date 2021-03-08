@@ -35,7 +35,7 @@ ex double copy(const char* source, const char* destination) {
 }
 
 ex double process(const char* filename, const char* verb) {
-    SHELLEXECUTEINFO info;
+    SHELLEXECUTEINFO info{};
     info.cbSize = sizeof(SHELLEXECUTEINFO);
     info.fMask = SEE_MASK_NOCLOSEPROCESS;
     info.lpVerb = (LPCWSTR)verb;
@@ -143,7 +143,7 @@ LRESULT WINAPI MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
                 std::string path = "";
                 wchar_t* data = buffer.data();
                 // i hate this part very much
-                for (int j = 0; j < buffer.size(); j++) {
+                for (unsigned int j = 0; j < buffer.size(); j++) {
                     path += *(data + j);
                 }
                 path += '\0';
@@ -154,8 +154,6 @@ LRESULT WINAPI MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
         DragFinish(hdr);
         break;
     }
-    default: {
-        return CallWindowProc((WNDPROC)window_original, hWnd, msg, wParam, lParam);
     }
-    }
+    return CallWindowProc((WNDPROC)window_original, hWnd, msg, wParam, lParam);
 }
