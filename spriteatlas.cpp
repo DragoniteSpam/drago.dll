@@ -8,7 +8,7 @@
 #include <cmath>
 
 namespace sprite_atlas {
-	int pack_atlas(int* sprite_data, int length, int padding) {
+	double pack(const int* sprite_data, int length, int padding) {
 		int maxx = 0, maxy = 0, nextx = 0, nexty = 0;
 
 		for (int i = 0; i < length; i += 8) {
@@ -37,9 +37,12 @@ namespace sprite_atlas {
 
 		maxx = 1 << ((int)ceil(log2((double)maxx));
 		maxy = 1 << ((int)ceil(log2((double)maxy));
+
+		// theoretically other return values might indicate some error code
+		return 1.0;
 	}
 
-	bool place_sprite(int* sprite_data, int length, int index, int maxx, int maxy) {
+	bool place_sprite(const int* sprite_data, int length, int index, int maxx, int maxy) {
 		for (int x = 0; x < maxx; x += 4) {
 			for (int y = 0; y < maxx; y += 4) {
 				if (!collide_sprite(sprite_data, length, index, x, y)) {
@@ -52,7 +55,7 @@ namespace sprite_atlas {
 		return false;
 	}
 
-	bool collide_sprite(int* sprite_data, int length, int index, int x, int y) {
+	bool collide_sprite(const int* sprite_data, int length, int index, int x, int y) {
 		int ow = *(sprite_data + index + SPRITE_DATA_W);
 		int oh = *(sprite_data + index + SPRITE_DATA_H);
 
