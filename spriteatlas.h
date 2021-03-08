@@ -1,3 +1,5 @@
-void pack_atlas(int* sprite_data, int number, int padding);
-bool place_sprite(int* sprite_data, int number, int index, int maxx, int maxy);
-bool collide_sprite(int* sprite_data, int number, int index);
+namespace sprite_atlas {
+	void pack_atlas(short* sprite_data, int length, short padding);
+	bool place_sprite(short* sprite_data, int length, int index, short maxx, short maxy);
+	bool collide_sprite(short* sprite_data, int length, int index, short x, short y);
+}
