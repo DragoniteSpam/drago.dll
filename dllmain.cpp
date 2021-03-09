@@ -112,7 +112,7 @@ ex double file_drop_flush() {
 }
 
 ex double pack_textures(int* sprite_data, double length) {
-    return sprite_atlas::pack(sprite_data, (int)length);
+    return sprite_atlas::pack(sprite_data, ((int)length) >> 3);
 }
 
 // internal stuff
