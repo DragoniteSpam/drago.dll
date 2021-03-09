@@ -8,7 +8,7 @@
 #include <cmath>
 
 namespace sprite_atlas {
-	double pack(int* sprite_data, int length, int padding) {
+	double pack(int* sprite_data, int length) {
 		int maxx = 0, maxy = 0, nextx = 0, nexty = 0;
 
 		for (int i = 0; i < length; i += 8) {
@@ -35,9 +35,9 @@ namespace sprite_atlas {
 			maxy = (int)fmax((double)maxy, (double)(*(sprite_data + i + SPRITE_DATA_Y)) + (double)hh + (double)PADDING);
 		}
 
-		maxx = 1 << ((int)ceil(log2((double)maxx)));
-		maxy = 1 << ((int)ceil(log2((double)maxy)));
-
+		*(sprite_data + length + SPRITE_DATA_X - 8) = 1 << ((int)ceil(log2((double)maxx)));
+		*(sprite_data + length + SPRITE_DATA_X - 4) = 1 << ((int)ceil(log2((double)maxy)));
+		
 		// theoretically other return values might indicate some error code
 		return 1.0;
 	}
