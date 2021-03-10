@@ -1,3 +1,5 @@
+// see: https://www.gamedev.net/forums/topic/683912-sprite-packing-algorithm-explained-with-example-code/
+// see: https://jsfiddle.net/jLchftot/
 #define SPRITE_DATA_X 0
 #define SPRITE_DATA_Y 1
 #define SPRITE_DATA_W 2
@@ -7,8 +9,10 @@
 
 #include "spriteatlas.h"
 #include <cmath>
+#include <algorithm>
 
 namespace sprite_atlas {
+	// we just give it a pointer to a blob of sprite data and tell it how long it is
 	double pack(int* sprite_data, int ints) {
 		int maxx = 0, maxy = 0, nextx = 0, nexty = 0;
 
@@ -22,6 +26,8 @@ namespace sprite_atlas {
 			}
 			else {
 				if (!place_sprite(sprite_data, ints, i, maxx, maxy)) {
+					// if you cant place a sprite in the existing space, extend the
+					// bounds of the atlas
 					if (nextx + ww > maxy) {
 						nexty = maxy;
 						nextx = 0;
@@ -32,12 +38,16 @@ namespace sprite_atlas {
 				}
 			}
 
-			maxx = (int)fmax((double)maxx, (double)(sprite_data[i + SPRITE_DATA_X]) + (double)ww + (double)PADDING);
-			maxy = (int)fmax((double)maxy, (double)(sprite_data[i + SPRITE_DATA_Y]) + (double)hh + (double)PADDING);
+			// recalculate the bounds
+			maxx = std::max(maxx, sprite_data[i + SPRITE_DATA_X] + ww + PADDING);
+			maxy = std::max(maxy, sprite_data[i + SPRITE_DATA_Y] + hh + PADDING);
 		}
 
-		sprite_data[ints] = 1 << ((int)ceil(log2((double)maxx)));
-		sprite_data[ints + 1] = 1 << ((int)ceil(log2((double)maxy)));
+		// force the bounds to a power of 2 and write them to the final two
+		// integers in the buffer (this looks worse than it really is, it's
+		// it's not actually an array index out of bounds)
+		sprite_data[ints] = 1 << ((int)ceil(log2((double)std::max(1, maxx))));
+		sprite_data[ints + 1] = 1 << ((int)ceil(log2((double)std::max(1, maxy))));
 
 		// theoretically other return values might indicate some error code
 		return 1.0;
