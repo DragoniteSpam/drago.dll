@@ -12,6 +12,10 @@
 #include <algorithm>
 
 namespace sprite_atlas {
+	const char* version() {
+		return __DRAGO_SPRITE_ATLAS;
+	}
+
 	// we just give it a pointer to a blob of sprite data and tell it how long it is
 	double pack(int* sprite_data, int ints) {
 		int maxx = 0, maxy = 0, nextx = 0, nexty = 0;
