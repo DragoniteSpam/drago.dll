@@ -1,5 +1,5 @@
 #ifndef __DRAGO_DDD_MAIN
-#define __DRAGO_DDD_MAIN
+#define __DRAGO_DDD_MAIN "1.0.1"
 
 #include <windows.h>
 #include <shellapi.h>
@@ -40,5 +40,9 @@ ex char* file_drop_get(double n);
 ex double file_drop_flush();
 
 ex double pack_textures(int*, double);
+
+// no point implementing the core version, honestly
+ex const char* version();
+ex const char* sprite_atlas_version();
 
 #endif

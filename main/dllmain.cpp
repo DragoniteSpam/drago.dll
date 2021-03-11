@@ -115,6 +115,16 @@ ex double pack_textures(int* sprite_data, double length) {
     return sprite_atlas::pack(sprite_data, ((int)length) >> 2);
 }
 
+// versioning
+
+const char* version() {
+    return __DRAGO_DDD_MAIN;
+}
+
+const char* sprite_atlas_version() {
+    return __DRAGO_SPRITE_ATLAS;
+}
+
 // internal stuff
 
 LRESULT WINAPI MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
