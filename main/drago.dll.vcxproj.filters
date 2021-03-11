@@ -15,24 +15,21 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="framework.h">
+    <ClInclude Include="core.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="spriteatlas.h">
-      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="drago.h">
-      <Filter>Source Files</Filter>
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="../SpriteAtlas/spriteatlas.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="spriteatlas.cpp">
+    <ClCompile Include="../SpriteAtlas/spriteatlas.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

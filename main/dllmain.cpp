@@ -1,5 +1,5 @@
 #include "drago.h"
-#include "spriteatlas.h"
+#include "spriteatlas/spriteatlas.h"
 
 // not everything in here is used
 

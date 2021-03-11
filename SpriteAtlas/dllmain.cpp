@@ -1,13 +1,7 @@
-// not everything in here is used
+#include "spriteatlas.h"
 
-// exported stuff
-
-ex double init(HWND hWnd, double close) {
-    window_original = GetWindowLongPtr(hWnd, GWLP_WNDPROC);
-    window_status = WINDOW_NEVERMIND;
-    disable_close = (close != 0.0);
-    SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)MsgProc);
-    DragAcceptFiles(hWnd, true);
+ex double init() {
+    
     return 1.0;
 }
 

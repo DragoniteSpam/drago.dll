@@ -7,8 +7,8 @@
 #include <map>
 #include <vector>
 #include <cstring>
+#include "core.h"
 
-#define ex extern "C" __declspec (dllexport)
 #define WINDOW_NEVERMIND 0.0
 #define WINDOW_CLOSE 1.0
 
