@@ -3,12 +3,25 @@
 
 #include "main/core.h"
 
-namespace file_dropper {
-	const char* version();
+#include <windows.h>
+#include <shellapi.h>
+#include <fstream>
 
-	double file_drop_count();
-	char* file_drop_get(double n);
-	double file_drop_flush();
+#include <vector>
+
+namespace file_dropper {
+	extern LONG_PTR window_original;
+	extern std::vector<std::string> names;
+	LRESULT WINAPI MsgProc(HWND, UINT, WPARAM, LPARAM);
+	
+	const char* version();
+	void init(HWND, bool);
+
+	int count();
+	char* get(int n);
+	void flush();
+
+	void handle(HWND, UINT, WPARAM, LPARAM);
 }
 
 #endif
