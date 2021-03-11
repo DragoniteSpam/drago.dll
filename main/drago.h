@@ -1,3 +1,6 @@
+#ifndef __DRAGO_DDD_MAIN
+#define __DRAGO_DDD_MAIN
+
 #include <windows.h>
 #include <shellapi.h>
 #include <stdio.h>
@@ -37,3 +40,5 @@ ex char* file_drop_get(double n);
 ex double file_drop_flush();
 
 ex double pack_textures(int*, double);
+
+#endif

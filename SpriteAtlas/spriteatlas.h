@@ -1,3 +1,6 @@
+#ifndef __DRAGO_SPRITE_ATLAS
+#define __DRAGO_SPRITE_ATLAS
+
 #include "main/core.h"
 
 namespace sprite_atlas {
@@ -10,3 +13,5 @@ namespace sprite_atlas {
 	bool place_sprite(int*, int, int, int, int);
 	bool collide_sprite(int*, int, int, int, int);
 }
+
+#endif
