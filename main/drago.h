@@ -8,7 +8,6 @@
 #include <iostream>
 
 #include <map>
-#include <vector>
 #include <cstring>
 #include "core.h"
 
@@ -20,7 +19,6 @@ LONG_PTR window_original;
 double window_status;
 bool disable_close = false;
 HWND hwnd_original;
-std::vector<std::string> file_drop_names;
 
 ex double process(const char*, const char*);
 LRESULT WINAPI MsgProc(HWND, UINT, WPARAM, LPARAM);

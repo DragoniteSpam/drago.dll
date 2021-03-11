@@ -1,16 +1,17 @@
 #include "drago.h"
-#include "spriteatlas/spriteatlas.h"
+#include "SpriteAtlas/spriteatlas.h"
+#include "FileDropper/filedropper.h"
 
 // not everything in here is used
 
 // exported stuff
 
 ex double init(HWND hWnd, double close) {
+    file_dropper::init(hWnd, false);
     window_original = GetWindowLongPtr(hWnd, GWLP_WNDPROC);
     window_status = WINDOW_NEVERMIND;
     disable_close = (close != 0.0);
     SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)MsgProc);
-    DragAcceptFiles(hWnd, true);
     return 1.0;
 }
 
@@ -96,18 +97,15 @@ ex double fetch_status() {
 }
 
 ex double file_drop_count() {
-    return 1.0 * file_drop_names.size();
+    return 1.0 * file_dropper::count();
 }
 
 ex char* file_drop_get(double n) {
-    std::string path = file_drop_names.at((int)n);
-    char* cstr = new char[path.size() + 1];
-    strcpy_s(cstr, path.size() + 1, path.c_str());
-    return cstr;
+    return file_dropper::get((int)n);
 }
 
 ex double file_drop_flush() {
-    file_drop_names.clear();
+    file_dropper::flush();
     return 0.0;
 }
 
@@ -139,29 +137,7 @@ LRESULT WINAPI MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
         break;
     }
     case WM_DROPFILES: {
-        HDROP hdr = ((HDROP)wParam);
-
-        file_drop_flush();
-        int count = DragQueryFileW(hdr, 0xffffffff, NULL, 0);
-
-        std::vector<wchar_t> buffer;
-        for (int i = 0; i < count; i++) {
-            int size = DragQueryFileW(hdr, i, NULL, 0);
-            if (size > 0) {
-                buffer.resize(size + 1);
-                DragQueryFileW(hdr, i, buffer.data(), size + 1);
-                std::string path = "";
-                wchar_t* data = buffer.data();
-                // i hate this part very much
-                for (unsigned int j = 0; j < buffer.size(); j++) {
-                    path += *(data + j);
-                }
-                path += '\0';
-                file_drop_names.push_back(path);
-            }
-        }
-
-        DragFinish(hdr);
+        file_dropper::handle(hWnd, msg, wParam, lParam);
         break;
     }
     default: {
