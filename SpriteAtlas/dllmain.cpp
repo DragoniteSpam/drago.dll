@@ -1,9 +1,5 @@
 #include "spriteatlas.h"
 
-ex double init() {
-    return 1.0;
-}
-
 ex double sprite_atlas_pack(int* sprite_data, double length) {
     return sprite_atlas::pack(sprite_data, ((int)length) >> 2);
 }
