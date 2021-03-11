@@ -41,5 +41,6 @@ ex double pack_textures(int*, double);
 // no point implementing the core version, honestly
 ex const char* version();
 ex const char* sprite_atlas_version();
+ex const char* file_dropper_version();
 
 #endif

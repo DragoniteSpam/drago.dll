@@ -115,12 +115,16 @@ ex double pack_textures(int* sprite_data, double length) {
 
 // versioning
 
-const char* version() {
+ex const char* version() {
     return __DRAGO_DDD_MAIN;
 }
 
-const char* sprite_atlas_version() {
-    return __DRAGO_SPRITE_ATLAS;
+ex const char* sprite_atlas_version() {
+    return sprite_atlas::version();
+}
+
+ex const char* file_dropper_version() {
+    return file_dropper::version();
 }
 
 // internal stuff
