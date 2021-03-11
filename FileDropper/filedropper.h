@@ -4,9 +4,7 @@
 #include "main/core.h"
 
 #include <windows.h>
-#include <shellapi.h>
 #include <fstream>
-
 #include <vector>
 
 namespace file_dropper {
