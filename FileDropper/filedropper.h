@@ -13,7 +13,7 @@ namespace file_dropper {
 	LRESULT WINAPI MsgProc(HWND, UINT, WPARAM, LPARAM);
 	
 	const char* version();
-	void init(HWND, bool);
+	void init(HWND);
 
 	int count();
 	char* get(int n);
@@ -22,4 +22,5 @@ namespace file_dropper {
 	void handle(HWND, UINT, WPARAM, LPARAM);
 }
 
+LRESULT WINAPI MsgProc(HWND, UINT, WPARAM, LPARAM);
 #endif

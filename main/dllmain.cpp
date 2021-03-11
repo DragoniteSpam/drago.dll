@@ -7,7 +7,7 @@
 // exported stuff
 
 ex double init(HWND hWnd, double close) {
-    file_dropper::init(hWnd, false);
+    file_dropper::init(hWnd);
     window_original = GetWindowLongPtr(hWnd, GWLP_WNDPROC);
     window_status = WINDOW_NEVERMIND;
     disable_close = (close != 0.0);

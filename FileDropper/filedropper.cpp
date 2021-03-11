@@ -4,12 +4,9 @@ namespace file_dropper {
     LONG_PTR window_original;
     std::vector<std::string> names;
 
-    void init(HWND hWnd, bool set_ptr) {
+    void init(HWND hWnd) {
         window_original = GetWindowLongPtr(hWnd, GWLP_WNDPROC);
         DragAcceptFiles(hWnd, true);
-        if (set_ptr) {
-            SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)handle);
-        }
     }
     
 	const char* version() {
@@ -17,8 +14,7 @@ namespace file_dropper {
 	}
     
 	int count() {
-		//return names.size();
-        return 0;
+		return names.size();
 	}
     
 	char* get(int n) {
@@ -40,6 +36,7 @@ namespace file_dropper {
         int count = DragQueryFileW(hdr, 0xffffffff, NULL, 0);
 
         std::vector<wchar_t> buffer;
+        
         for (int i = 0; i < count; i++) {
             int size = DragQueryFileW(hdr, i, NULL, 0);
             if (size > 0) {
