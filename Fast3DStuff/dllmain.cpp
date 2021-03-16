@@ -15,7 +15,8 @@ ex double vertex_set_position(double x, double y, double z) {
 
 ex double vertex_buffer_combine(float* combine_target, float* source_data, double length, double address) {
 	int a = (int)address;
-	for (int i = 0; i < (int)length; i += 9) {
+	int vertices = (int)length / 4;
+	for (int i = 0; i < vertices; i += 9) {
 		combine_target[a + i + 0] = source_data[i + 0] + store_x;
 		combine_target[a + i + 1] = source_data[i + 1] + store_y;
 		combine_target[a + i + 2] = source_data[i + 2] + store_z;
