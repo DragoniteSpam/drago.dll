@@ -7,8 +7,8 @@ namespace falcon {
 		return __DRAGO_FALCON;
 	}
 
-	void set_vertex_size(int bytes) {
-		vertex_size = bytes;
+	void set_vertex_size(int floats) {
+		vertex_size = floats;
 	}
 
 	void combine(float* combine_target, float* combine_positions, double count) {
