@@ -1,7 +1,7 @@
 #ifndef __DRAGO_FALCON
-#define __DRAGO_FALCON "1.0.0"
+#define __DRAGO_FALCON "1.0.1"
 
-#define FALCON_BATCH_DATA_SIZE 7
+#define FALCON_BATCH_DATA_SIZE 4
 
 #include "falcon.h"
 
