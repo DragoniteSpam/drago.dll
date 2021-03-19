@@ -6,16 +6,16 @@ namespace falcon {
 	}
 
 	void combine(float* combine_target, float* combine_positions, double count) {
-		const int SIZE = 324;
 		int tree_count = (int)count;
 		int index = 0;
 		for (int tree = 0; tree < tree_count; tree++) {
-			for (int i = 0; i < 324; i += 9) {
-				combine_target[index + i + 0] += combine_positions[tree * 3 + 0];
-				combine_target[index + i + 1] += combine_positions[tree * 3 + 1];
-				combine_target[index + i + 2] += combine_positions[tree * 3 + 2];
+			int tree_size = combine_positions[tree * FALCON_BATCH_DATA_SIZE + 0];
+			for (int i = 0; i < tree_size; i += 9) {
+				combine_target[index + i + 0] = combine_target[index + i + 0] * combine_positions[tree * FALCON_BATCH_DATA_SIZE + 4] + combine_positions[tree * FALCON_BATCH_DATA_SIZE + 1];
+				combine_target[index + i + 1] = combine_target[index + i + 1] * combine_positions[tree * FALCON_BATCH_DATA_SIZE + 5] + combine_positions[tree * FALCON_BATCH_DATA_SIZE + 2];
+				combine_target[index + i + 2] = combine_target[index + i + 2] * combine_positions[tree * FALCON_BATCH_DATA_SIZE + 6] + combine_positions[tree * FALCON_BATCH_DATA_SIZE + 3];
 			}
-			index += SIZE;
+			index += tree_size;
 		}
 	}
 }
