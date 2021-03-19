@@ -24,6 +24,7 @@
     <ProjectGuid>{860cb947-e822-444e-9001-a1bd17759769}</ProjectGuid>
     <RootNamespace>Fast3DStuff</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Falcon</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -156,9 +157,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\main\core.h" />
+    <ClInclude Include="falcon.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="falcon.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

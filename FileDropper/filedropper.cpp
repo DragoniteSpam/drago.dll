@@ -14,11 +14,11 @@ namespace file_dropper {
 	}
     
 	int count() {
-		return names.size();
+		return (int)names.size();
 	}
     
 	char* get(int n) {
-		std::string path = names.at(n);
+		std::string path(names.at(n));
 		char* cstr = new char[path.size() + 1];
 		strcpy_s(cstr, path.size() + 1, path.c_str());
 		return cstr;
@@ -38,18 +38,13 @@ namespace file_dropper {
         std::vector<wchar_t> buffer;
         
         for (int i = 0; i < count; i++) {
-            int size = DragQueryFileW(hdr, i, NULL, 0);
+            int size = (int)DragQueryFileW(hdr, i, NULL, 0);
             if (size > 0) {
                 buffer.resize(size + 1);
                 DragQueryFileW(hdr, i, buffer.data(), size + 1);
+                std::wstring tws(buffer.data());
                 std::string path = "";
-                wchar_t* data = buffer.data();
-                // i hate this part very much
-                for (unsigned int j = 0; j < buffer.size(); j++) {
-                    path += *(data + j);
-                }
-                path += '\0';
-                names.push_back(path);
+                names.push_back(std::string(tws.begin(), tws.end()));
             }
         }
 
