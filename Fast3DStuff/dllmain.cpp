@@ -8,5 +8,4 @@ ex double falcon_combine(float* combine_target, float* combine_positions, double
 
 ex const char* falcon_version() {
 	return falcon::version();
-	return __DRAGO_FALCON;
 }
