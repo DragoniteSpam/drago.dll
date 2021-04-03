@@ -1,8 +1,13 @@
 #include "main/core.h"
 #include "falcon.h"
 
-ex double set_vertex_size(double floats) {
+ex double falcon_set_vertex_size(double floats) {
 	falcon::set_vertex_size((int)floats);
+	return 1.0;
+}
+
+ex double falcon_set_color_offset(double floats) {
+	falcon::set_color_offset((int)floats);
 	return 1.0;
 }
 
