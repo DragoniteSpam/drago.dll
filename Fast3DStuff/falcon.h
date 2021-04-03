@@ -12,6 +12,7 @@ namespace falcon {
 
 	const char* version();
 	void set_vertex_size(int);
+	void set_color_offset(int);
 	void combine(float*, float*, double);
 
 	void combine_color(float*, float*, double);

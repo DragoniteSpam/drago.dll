@@ -12,6 +12,10 @@ namespace falcon {
 		vertex_size = floats;
 	}
 
+	void set_color_offset(int floats) {
+		vertex_color_offset = floats;
+	}
+
 	void combine(float* combine_target, float* combine_positions, double count) {
 		int tree_count = (int)count;
 		int index = 0;
