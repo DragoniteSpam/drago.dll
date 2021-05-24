@@ -13,6 +13,9 @@ namespace bullet_wrapper {
 		btCollisionDispatcher* Dispatcher();
 		btBroadphaseInterface* OverlappingPairCache();
 		btSequentialImpulseConstraintSolver* Solver();
+
+		void SetGravity(float, float, float);
+		void GetGravity(float*);
 	private:
 		btDiscreteDynamicsWorld* world;
 		btDefaultCollisionConfiguration* collisionConfiguration;

@@ -48,4 +48,15 @@ namespace bullet_wrapper {
 	btSequentialImpulseConstraintSolver* DragoBulletWorld::Solver() {
 		return this->solver;
 	}
+
+	void DragoBulletWorld::SetGravity(float x, float y, float z) {
+		this->world->setGravity(btVector3(x, y, z));
+	}
+
+	void DragoBulletWorld::GetGravity(float* storage) {
+		btVector3 gravity = this->world->getGravity();
+		storage[0] = gravity.x();
+		storage[1] = gravity.y();
+		storage[2] = gravity.z();
+	}
 }
