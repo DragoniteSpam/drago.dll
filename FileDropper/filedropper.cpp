@@ -40,7 +40,7 @@ namespace file_dropper {
         for (int i = 0; i < count; i++) {
             int size = (int)DragQueryFileW(hdr, i, NULL, 0);
             if (size > 0) {
-                buffer.resize(size + 1);
+                buffer.resize(size + (size_t)(1));
                 DragQueryFileW(hdr, i, buffer.data(), size + 1);
                 std::wstring tws(buffer.data());
                 std::string path = "";

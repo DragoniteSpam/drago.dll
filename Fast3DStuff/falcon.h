@@ -4,8 +4,6 @@
 #define FALCON_BATCH_DATA_SIZE 4
 #define FALCON_BATCH_DATA_SIZE_COLOR 5
 
-#include "falcon.h"
-
 namespace falcon {
 	extern int vertex_size;
 	extern int vertex_color_offset;
