@@ -12,8 +12,8 @@ namespace bullet_drago {
 	int world_create();
 	int world_destroy(int);
 
-	int world_set_gravity(double, double, double, double);
-	int world_get_gravity(double, float*);
+	int world_set_gravity(int, float, float, float);
+	int world_get_gravity(int, float*);
 
 	std::vector<bullet_wrapper::DragoBulletWorld*> worlds;
 }
