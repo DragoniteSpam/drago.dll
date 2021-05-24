@@ -5,16 +5,28 @@
 #include <vector>
 
 namespace bullet {
-	class BulletInstance {
+	class DragoBullet {
 	public:
+		btDiscreteDynamicsWorld* World();
+		btDefaultCollisionConfiguration* CollisionConfiguration();
+		btCollisionDispatcher* Dispatcher();
+		btBroadphaseInterface* OverlappingPairCache();
+		btSequentialImpulseConstraintSolver* Solver();
 	private:
-		btDiscreteDynamicsWorld world;
+		btDiscreteDynamicsWorld* world;
+		btDefaultCollisionConfiguration* collisionConfiguration;
+		btCollisionDispatcher* dispatcher;
+		btBroadphaseInterface* overlappingPairCache;
+		btSequentialImpulseConstraintSolver* solver;
 	};
 	
 	const char* version();
 	int get_world_count();
 
-	std::vector<bullet::BulletInstance> worlds;
+	int world_create();
+	int world_destroy(int);
+
+	std::vector<bullet::DragoBullet*> worlds;
 }
 
 #endif
