@@ -10,7 +10,7 @@ namespace bullet_drago {
 	}
 
 	int world_create() {
-		worlds.push_back(new bullet_wrapper::DragoBullet());
+		worlds.push_back(new bullet_wrapper::DragoBulletWorld());
 		return 1;
 	}
 

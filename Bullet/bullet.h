@@ -4,10 +4,10 @@
 #include "bullet/btBulletDynamicsCommon.h"
 
 namespace bullet_wrapper {
-	class DragoBullet {
+	class DragoBulletWorld {
 	public:
-		DragoBullet();
-		~DragoBullet();
+		DragoBulletWorld();
+		~DragoBulletWorld();
 		btDiscreteDynamicsWorld* World();
 		btDefaultCollisionConfiguration* CollisionConfiguration();
 		btCollisionDispatcher* Dispatcher();
@@ -19,6 +19,9 @@ namespace bullet_wrapper {
 		btCollisionDispatcher* dispatcher;
 		btBroadphaseInterface* overlappingPairCache;
 		btSequentialImpulseConstraintSolver* solver;
+
+		// managed
+		btAlignedObjectArray<btCollisionShape*> collisionShapes;
 	};
 }
 

@@ -1,7 +1,7 @@
 #include "bullet.h"
 
 namespace bullet_wrapper {
-	DragoBullet::DragoBullet() {
+	DragoBulletWorld::DragoBulletWorld() {
 		collisionConfiguration = new btDefaultCollisionConfiguration();
 		dispatcher = new btCollisionDispatcher(collisionConfiguration);
 		overlappingPairCache = new btDbvtBroadphase();
@@ -9,9 +9,10 @@ namespace bullet_wrapper {
 		world = new btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
 	}
 
-	DragoBullet::~DragoBullet() {
-		for (int i = world->getNumCollisionObjects() - 1; i >= 0; i--) {
-			btCollisionObject* obj = world->getCollisionObjectArray()[i];
+	DragoBulletWorld::~DragoBulletWorld() {
+		btCollisionObjectArray objArray = world->getCollisionObjectArray();
+		for (int i = objArray.size() - 1; i >= 0; i--) {
+			btCollisionObject* obj = objArray[i];
 			btRigidBody* body = btRigidBody::upcast(obj);
 			if (body && body->getMotionState()) {
 				delete body->getMotionState();
@@ -19,6 +20,12 @@ namespace bullet_wrapper {
 			world->removeCollisionObject(obj);
 			delete obj;
 		}
+
+		//delete collision shapes
+		for (int i = 0; i < collisionShapes.size(); i++) {
+			delete collisionShapes[i];
+		}
+
 		delete world;
 		delete collisionConfiguration;
 		delete dispatcher;
@@ -26,19 +33,19 @@ namespace bullet_wrapper {
 		delete solver;
 	}
 
-	btDiscreteDynamicsWorld* DragoBullet::World() {
+	btDiscreteDynamicsWorld* DragoBulletWorld::World() {
 		return this->world;
 	}
-	btDefaultCollisionConfiguration* DragoBullet::CollisionConfiguration() {
+	btDefaultCollisionConfiguration* DragoBulletWorld::CollisionConfiguration() {
 		return this->collisionConfiguration;
 	}
-	btCollisionDispatcher* DragoBullet::Dispatcher() {
+	btCollisionDispatcher* DragoBulletWorld::Dispatcher() {
 		return this->dispatcher;
 	}
-	btBroadphaseInterface* DragoBullet::OverlappingPairCache() {
+	btBroadphaseInterface* DragoBulletWorld::OverlappingPairCache() {
 		return this->overlappingPairCache;
 	}
-	btSequentialImpulseConstraintSolver* DragoBullet::Solver() {
+	btSequentialImpulseConstraintSolver* DragoBulletWorld::Solver() {
 		return this->solver;
 	}
 }

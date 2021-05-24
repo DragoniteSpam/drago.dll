@@ -12,7 +12,7 @@ namespace bullet_drago {
 	int world_create();
 	int world_destroy(int);
 
-	std::vector<bullet_wrapper::DragoBullet*> worlds;
+	std::vector<bullet_wrapper::DragoBulletWorld*> worlds;
 }
 
 #endif
