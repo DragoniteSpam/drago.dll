@@ -5,7 +5,7 @@ namespace macaw {
 		return __DRAGO_MACAW;
 	}
 
-	void generate(int w, int h, int octaves) {
+	void generate(float* buffer, int w, int h, int octaves) {
 
 	}
 

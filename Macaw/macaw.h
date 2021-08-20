@@ -6,7 +6,7 @@
 namespace macaw {
 	const char* version();
 
-	void generate(int, int, int);
+	void generate(float*, int, int, int);
 	float[][] _gen_white_noise(int, int);
 	float[][] _gen_smooth_noise(float[][], int);
 }
