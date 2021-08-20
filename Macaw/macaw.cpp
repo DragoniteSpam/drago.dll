@@ -9,11 +9,11 @@ namespace macaw {
 
 	}
 
-	float[][] _gen_white_noise(int w, int h) {
+	float* _gen_white_noise(int w, int h) {
 		return 0;
 	}
 
-	float[][] _gen_smooth_noise(float[][] base_noise, int octave) {
+	float* _gen_smooth_noise(float* base_noise, int octave) {
 		return 0;
 	}
 }
