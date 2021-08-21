@@ -2,21 +2,40 @@
 
 #include "macaw.h"
 
-#define GET_SMOOTH_INDEX(i, j, octave) ((i + j) * octave + i * h + j)
+#define GET_3D_INDEX(i, j, h, octaves) ((i + j) * octaves + i * h + j)
+#define GET_2D_INDEX(i, j, h) (i * h + j)
 
 namespace macaw {
 	const char* version() {
 		return __DRAGO_MACAW;
 	}
 
-	void generate(float* buffer, int w, int h, int octaves) {
+	void generate(float* perlin, int w, int h, int octaves) {
 		float persistence = 0.5;
 		float amplitude = 1.0;
 		float total_amplitude = 0.0;
 		float* base = _gen_white_noise(w, h);
 
 		int tlen = w * h * octaves;
-		float* smooth = new float[tlen];
+		float* smooth = _gen_smooth_noise(base, w, h, octaves);
+
+		for (int octave = 0; octave < octaves; octave++) {
+			amplitude *= persistence;
+			total_amplitude += amplitude;
+
+			for (int i = 0; i < w; i++) {
+				for (int j = 0; j < h; j++) {
+#pragma warning(disable:6386)
+					perlin[GET_2D_INDEX(i, j, h)] = smooth[GET_3D_INDEX(i, j, h, octave)] * amplitude;
+#pragma warning(default:6386)
+				}
+			}
+		}
+
+		int len = w * h;
+		for (int i = 0; i < len; i++) {
+			perlin[i] /= total_amplitude;
+		}
 
 		delete[] base;
 		delete[] smooth;
@@ -61,7 +80,7 @@ namespace macaw {
 						float bottom = interpolate(b01, b11, hblend);
 
 #pragma warning(disable:6386)
-						smooth[GET_SMOOTH_INDEX(i, j, octave)] = interpolate(top, bottom, vblend);
+						smooth[GET_3D_INDEX(i, j, h, octave)] = interpolate(top, bottom, vblend);
 #pragma warning(default:6386)
 					}
 				}
@@ -80,4 +99,5 @@ namespace macaw {
 	}
 }
 
-#undef GET_SMOOTH_INDEX
+#undef GET_3D_INDEX
+#undef GET_2D_INDEX
