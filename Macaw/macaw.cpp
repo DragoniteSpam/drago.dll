@@ -2,7 +2,7 @@
 
 #include "macaw.h"
 
-#define GET_3D_INDEX(i, j, h, octaves) ((i + j) * octaves + i * h + j)
+#define GET_3D_INDEX(i, j, k, w, h) ((w * h) * k + i * h + j)
 #define GET_2D_INDEX(i, j, h) (i * h + j)
 
 namespace macaw {
@@ -25,8 +25,7 @@ namespace macaw {
 
 			for (int i = 0; i < w; i++) {
 				for (int j = 0; j < h; j++) {
-#pragma warning(disable:6386)
-					perlin[GET_2D_INDEX(i, j, h)] = smooth[GET_3D_INDEX(i, j, h, octave)] * amplitude;
+					perlin[GET_2D_INDEX(i, j, h)] += smooth[GET_3D_INDEX(i, j, octave, w, h)] * amplitude;
 #pragma warning(default:6386)
 				}
 			}
@@ -61,28 +60,26 @@ namespace macaw {
 			float frequency = 1.0 / period;
 
 			for (int i = 0; i < w; i++) {
+				int i0 = (i / period) * period;
+				int i1 = (i0 + period) % w;
+				float hblend = (i - i0) * frequency;
+
 				for (int j = 0; j < h; j++) {
-					int i0 = (i / period) * period;
-					int i1 = (i0 + period) % w;
-					float hblend = (i - i0) * frequency;
+					int j0 = (j / period) * period;
+					int j1 = (j0 + period) % h;
+					float vblend = (j - j0) * frequency;
 
-					for (int j = 0; j < h; j++) {
-						int j0 = (j / period) * period;
-						int j1 = (j0 + period) % h;
-						float vblend = (j - j0) * frequency;
+					float b00 = base_noise[i0 * h + j0];
+					float b01 = base_noise[i0 * h + j1];
+					float b10 = base_noise[i1 * h + j0];
+					float b11 = base_noise[i1 * h + j1];
 
-						float b00 = base_noise[i0 * h + j0];
-						float b01 = base_noise[i0 * h + j1];
-						float b10 = base_noise[i1 * h + j0];
-						float b11 = base_noise[i1 * h + j1];
-
-						float top = interpolate(b00, b10, hblend);
-						float bottom = interpolate(b01, b11, hblend);
+					float top = interpolate(b00, b10, hblend);
+					float bottom = interpolate(b01, b11, hblend);
 
 #pragma warning(disable:6386)
-						smooth[GET_3D_INDEX(i, j, h, octave)] = interpolate(top, bottom, vblend);
+					smooth[GET_3D_INDEX(i, j, octave, w, h)] = interpolate(top, bottom, vblend);
 #pragma warning(default:6386)
-					}
 				}
 			}
 		}
