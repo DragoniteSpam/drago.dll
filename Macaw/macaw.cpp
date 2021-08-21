@@ -8,7 +8,16 @@ namespace macaw {
 	}
 
 	void generate(float* buffer, int w, int h, int octaves) {
+		float persistence = 0.5;
+		float amplitude = 1.0;
+		float total_amplitude = 0.0;
+		float* base = _gen_white_noise(w, h);
 
+		int tlen = w * h * octaves;
+		float* smooth = new float[tlen];
+
+		delete[] base;
+		delete[] smooth;
 	}
 
 	float* _gen_white_noise(int w, int h) {
