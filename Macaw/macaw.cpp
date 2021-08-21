@@ -1,3 +1,5 @@
+#include <random>
+
 #include "macaw.h"
 
 namespace macaw {
@@ -10,7 +12,15 @@ namespace macaw {
 	}
 
 	float* _gen_white_noise(int w, int h) {
-		return 0;
+		#pragma warning(disable: 26451)
+		float* noise = new float[w * h];
+		#pragma warning(default: 26451)
+
+		for (int i = 0; i < w * h; i++) {
+			noise[i] = std::rand();
+		}
+
+		return noise;
 	}
 
 	float* _gen_smooth_noise(float* base_noise, int octave) {
