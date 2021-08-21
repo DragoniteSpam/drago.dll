@@ -19,7 +19,7 @@ namespace macaw {
 		int tlen = w * h * octaves;
 		float* smooth = _gen_smooth_noise(base, w, h, octaves);
 
-		for (int octave = 0; octave < octaves; octave++) {
+		for (int octave = octaves - 1; octave >= 0; octave--) {
 			amplitude *= persistence;
 			total_amplitude += amplitude;
 
