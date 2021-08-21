@@ -1,4 +1,4 @@
-#include <random>
+#include <stdlib.h>
 
 #include "macaw.h"
 
@@ -12,12 +12,11 @@ namespace macaw {
 	}
 
 	float* _gen_white_noise(int w, int h) {
-		#pragma warning(disable: 26451)
-		float* noise = new float[w * h];
-		#pragma warning(default: 26451)
+		int len = w * h;
 
-		for (int i = 0; i < w * h; i++) {
-			noise[i] = std::rand();
+		float* noise = new float[len];
+		for (int i = 0; i < len; i++) {
+			noise[i] = ((float)rand()) / RAND_MAX;
 		}
 
 		return noise;
