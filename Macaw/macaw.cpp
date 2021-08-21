@@ -25,4 +25,8 @@ namespace macaw {
 	float* _gen_smooth_noise(float* base_noise, int octave) {
 		return 0;
 	}
+
+	void seed_set(unsigned int seed) {
+		srand(seed);
+	}
 }
