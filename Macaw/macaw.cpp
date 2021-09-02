@@ -6,34 +6,44 @@
 #define GET_2D_INDEX(i, j, h) (i * h + j)
 
 namespace macaw {
+	extern double setting_height = 1.0;
+	extern int setting_octaves = 6;
+
 	const char* version() {
 		return __DRAGO_MACAW;
 	}
 
-	void generate(float* perlin, int w, int h, int octaves) {
+	void set_octaves(int octaves) {
+		setting_octaves = octaves;
+	}
+
+	void set_height(double height) {
+		setting_height = height;
+	}
+
+	void generate(float* perlin, int w, int h) {
 		float persistence = 0.5;
 		float amplitude = 1.0;
 		float total_amplitude = 0.0;
 		float* base = _gen_white_noise(w, h);
 
-		int tlen = w * h * octaves;
-		float* smooth = _gen_smooth_noise(base, w, h, octaves);
+		int tlen = w * h * setting_octaves;
+		float* smooth = _gen_smooth_noise(base, w, h, setting_octaves);
 
-		for (int octave = octaves - 1; octave >= 0; octave--) {
+		for (int octave = setting_octaves - 1; octave >= 0; octave--) {
 			amplitude *= persistence;
 			total_amplitude += amplitude;
 
 			for (int i = 0; i < w; i++) {
 				for (int j = 0; j < h; j++) {
 					perlin[GET_2D_INDEX(i, j, h)] += smooth[GET_3D_INDEX(i, j, octave, w, h)] * amplitude;
-#pragma warning(default:6386)
 				}
 			}
 		}
 
 		int len = w * h;
 		for (int i = 0; i < len; i++) {
-			perlin[i] /= total_amplitude;
+			perlin[i] = (perlin[i] / total_amplitude) * setting_height;
 		}
 
 		delete[] base;

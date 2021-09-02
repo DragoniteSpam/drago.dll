@@ -5,8 +5,18 @@ ex const char* macaw_version() {
 	return __DRAGO_MACAW;
 }
 
-ex double macaw_generate(float* buffer, double w, double h, double octaves) {
-	macaw::generate(buffer, (int)w, (int)h, (int)octaves);
+ex double macaw_set_octaves(double octaves) {
+	macaw::set_octaves((int)octaves);
+	return 1.0;
+}
+
+ex double macaw_set_height(double height) {
+	macaw::set_height(height);
+	return 1.0;
+}
+
+ex double macaw_generate(float* buffer, double w, double h) {
+	macaw::generate(buffer, (int)w, (int)h);
 	return 1.0;
 }
 
