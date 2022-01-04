@@ -17,8 +17,8 @@ namespace macaw {
 	float* _gen_smooth_noise(float*, int, int, int);
 	float interpolate(float, float, float);
 
-	void to_sprite(float*, float*, int, int);
-	void to_vbuff(float*, float*, int, int);
+	void to_sprite(float*, float*, int, int, int);
+	void to_vbuff(float*, float*, int, int, int);
 }
 
 #endif

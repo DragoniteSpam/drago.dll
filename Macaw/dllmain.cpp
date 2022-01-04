@@ -25,12 +25,12 @@ ex double macaw_set_seed(double seed) {
 	return 1.0;
 }
 
-ex double macaw_to_sprite(float* in, float* out, double w, double h) {
-	macaw::to_sprite(in, out, (int)w, (int)h);
+ex double macaw_to_sprite(float* in, float* out, double len, double w, double h) {
+	macaw::to_sprite(in, out, (int)len, (int)w, (int)h);
 	return 1.0;
 }
 
-ex double macaw_to_vbuff(float* in, float* out, double w, double h) {
-	macaw::to_vbuff(in, out, (int)w, (int)h);
+ex double macaw_to_vbuff(float* in, float* out, double len, double w, double h) {
+	macaw::to_vbuff(in, out, (int) len, (int)w, (int)h);
 	return 1.0;
 }

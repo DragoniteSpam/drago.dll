@@ -106,11 +106,11 @@ namespace macaw {
 	}
 
 	// these arent really needed but they may be occasionally helpful
-	void to_sprite(float* in, float* out, int w, int h) {
-
+	void to_sprite(float* in, float* out, int len, int w, int h) {
+		
 	}
 
-	void to_vbuff(float* in, float* out, int w, int h) {
+	void to_vbuff(float* in, float* out, int len, int w, int h) {
 
 	}
 }
