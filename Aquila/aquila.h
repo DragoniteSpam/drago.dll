@@ -14,6 +14,9 @@ namespace aquila {
 	void clear_nodes();
 	void navigate();
 
+	class Graph;
+	class Node;
+
 	class Graph {
 	private:
 		std::map<int, Node> nodes;
