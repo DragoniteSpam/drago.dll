@@ -104,6 +104,15 @@ namespace macaw {
 	float interpolate(float a, float b, float f) {
 		return a * (1 - f) + f * b;
 	}
+
+	// these arent really needed but they may be occasionally helpful
+	void to_sprite(float* in, float* out, int w, int h) {
+
+	}
+
+	void to_vbuff(float* in, float* out, int w, int h) {
+
+	}
 }
 
 #undef GET_3D_INDEX
