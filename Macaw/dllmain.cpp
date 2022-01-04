@@ -25,8 +25,8 @@ ex double macaw_set_seed(double seed) {
 	return 1.0;
 }
 
-ex double macaw_to_sprite(float* in, float* out, double len, double w, double h) {
-	macaw::to_sprite(in, out, (int)len, (int)w, (int)h);
+ex double macaw_to_sprite(float* in, int* out, double len) {
+	macaw::to_sprite(in, out, (int)len);
 	return 1.0;
 }
 

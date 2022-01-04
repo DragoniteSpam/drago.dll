@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <algorithm>
 
 #include "macaw.h"
 
@@ -106,8 +107,11 @@ namespace macaw {
 	}
 
 	// these arent really needed but they may be occasionally helpful
-	void to_sprite(float* in, float* out, int len, int w, int h) {
-		
+	void to_sprite(float* in, int* out, int len) {
+		for (int i = 0; i < len; i++) {
+			unsigned int intensity = std::min(255, std::max((int)in[i], 0));
+			out[i] = intensity | (intensity << 8) | (intensity << 16) | 0xff000000;
+		}
 	}
 
 	void to_vbuff(float* in, float* out, int len, int w, int h) {
