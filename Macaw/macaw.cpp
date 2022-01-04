@@ -43,7 +43,7 @@ namespace macaw {
 
 		int len = w * h;
 		for (int i = 0; i < len; i++) {
-			perlin[i] = (perlin[i] / total_amplitude) * setting_height;
+			perlin[i] *= setting_height / total_amplitude;
 		}
 
 		delete[] base;
