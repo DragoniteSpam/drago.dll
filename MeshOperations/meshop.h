@@ -7,10 +7,10 @@ namespace meshop {
 	float trans_x = 0;
 	float trans_y = 0;
 	float trans_z = 0;
-	float vertex_size = 36;
+	int vertex_size = 9;
 
 	const char* version();
-	void init(float);
+	void init(int);
 
 	// transform
 	void transform_position_set(float, float, float);

@@ -2,7 +2,9 @@
 #include "meshop.h"
 
 ex double init(double vertex_size) {
-	meshop::init((float)vertex_size);
+	// in gamemaker, our vertex size is in bytes; here we don't care about
+	// bytes and would prefer our vertex size to be in floats
+	meshop::init(((int)vertex_size) / 9);
 	return 1.0;
 }
 

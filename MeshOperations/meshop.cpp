@@ -5,7 +5,7 @@ namespace meshop {
 		return __DRAGO_MESH_OP;
 	}
 
-	void init(float vertex_size) {
+	void init(int vertex_size) {
 		meshop::vertex_size = vertex_size;
 	}
 
