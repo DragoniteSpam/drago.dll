@@ -71,15 +71,29 @@ namespace meshop {
 
 	// colour
 	void reset_colour(float* data, int len) {
+		for (int i = 0; i < len; i += meshop::vertex_size) {
+			((int*)data)[i + 8] |= 0x00ffffff;
+		}
 	}
 
 	void reset_alpha(float* data, int len) {
+		for (int i = 0; i < len; i += meshop::vertex_size) {
+			((int*)data)[i + 8] |= 0xff000000;
+		}
 	}
 
 	void reset_colour_and_alpha(float* data, int len) {
+		for (int i = 0; i < len; i += meshop::vertex_size) {
+			((int*)data)[i + 8] = 0xffffffff;
+		}
 	}
 
 	void invert_alpha(float* data, int len) {
+		for (int i = 0; i < len; i += meshop::vertex_size) {
+			int value = ((int*)data)[i + 8];
+			int a = (0xff - (value >> 24)) << 24;
+			((int*)data)[i + 8] = a | (value & 0x00ffffff);
+		}
 	}
 
 	// normals
