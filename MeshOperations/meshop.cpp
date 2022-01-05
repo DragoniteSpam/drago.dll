@@ -37,6 +37,11 @@ namespace meshop {
 	}
 
 	void transform_scale(float* data, int len, float scale) {
+		for (int i = 0; i < len; i += meshop::vertex_size) {
+			data[i + 0] *= scale;
+			data[i + 1] *= scale;
+			data[i + 2] *= scale;
+		}
 	}
 
 	// mirror on an axis
