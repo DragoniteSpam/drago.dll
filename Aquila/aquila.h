@@ -1,8 +1,9 @@
 #ifndef __DRAGO_AQUILA
 #define __DRAGO_AQUILA "0.0.1"
 
-#include <map>
 #include "main/core.h"
+#include <map>
+#include <vector>
 
 namespace aquila {
 	const char* version();
@@ -14,15 +15,13 @@ namespace aquila {
 	void clear_nodes();
 	void navigate();
 
-	class Graph;
-	class Node;
-
 	class Graph {
 	private:
 		std::map<int, Node> nodes;
 		int id;
 	public:
 		Graph();
+		~Graph();
 		int AddNode();
 		void RemoveNode(Node* node);
 		void ConnectNodes(Node* a, Node* b);
@@ -36,10 +35,13 @@ namespace aquila {
 		int id;
 	public:
 		Node(Graph* graph);
+		~Node();
 		std::map<int, Node>* GetConnections();
 		void Connect(Node* node);
 		void Disconnect(Node* node);
 	};
+
+	std::vector<Graph*> graphs;
 }
 
 #endif
