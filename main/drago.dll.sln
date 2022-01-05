@@ -19,6 +19,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Macaw", "..\Macaw\Macaw.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Aquila", "..\Aquila\Aquila.vcxproj", "{9C803CDF-2AEF-4706-9D1D-9232A3F1A336}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MeshOperations", "..\MeshOperations\MeshOperations.vcxproj", "{87B39410-F68C-4BC5-8D6F-B5E2672C4BD3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
