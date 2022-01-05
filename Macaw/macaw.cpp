@@ -1,10 +1,11 @@
 #include <stdlib.h>
 #include <algorithm>
+#include <iostream>
 
 #include "macaw.h"
 
-#define GET_3D_INDEX(i, j, k, w, h) ((w * h) * k + i * h + j)
-#define GET_2D_INDEX(i, j, h) (i * h + j)
+#define GET_3D_INDEX(i, j, k, w, h) (((w) * (h)) * (k) + (i) * (h) + (j))
+#define GET_2D_INDEX(i, j, h) ((i) * (h) + (j))
 
 namespace macaw {
 	extern double setting_height = 1.0;
@@ -114,8 +115,36 @@ namespace macaw {
 		}
 	}
 
-	void to_vbuff(float* in, float* out, int len, int w, int h) {
-
+	void to_vbuff(float* in, float* out, int w, int h) {
+		int index = 0;
+		for (int i = 0; i < w - 1; i++) {
+			for (int j = 0; j < h - 1; j++) {
+				float h00 = in[GET_2D_INDEX(i, j, h)];
+				float h01 = in[GET_2D_INDEX(i, j + 1, h)];
+				float h10 = in[GET_2D_INDEX(i + 1, j, h)];
+				float h11 = in[GET_2D_INDEX(i + 1, j + 1, h)];
+				out[index++] = (float)i;
+				out[index++] = (float)j;
+				out[index++] = h00;
+				out[index++] = (float)(i + 1);
+				out[index++] = (float)j;
+				out[index++] = h10;
+				out[index++] = (float)(i + 1);
+				out[index++] = (float)(j + 1);
+				out[index++] = h11;
+				out[index++] = (float)(i + 1);
+				out[index++] = (float)(j + 1);
+				out[index++] = h11;
+				out[index++] = (float)i;
+				out[index++] = (float)(j + 1);
+				out[index++] = h01;
+				out[index++] = (float)i;
+				out[index++] = (float)j;
+				out[index++] = h00;
+			}
+			std::cout << "finished with outer loop\n";
+		}
+		std::cout << "finished with all the things\n";
 	}
 }
 

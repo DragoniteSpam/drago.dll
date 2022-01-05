@@ -18,7 +18,7 @@ namespace macaw {
 	float interpolate(float, float, float);
 
 	void to_sprite(float*, int*, int);
-	void to_vbuff(float*, float*, int, int, int);
+	void to_vbuff(float*, float*, int, int);
 }
 
 #endif
