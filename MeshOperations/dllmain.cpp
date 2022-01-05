@@ -1,6 +1,11 @@
 #include "main/core.h"
 #include "meshop.h"
 
+ex double init(double vertex_size) {
+	meshop::init((float)vertex_size);
+	return 1.0;
+}
+
 ex const char* meshop_version() {
 	return meshop::version();
 }

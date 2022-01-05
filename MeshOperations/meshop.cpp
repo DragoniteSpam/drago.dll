@@ -5,6 +5,10 @@ namespace meshop {
 		return __DRAGO_MESH_OP;
 	}
 
+	void init(float vertex_size) {
+		meshop::vertex_size = vertex_size;
+	}
+
 	// transform
 	void transform_position_set(float x, float y, float z) {
 		meshop::trans_x = x;
