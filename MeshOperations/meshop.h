@@ -5,10 +5,10 @@
 #include <math.h>
 
 namespace meshop {
-	float trans_x = 0;
-	float trans_y = 0;
-	float trans_z = 0;
-	int vertex_size = 9;
+	extern float trans_x;
+	extern float trans_y;
+	extern float trans_z;
+	extern int vertex_size;
 
 	const char* version();
 	void init(int);

@@ -1,6 +1,11 @@
 #include "meshop.h"
 
 namespace meshop {
+	float trans_x = 0;
+	float trans_y = 0;
+	float trans_z = 0;
+	int vertex_size = 9;
+
 	const char* version() {
 		return __DRAGO_MESH_OP;
 	}
