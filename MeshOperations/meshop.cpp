@@ -17,6 +17,11 @@ namespace meshop {
 	}
 
 	void transform_position(float* data, int len) {
+		for (int i = 0; i < len; i += meshop::vertex_size) {
+			data[i + 0] += meshop::trans_x;
+			data[i + 1] += meshop::trans_y;
+			data[i + 2] += meshop::trans_z;
+		}
 	}
 
 	void transform_center(float* data, int len) {
