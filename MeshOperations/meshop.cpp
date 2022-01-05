@@ -58,9 +58,15 @@ namespace meshop {
 
 	// texture
 	void flip_tex_u(float* data, int len) {
+		for (int i = 0; i < len; i += meshop::vertex_size) {
+			data[i + 6] = 1.0 - data[i + 6];
+		}
 	}
 
 	void flip_tex_v(float* data, int len) {
+		for (int i = 0; i < len; i += meshop::vertex_size) {
+			data[i + 7] = 1.0 - data[i + 7];
+		}
 	}
 
 	// colour
