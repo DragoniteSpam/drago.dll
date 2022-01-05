@@ -32,9 +32,9 @@ namespace meshop {
 	void flip_tex_v(float*, int);
 
 	// color and alpha
-	void reset_colour(float*, int);
-	void reset_alpha(float*, int);
-	void reset_colour_and_alpha(float*, int);
+	void set_colour(float*, int, int);
+	void set_alpha(float*, int, int);
+	void set_colour_and_alpha(float*, int, int, int);
 	void invert_alpha(float*, int);
 
 	// normals

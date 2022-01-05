@@ -75,18 +75,18 @@ ex double meshop_flip_tex_v(float* data, double len) {
 }
 
 // colour
-ex double meshop_reset_colour(float* data, double len) {
-	meshop::reset_colour(data, (int)len);
+ex double meshop_set_colour(float* data, double len, double colour) {
+	meshop::set_colour(data, (int)len, (int)colour);
 	return 1.0;
 }
 
-ex double meshop_reset_alpha(float* data, double len) {
-	meshop::reset_alpha(data, (int)len);
+ex double meshop_set_alpha(float* data, double len, double alpha) {
+	meshop::set_alpha(data, (int)len, (int)(alpha * 255));
 	return 1.0;
 }
 
-ex double meshop_reset_colour_and_alpha(float* data, double len) {
-	meshop::reset_colour_and_alpha(data, (int)len);
+ex double meshop_set_colour_and_alpha(float* data, double len, double colour, double alpha) {
+	meshop::set_colour_and_alpha(data, (int)len, (int)colour, (int)(alpha * 255));
 	return 1.0;
 }
 
