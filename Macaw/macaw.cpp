@@ -142,9 +142,8 @@ namespace macaw {
 				out[index++] = (float)j;
 				out[index++] = h00;
 			}
-			std::cout << "finished with outer loop\n";
 		}
-		std::cout << "finished with all the things\n";
+		std::cout << "printing something out because computers are the stupidest things ever and this literally crashes if the printout isnt here" << std::endl;
 	}
 }
 
