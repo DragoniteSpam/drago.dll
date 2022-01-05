@@ -32,6 +32,7 @@ namespace aquila {
 	}
 
 	Node::Node(Graph* graph) {
+		id = 0;
 	}
 
 	Node::~Node() {
@@ -48,6 +49,7 @@ namespace aquila {
 	}
 
 	Graph::Graph() {
+		id = graphs.size();
 	}
 
 	Graph::~Graph() {
