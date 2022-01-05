@@ -30,4 +30,39 @@ namespace aquila {
 	void navigate() {
 
 	}
+
+	Node::Node(Graph* graph) {
+	}
+
+	std::map<int, Node>* Node::GetConnections() {
+		return nullptr;
+	}
+
+	void Node::Connect(Node* node) {
+	}
+
+	void Node::Disconnect(Node* node) {
+	}
+
+	Graph::Graph() {
+	}
+
+	int Graph::AddNode() {
+		return 0;
+	}
+
+	void Graph::RemoveNode(Node* node) {
+	}
+
+	void Graph::ConnectNodes(Node* a, Node* b) {
+	}
+
+	void Graph::DisconnectNodes(Node* a, Node* b) {
+	}
+
+	void Graph::ClearNodes() {
+	}
+
+	void Graph::Navigate(Node* source, Node* destination) {
+	}
 }
