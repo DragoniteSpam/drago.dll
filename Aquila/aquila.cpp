@@ -34,6 +34,9 @@ namespace aquila {
 	Node::Node(Graph* graph) {
 	}
 
+	Node::~Node() {
+	}
+
 	std::map<int, Node>* Node::GetConnections() {
 		return nullptr;
 	}
@@ -45,6 +48,9 @@ namespace aquila {
 	}
 
 	Graph::Graph() {
+	}
+
+	Graph::~Graph() {
 	}
 
 	int Graph::AddNode() {
