@@ -27,13 +27,26 @@ namespace meshop {
 	void transform_center(float* data, int len) {
 	}
 
+	// could do these with matrices but for set axes i'm pretty sure this is faster
 	void transform_rotate_x(float* data, int len, float angle) {
+		for (int i = 0; i < len; i += meshop::vertex_size) {
+			data[i + 1] = data[i + 1] * cos(angle) - data[i + 2] * sin(angle);
+			data[i + 2] = data[i + 1] * sin(angle) - data[i + 2] * cos(angle);
+		}
 	}
 
 	void transform_rotate_y(float* data, int len, float angle) {
+		for (int i = 0; i < len; i += meshop::vertex_size) {
+			data[i + 0] = data[i + 2] * sin(angle) - data[i + 0] * cos(angle);
+			data[i + 2] = data[i + 2] * cos(angle) - data[i + 0] * sin(angle);
+		}
 	}
 
 	void transform_rotate_z(float* data, int len, float angle) {
+		for (int i = 0; i < len; i += meshop::vertex_size) {
+			data[i + 0] = data[i + 0] * cos(angle) - data[i + 1] * sin(angle);
+			data[i + 1] = data[i + 0] * sin(angle) - data[i + 1] * cos(angle);
+		}
 	}
 
 	void transform_scale(float* data, int len, float scale) {

@@ -2,6 +2,7 @@
 #define __DRAGO_MESH_OP "0.0.1"
 
 #include "main/core.h"
+#include <math.h>
 
 namespace meshop {
 	float trans_x = 0;

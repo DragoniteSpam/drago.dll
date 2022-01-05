@@ -28,17 +28,17 @@ ex double meshop_transform_center(float* data, double len) {
 }
 
 ex double meshop_transform_rotate_x(float* data, double len, double angle) {
-	meshop::transform_rotate_x(data, (int)len, (float)angle);
+	meshop::transform_rotate_x(data, (int)len, ((float)angle) * 3.141592653 / 180.0);
 	return 1.0;
 }
 
 ex double meshop_transform_rotate_y(float* data, double len, double angle) {
-	meshop::transform_rotate_y(data, (int)len, (float)angle);
+	meshop::transform_rotate_y(data, (int)len, ((float)angle) * 3.141592653 / 180.0);
 	return 1.0;
 }
 
 ex double meshop_transform_rotate_z(float* data, double len, double angle) {
-	meshop::transform_rotate_z(data, (int)len, (float)angle);
+	meshop::transform_rotate_z(data, (int)len, ((float)angle) * 3.141592653 / 180.0);
 	return 1.0;
 }
 
