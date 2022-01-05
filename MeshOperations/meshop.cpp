@@ -30,6 +30,21 @@ namespace meshop {
 	}
 
 	void transform_center(float* data, int len) {
+		float total_x = 0;
+		float total_y = 0;
+
+		for (int i = 0; i < len; i += meshop::vertex_size) {
+			total_x += data[i + 0];
+			total_y += data[i + 1];
+		}
+
+		total_x /= len;
+		total_y /= len;
+
+		for (int i = 0; i < len; i += meshop::vertex_size) {
+			data[i + 0] -= total_x;
+			data[i + 1] -= total_y;
+		}
 	}
 
 	// could do these with matrices but for set axes i'm pretty sure this is faster
