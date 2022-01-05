@@ -36,12 +36,24 @@ namespace meshop {
 
 	// mirror on an axis
 	void mirror_axis_x(float* data, int len) {
+		for (int i = 0; i < len; i += meshop::vertex_size) {
+			data[i + 0] *= -1;
+			data[i + 3] *= -1;
+		}
 	}
 
 	void mirror_axis_y(float* data, int len) {
+		for (int i = 0; i < len; i += meshop::vertex_size) {
+			data[i + 1] *= -1;
+			data[i + 4] *= -1;
+		}
 	}
 
 	void mirror_axis_z(float* data, int len) {
+		for (int i = 0; i < len; i += meshop::vertex_size) {
+			data[i + 2] *= -1;
+			data[i + 5] *= -1;
+		}
 	}
 
 	// texture
