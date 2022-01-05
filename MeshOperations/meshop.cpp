@@ -141,5 +141,48 @@ namespace meshop {
 
 	// normals
 	void set_normals_flat(float* data, int len) {
+		float x1, x2, x3, y1, y2, y3, z1, z2, z3;
+		float v1x, v1y, v1z, v2x, v2y, v2z;
+		float cx, cy, cz;
+		float cpl;
+		float nx, ny, nz;
+
+		for (int i = 0; i < len; i += meshop::vertex_size * 3) {
+			x1 = data[i + 0];
+			y1 = data[i + 1];
+			z1 = data[i + 2];
+			x2 = data[i + 0 + meshop::vertex_size];
+			y2 = data[i + 1 + meshop::vertex_size];
+			z2 = data[i + 2 + meshop::vertex_size];
+			x3 = data[i + 0 + meshop::vertex_size * 2];
+			y3 = data[i + 1 + meshop::vertex_size * 2];
+			z3 = data[i + 2 + meshop::vertex_size * 2];
+
+			v1x = x2 - x1;
+			v1y = y2 - y1;
+			v1z = z2 - z1;
+			v2x = x3 - x1;
+			v2y = y3 - y1;
+			v2z = z3 - z1;
+			cx = v1y * v2z - v1z * v2y;
+			cy = -v1x * v2z + v1z * v2x;
+			cz = v1x * v2y - v1y * v2x;
+
+			cpl = sqrtf(cx * cx + cy * cy + cz * cz);
+
+			nx = cx / cpl;
+			ny = cy / cpl;
+			nz = cz / cpl;
+
+			data[i + 3] = nx;
+			data[i + 4] = ny;
+			data[i + 5] = nz;
+			data[i + 3 + meshop::vertex_size] = nx;
+			data[i + 4 + meshop::vertex_size] = ny;
+			data[i + 5 + meshop::vertex_size] = nz;
+			data[i + 3 + meshop::vertex_size * 2] = nx;
+			data[i + 4 + meshop::vertex_size * 2] = ny;
+			data[i + 5 + meshop::vertex_size * 2] = nz;
+		}
 	}
 }
