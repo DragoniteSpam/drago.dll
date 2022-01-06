@@ -1,5 +1,5 @@
 #ifndef __DRAGO_MESH_OP
-#define __DRAGO_MESH_OP "0.0.1"
+#define __DRAGO_MESH_OP "1.0.0"
 
 #include "main/core.h"
 #include <math.h>
