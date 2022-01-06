@@ -268,6 +268,6 @@ namespace meshops {
 	}
 
 	void set_normals_smooth(float* data, int len, float threshold) {
-
+		set_normals_flat(data, len);
 	}
 }
