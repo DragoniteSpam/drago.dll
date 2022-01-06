@@ -52,6 +52,8 @@ namespace meshops {
 		for (int i = 0; i < len; i += meshops::vertex_size) {
 			data[i + 1] = data[i + 1] * cosf(angle) - data[i + 2] * sinf(angle);
 			data[i + 2] = data[i + 1] * sinf(angle) - data[i + 2] * cosf(angle);
+			data[i + 4] = data[i + 4] * cosf(angle) - data[i + 5] * sinf(angle);
+			data[i + 5] = data[i + 4] * sinf(angle) - data[i + 5] * cosf(angle);
 		}
 	}
 
@@ -59,6 +61,8 @@ namespace meshops {
 		for (int i = 0; i < len; i += meshops::vertex_size) {
 			data[i + 0] = data[i + 2] * sinf(angle) - data[i + 0] * cosf(angle);
 			data[i + 2] = data[i + 2] * cosf(angle) - data[i + 0] * sinf(angle);
+			data[i + 3] = data[i + 5] * sinf(angle) - data[i + 3] * cosf(angle);
+			data[i + 5] = data[i + 5] * cosf(angle) - data[i + 3] * sinf(angle);
 		}
 	}
 
@@ -66,6 +70,8 @@ namespace meshops {
 		for (int i = 0; i < len; i += meshops::vertex_size) {
 			data[i + 0] = data[i + 0] * cosf(angle) - data[i + 1] * sinf(angle);
 			data[i + 1] = data[i + 0] * sinf(angle) - data[i + 1] * cosf(angle);
+			data[i + 3] = data[i + 3] * cosf(angle) - data[i + 4] * sinf(angle);
+			data[i + 4] = data[i + 3] * sinf(angle) - data[i + 4] * cosf(angle);
 		}
 	}
 
