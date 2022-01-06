@@ -5,12 +5,13 @@ ex const char* spriteops_version() {
 	return spriteops::version();
 }
 
-ex double spriteops_set_dimensions_output(float* out) {
+ex double spriteops_set_dimensions_output(int* out) {
 	spriteops::set_cropped_dimensions_output(out);
+	return 1.0;
 }
 
-ex double spriteops_get_cropped_dimensions(float* data, double length, double w, double h) {
-	spriteops::get_cropped_dimensions(data, BYTES2FLOATS(length), (int)w, (int)h);
+ex double spriteops_get_cropped_dimensions(int* data, double w, double h, double cutoff) {
+	spriteops::get_cropped_dimensions(data, (int)w, (int)h, (int)(cutoff * 255));
 	return 1.0;
 }
 

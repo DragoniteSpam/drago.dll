@@ -4,14 +4,15 @@
 #include "main/core.h"
 
 #define BYTES2FLOATS(bytes) (((int)bytes) / 4)
+#define GET_INDEX(i, j, w) ((j) * (w) + (i))
 
 namespace spriteops {
-	extern float* dimensions_output;
+	extern int* cropped_dimensions_output;
 
 	const char* version();
 	
-	void set_cropped_dimensions_output(float*);
-	void get_cropped_dimensions(float*, int, int, int, float*);
+	void set_cropped_dimensions_output(int*);
+	void get_cropped_dimensions(int*, int, int, int);
 	void spriteops_remove_transparent_colour(float*, int, int);
 }
 
