@@ -6,9 +6,12 @@
 #define BYTES2FLOATS(bytes) (((int)bytes) / 4)
 
 namespace spriteops {
+	extern float* dimensions_output;
+
 	const char* version();
 	
-	void get_cropped_dimensions(float*, int, float*);
+	void set_cropped_dimensions_output(float*);
+	void get_cropped_dimensions(float*, int, int, int, float*);
 	void spriteops_remove_transparent_colour(float*, int, int);
 }
 

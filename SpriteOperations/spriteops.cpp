@@ -5,7 +5,11 @@ namespace spriteops {
 		return __DRAGO_SPRITE_OP;
 	}
 
-	void get_cropped_dimensions(float* data, int length, float* out) {
+	void set_cropped_dimensions_output(float* data) {
+		dimensions_output = data;
+	}
+
+	void get_cropped_dimensions(float* data, int length, int w, int h, float* out) {
 
 	}
 
