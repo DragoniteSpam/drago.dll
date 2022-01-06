@@ -117,14 +117,14 @@ namespace meshops {
 			y3 = data[i + 1 + meshops::vertex_size * 2];
 			z3 = data[i + 2 + meshops::vertex_size * 2];
 			data[i + 0] = -x1;
-			data[i + 1] = y1;
-			data[i + 2] = z1;
+			data[i + 1] = -y1;
+			data[i + 2] = -z1;
 			data[i + 0 + meshops::vertex_size] = -x3;
-			data[i + 1 + meshops::vertex_size] = y3;
-			data[i + 2 + meshops::vertex_size] = z3;
+			data[i + 1 + meshops::vertex_size] = -y3;
+			data[i + 2 + meshops::vertex_size] = -z3;
 			data[i + 0 + meshops::vertex_size * 2] = -x2;
-			data[i + 1 + meshops::vertex_size * 2] = y2;
-			data[i + 2 + meshops::vertex_size * 2] = z2;
+			data[i + 1 + meshops::vertex_size * 2] = -y2;
+			data[i + 2 + meshops::vertex_size * 2] = -z2;
 		}
 	}
 
@@ -141,15 +141,15 @@ namespace meshops {
 			x3 = data[i + 0 + meshops::vertex_size * 2];
 			y3 = data[i + 1 + meshops::vertex_size * 2];
 			z3 = data[i + 2 + meshops::vertex_size * 2];
-			data[i + 0] = x1;
+			data[i + 0] = -x1;
 			data[i + 1] = -y1;
-			data[i + 2] = z1;
-			data[i + 0 + meshops::vertex_size] = x3;
+			data[i + 2] = -z1;
+			data[i + 0 + meshops::vertex_size] = -x3;
 			data[i + 1 + meshops::vertex_size] = -y3;
-			data[i + 2 + meshops::vertex_size] = z3;
-			data[i + 0 + meshops::vertex_size * 2] = x2;
+			data[i + 2 + meshops::vertex_size] = -z3;
+			data[i + 0 + meshops::vertex_size * 2] = -x2;
 			data[i + 1 + meshops::vertex_size * 2] = -y2;
-			data[i + 2 + meshops::vertex_size * 2] = z2;
+			data[i + 2 + meshops::vertex_size * 2] = -z2;
 		}
 	}
 
@@ -166,14 +166,14 @@ namespace meshops {
 			x3 = data[i + 0 + meshops::vertex_size * 2];
 			y3 = data[i + 1 + meshops::vertex_size * 2];
 			z3 = data[i + 2 + meshops::vertex_size * 2];
-			data[i + 0] = x1;
-			data[i + 1] = y1;
+			data[i + 0] = -x1;
+			data[i + 1] = -y1;
 			data[i + 2] = -z1;
-			data[i + 0 + meshops::vertex_size] = x3;
-			data[i + 1 + meshops::vertex_size] = y3;
+			data[i + 0 + meshops::vertex_size] = -x3;
+			data[i + 1 + meshops::vertex_size] = -y3;
 			data[i + 2 + meshops::vertex_size] = -z3;
-			data[i + 0 + meshops::vertex_size * 2] = x2;
-			data[i + 1 + meshops::vertex_size * 2] = y2;
+			data[i + 0 + meshops::vertex_size * 2] = -x2;
+			data[i + 1 + meshops::vertex_size * 2] = -y2;
 			data[i + 2 + meshops::vertex_size * 2] = -z2;
 		}
 	}
