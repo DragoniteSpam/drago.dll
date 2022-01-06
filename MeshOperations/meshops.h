@@ -42,6 +42,7 @@ namespace meshops {
 
 	// normals
 	void set_normals_flat(float*, int);
+	void set_normals_smooth(float*, int, float);
 }
 
 #endif

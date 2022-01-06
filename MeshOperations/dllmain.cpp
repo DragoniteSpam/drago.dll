@@ -105,3 +105,8 @@ ex double meshops_set_normals_flat(float* data, double len) {
 	meshops::set_normals_flat(data, BYTES2FLOATS(len));
 	return 1.0;
 }
+
+ex double meshops_set_normals_smooth(float* data, double len, double threshold) {
+	meshops::set_normals_smooth(data, BYTES2FLOATS(len), (float)threshold);
+	return 1.0;
+}

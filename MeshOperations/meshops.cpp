@@ -266,4 +266,8 @@ namespace meshops {
 			data[i + 5 + meshops::vertex_size * 2] = nz;
 		}
 	}
+
+	void set_normals_smooth(float* data, int len, float threshold) {
+
+	}
 }
