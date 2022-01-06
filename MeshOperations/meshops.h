@@ -6,7 +6,7 @@
 
 #define BYTES2FLOATS(bytes) (((int)bytes) / 4)
 
-namespace meshop {
+namespace meshops {
 	extern float trans_x;
 	extern float trans_y;
 	extern float trans_z;

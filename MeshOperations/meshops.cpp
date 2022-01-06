@@ -1,6 +1,6 @@
 #include "meshops.h"
 
-namespace meshop {
+namespace meshops {
 	float trans_x = 0;
 	float trans_y = 0;
 	float trans_z = 0;
@@ -11,21 +11,21 @@ namespace meshop {
 	}
 
 	void init(int vertex_size) {
-		meshop::vertex_size = vertex_size;
+		meshops::vertex_size = vertex_size;
 	}
 
 	// transform
 	void transform_position_set(float x, float y, float z) {
-		meshop::trans_x = x;
-		meshop::trans_y = y;
-		meshop::trans_z = z;
+		meshops::trans_x = x;
+		meshops::trans_y = y;
+		meshops::trans_z = z;
 	}
 
 	void transform_position(float* data, int len) {
-		for (int i = 0; i < len; i += meshop::vertex_size) {
-			data[i + 0] += meshop::trans_x;
-			data[i + 1] += meshop::trans_y;
-			data[i + 2] += meshop::trans_z;
+		for (int i = 0; i < len; i += meshops::vertex_size) {
+			data[i + 0] += meshops::trans_x;
+			data[i + 1] += meshops::trans_y;
+			data[i + 2] += meshops::trans_z;
 		}
 	}
 
@@ -33,7 +33,7 @@ namespace meshop {
 		float total_x = 0;
 		float total_y = 0;
 
-		for (int i = 0; i < len; i += meshop::vertex_size) {
+		for (int i = 0; i < len; i += meshops::vertex_size) {
 			total_x += data[i + 0];
 			total_y += data[i + 1];
 		}
@@ -41,7 +41,7 @@ namespace meshop {
 		total_x /= len;
 		total_y /= len;
 
-		for (int i = 0; i < len; i += meshop::vertex_size) {
+		for (int i = 0; i < len; i += meshops::vertex_size) {
 			data[i + 0] -= total_x;
 			data[i + 1] -= total_y;
 		}
@@ -49,28 +49,28 @@ namespace meshop {
 
 	// could do these with matrices but for set axes i'm pretty sure this is faster
 	void transform_rotate_x(float* data, int len, float angle) {
-		for (int i = 0; i < len; i += meshop::vertex_size) {
+		for (int i = 0; i < len; i += meshops::vertex_size) {
 			data[i + 1] = data[i + 1] * cosf(angle) - data[i + 2] * sinf(angle);
 			data[i + 2] = data[i + 1] * sinf(angle) - data[i + 2] * cosf(angle);
 		}
 	}
 
 	void transform_rotate_y(float* data, int len, float angle) {
-		for (int i = 0; i < len; i += meshop::vertex_size) {
+		for (int i = 0; i < len; i += meshops::vertex_size) {
 			data[i + 0] = data[i + 2] * sinf(angle) - data[i + 0] * cosf(angle);
 			data[i + 2] = data[i + 2] * cosf(angle) - data[i + 0] * sinf(angle);
 		}
 	}
 
 	void transform_rotate_z(float* data, int len, float angle) {
-		for (int i = 0; i < len; i += meshop::vertex_size) {
+		for (int i = 0; i < len; i += meshops::vertex_size) {
 			data[i + 0] = data[i + 0] * cosf(angle) - data[i + 1] * sinf(angle);
 			data[i + 1] = data[i + 0] * sinf(angle) - data[i + 1] * cosf(angle);
 		}
 	}
 
 	void transform_scale(float* data, int len, float scale) {
-		for (int i = 0; i < len; i += meshop::vertex_size) {
+		for (int i = 0; i < len; i += meshops::vertex_size) {
 			data[i + 0] *= scale;
 			data[i + 1] *= scale;
 			data[i + 2] *= scale;
@@ -79,21 +79,21 @@ namespace meshop {
 
 	// mirror on an axis
 	void mirror_axis_x(float* data, int len) {
-		for (int i = 0; i < len; i += meshop::vertex_size) {
+		for (int i = 0; i < len; i += meshops::vertex_size) {
 			data[i + 0] *= -1;
 			data[i + 3] *= -1;
 		}
 	}
 
 	void mirror_axis_y(float* data, int len) {
-		for (int i = 0; i < len; i += meshop::vertex_size) {
+		for (int i = 0; i < len; i += meshops::vertex_size) {
 			data[i + 1] *= -1;
 			data[i + 4] *= -1;
 		}
 	}
 
 	void mirror_axis_z(float* data, int len) {
-		for (int i = 0; i < len; i += meshop::vertex_size) {
+		for (int i = 0; i < len; i += meshops::vertex_size) {
 			data[i + 2] *= -1;
 			data[i + 5] *= -1;
 		}
@@ -101,40 +101,40 @@ namespace meshop {
 
 	// texture
 	void flip_tex_u(float* data, int len) {
-		for (int i = 0; i < len; i += meshop::vertex_size) {
+		for (int i = 0; i < len; i += meshops::vertex_size) {
 			data[i + 6] = 1 - data[i + 6];
 		}
 	}
 
 	void flip_tex_v(float* data, int len) {
-		for (int i = 0; i < len; i += meshop::vertex_size) {
+		for (int i = 0; i < len; i += meshops::vertex_size) {
 			data[i + 7] = 1 - data[i + 7];
 		}
 	}
 
 	// colour
 	void set_colour(float* data, int len, int colour) {
-		for (int i = 0; i < len; i += meshop::vertex_size) {
+		for (int i = 0; i < len; i += meshops::vertex_size) {
 			((unsigned int*)data)[i + 8] |= colour;
 		}
 	}
 
 	void set_alpha(float* data, int len, int alpha) {
 		unsigned int a = alpha << 24;
-		for (int i = 0; i < len; i += meshop::vertex_size) {
+		for (int i = 0; i < len; i += meshops::vertex_size) {
 			((unsigned int*)data)[i + 8] |= a;
 		}
 	}
 
 	void set_colour_and_alpha(float* data, int len, int colour, int alpha) {
 		unsigned int value = colour | (alpha << 24);
-		for (int i = 0; i < len; i += meshop::vertex_size) {
+		for (int i = 0; i < len; i += meshops::vertex_size) {
 			((int*)data)[i + 8] = value;
 		}
 	}
 
 	void invert_alpha(float* data, int len) {
-		for (int i = 0; i < len; i += meshop::vertex_size) {
+		for (int i = 0; i < len; i += meshops::vertex_size) {
 			unsigned int value = ((unsigned int*)data)[i + 8];
 			unsigned int a = (0xff - (value >> 24)) << 24;
 			((unsigned int*)data)[i + 8] = a | (value & 0x00ffffff);
@@ -149,16 +149,16 @@ namespace meshop {
 		float cpl;
 		float nx, ny, nz;
 
-		for (int i = 0; i < len; i += meshop::vertex_size * 3) {
+		for (int i = 0; i < len; i += meshops::vertex_size * 3) {
 			x1 = data[i + 0];
 			y1 = data[i + 1];
 			z1 = data[i + 2];
-			x2 = data[i + 0 + meshop::vertex_size];
-			y2 = data[i + 1 + meshop::vertex_size];
-			z2 = data[i + 2 + meshop::vertex_size];
-			x3 = data[i + 0 + meshop::vertex_size * 2];
-			y3 = data[i + 1 + meshop::vertex_size * 2];
-			z3 = data[i + 2 + meshop::vertex_size * 2];
+			x2 = data[i + 0 + meshops::vertex_size];
+			y2 = data[i + 1 + meshops::vertex_size];
+			z2 = data[i + 2 + meshops::vertex_size];
+			x3 = data[i + 0 + meshops::vertex_size * 2];
+			y3 = data[i + 1 + meshops::vertex_size * 2];
+			z3 = data[i + 2 + meshops::vertex_size * 2];
 
 			v1x = x2 - x1;
 			v1y = y2 - y1;
@@ -179,12 +179,12 @@ namespace meshop {
 			data[i + 3] = nx;
 			data[i + 4] = ny;
 			data[i + 5] = nz;
-			data[i + 3 + meshop::vertex_size] = nx;
-			data[i + 4 + meshop::vertex_size] = ny;
-			data[i + 5 + meshop::vertex_size] = nz;
-			data[i + 3 + meshop::vertex_size * 2] = nx;
-			data[i + 4 + meshop::vertex_size * 2] = ny;
-			data[i + 5 + meshop::vertex_size * 2] = nz;
+			data[i + 3 + meshops::vertex_size] = nx;
+			data[i + 4 + meshops::vertex_size] = ny;
+			data[i + 5 + meshops::vertex_size] = nz;
+			data[i + 3 + meshops::vertex_size * 2] = nx;
+			data[i + 4 + meshops::vertex_size * 2] = ny;
+			data[i + 5 + meshops::vertex_size * 2] = nz;
 		}
 	}
 }
