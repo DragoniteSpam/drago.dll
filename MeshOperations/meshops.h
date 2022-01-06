@@ -4,6 +4,8 @@
 #include "main/core.h"
 #include <math.h>
 
+#define BYTES2FLOATS(bytes) (((int)bytes) / 4)
+
 namespace meshop {
 	extern float trans_x;
 	extern float trans_y;
