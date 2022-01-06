@@ -13,15 +13,6 @@ namespace meshops {
 	extern float trans_z;
 	extern int vertex_size;
 	
-	// data structures
-	struct Vector3 {
-		float x, y, z;
-	};
-
-	struct Triangle {
-		Vector3 a, b, c;
-	};
-
 	const char* version();
 	void init(int);
 
