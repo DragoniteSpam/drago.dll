@@ -3,6 +3,10 @@
 
 #include "main/core.h"
 #include <math.h>
+#include <stdio.h>
+#include <map>
+#include <string>
+#include <format>
 
 #define BYTES2FLOATS(bytes) (((int)bytes) / 4)
 
@@ -11,6 +15,15 @@ namespace meshops {
 	extern float trans_y;
 	extern float trans_z;
 	extern int vertex_size;
+	
+	// data structures
+	struct Vector3 {
+		float x, y, z;
+	};
+
+	struct Triangle {
+		Vector3 a, b, c;
+	};
 
 	const char* version();
 	void init(int);
