@@ -3,4 +3,6 @@
 
 #define ex extern "C" __declspec (dllexport)
 
+#define BYTES2FLOATS(bytes) (((int)bytes) / 4)
+
 #endif

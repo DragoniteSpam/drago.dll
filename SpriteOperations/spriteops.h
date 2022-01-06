@@ -3,7 +3,6 @@
 
 #include "main/core.h"
 
-#define BYTES2FLOATS(bytes) (((int)bytes) / 4)
 #define GET_INDEX(i, j, w) ((j) * (w) + (i))
 
 namespace spriteops {

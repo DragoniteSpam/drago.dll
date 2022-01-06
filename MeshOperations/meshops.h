@@ -7,8 +7,6 @@
 #include <string>
 #include <format>
 
-#define BYTES2FLOATS(bytes) (((int)bytes) / 4)
-
 namespace meshops {
 	extern float trans_x;
 	extern float trans_y;
