@@ -3,7 +3,6 @@
 
 #include "main/core.h"
 #include <math.h>
-#include <stdio.h>
 #include <map>
 #include <string>
 #include <format>
