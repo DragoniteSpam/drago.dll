@@ -150,8 +150,6 @@ namespace meshop {
 		float nx, ny, nz;
 
 		for (int i = 0; i < len; i += meshop::vertex_size * 3) {
-
-
 			x1 = data[i + 0];
 			y1 = data[i + 1];
 			z1 = data[i + 2];
