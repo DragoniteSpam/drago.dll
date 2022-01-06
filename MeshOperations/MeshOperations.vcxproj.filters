@@ -18,15 +18,12 @@
     <ClCompile Include="dllmain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="meshop.cpp">
+    <ClCompile Include="meshops.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\main\core.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="meshop.h">
+    <ClInclude Include="meshops.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
