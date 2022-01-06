@@ -79,23 +79,77 @@ namespace meshops {
 
 	// mirror on an axis
 	void mirror_axis_x(float* data, int len) {
-		for (int i = 0; i < len; i += meshops::vertex_size) {
-			data[i + 0] *= -1;
-			data[i + 3] *= -1;
+		float x1, x2, x3, y1, y2, y3, z1, z2, z3;
+
+		for (int i = 0; i < len; i += meshops::vertex_size * 3) {
+			x1 = data[i + 0];
+			y1 = data[i + 1];
+			z1 = data[i + 2];
+			x2 = data[i + 0 + meshops::vertex_size];
+			y2 = data[i + 1 + meshops::vertex_size];
+			z2 = data[i + 2 + meshops::vertex_size];
+			x3 = data[i + 0 + meshops::vertex_size * 2];
+			y3 = data[i + 1 + meshops::vertex_size * 2];
+			z3 = data[i + 2 + meshops::vertex_size * 2];
+			data[i + 0] = -x1;
+			data[i + 1] = y1;
+			data[i + 2] = z1;
+			data[i + 0 + meshops::vertex_size] = -x3;
+			data[i + 1 + meshops::vertex_size] = y3;
+			data[i + 2 + meshops::vertex_size] = z3;
+			data[i + 0 + meshops::vertex_size * 2] = -x2;
+			data[i + 1 + meshops::vertex_size * 2] = y2;
+			data[i + 2 + meshops::vertex_size * 2] = z2;
 		}
 	}
 
 	void mirror_axis_y(float* data, int len) {
-		for (int i = 0; i < len; i += meshops::vertex_size) {
-			data[i + 1] *= -1;
-			data[i + 4] *= -1;
+		float x1, x2, x3, y1, y2, y3, z1, z2, z3;
+
+		for (int i = 0; i < len; i += meshops::vertex_size * 3) {
+			x1 = data[i + 0];
+			y1 = data[i + 1];
+			z1 = data[i + 2];
+			x2 = data[i + 0 + meshops::vertex_size];
+			y2 = data[i + 1 + meshops::vertex_size];
+			z2 = data[i + 2 + meshops::vertex_size];
+			x3 = data[i + 0 + meshops::vertex_size * 2];
+			y3 = data[i + 1 + meshops::vertex_size * 2];
+			z3 = data[i + 2 + meshops::vertex_size * 2];
+			data[i + 0] = x1;
+			data[i + 1] = -y1;
+			data[i + 2] = z1;
+			data[i + 0 + meshops::vertex_size] = x3;
+			data[i + 1 + meshops::vertex_size] = -y3;
+			data[i + 2 + meshops::vertex_size] = z3;
+			data[i + 0 + meshops::vertex_size * 2] = x2;
+			data[i + 1 + meshops::vertex_size * 2] = -y2;
+			data[i + 2 + meshops::vertex_size * 2] = z2;
 		}
 	}
 
 	void mirror_axis_z(float* data, int len) {
-		for (int i = 0; i < len; i += meshops::vertex_size) {
-			data[i + 2] *= -1;
-			data[i + 5] *= -1;
+		float x1, x2, x3, y1, y2, y3, z1, z2, z3;
+
+		for (int i = 0; i < len; i += meshops::vertex_size * 3) {
+			x1 = data[i + 0];
+			y1 = data[i + 1];
+			z1 = data[i + 2];
+			x2 = data[i + 0 + meshops::vertex_size];
+			y2 = data[i + 1 + meshops::vertex_size];
+			z2 = data[i + 2 + meshops::vertex_size];
+			x3 = data[i + 0 + meshops::vertex_size * 2];
+			y3 = data[i + 1 + meshops::vertex_size * 2];
+			z3 = data[i + 2 + meshops::vertex_size * 2];
+			data[i + 0] = x1;
+			data[i + 1] = y1;
+			data[i + 2] = -z1;
+			data[i + 0 + meshops::vertex_size] = x3;
+			data[i + 1 + meshops::vertex_size] = y3;
+			data[i + 2 + meshops::vertex_size] = -z3;
+			data[i + 0 + meshops::vertex_size * 2] = x2;
+			data[i + 1 + meshops::vertex_size * 2] = y2;
+			data[i + 2 + meshops::vertex_size * 2] = -z2;
 		}
 	}
 
