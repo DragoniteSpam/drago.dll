@@ -13,7 +13,7 @@ namespace spriteops {
 	
 	void set_cropped_dimensions_output(int*);
 	void get_cropped_dimensions(int*, int, int, int);
-	void spriteops_remove_transparent_colour(float*, int, int);
+	void spriteops_remove_transparent_colour(int*, int, int);
 }
 
 #endif

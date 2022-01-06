@@ -71,7 +71,12 @@ namespace spriteops {
 		spriteops::cropped_dimensions_output[3] = out_bottom;
 	}
 
-	void spriteops_remove_transparent_colour(float* data, int length, int colour) {
-
+	void spriteops_remove_transparent_colour(int* data, int length, int colour) {
+		for (int i = 0; i < length; i++) {
+			// it might be worth it to add a tolerance value here some time
+			if ((data[i] & 0x00ffffff) == colour) {
+				data[i] = 0;
+			}
+		}
 	}
 }
