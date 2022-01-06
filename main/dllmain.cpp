@@ -109,18 +109,10 @@ ex double file_drop_flush() {
     return 0.0;
 }
 
-ex double pack_textures(int* sprite_data, double length) {
-    return sprite_atlas::pack(sprite_data, ((int)length) >> 2);
-}
-
 // versioning
 
 ex const char* version() {
     return __DRAGO_DDD_MAIN;
-}
-
-ex const char* sprite_atlas_version() {
-    return sprite_atlas::version();
 }
 
 ex const char* file_dropper_version() {
