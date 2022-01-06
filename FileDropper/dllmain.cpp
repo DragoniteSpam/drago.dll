@@ -1,6 +1,6 @@
 #include "filedropper.h"
 
-ex double init(HWND hWnd) {
+ex double file_drop_init(HWND hWnd) {
     file_dropper::init(hWnd);
     SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)MsgProc);
     return 1.0;
