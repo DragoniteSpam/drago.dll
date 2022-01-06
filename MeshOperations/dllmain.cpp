@@ -47,7 +47,12 @@ ex double meshops_transform_scale(float* data, double len, double scale) {
 	return 1.0;
 }
 
-// mirror on an axis
+// axes
+ex double meshops_rotate_up(float* data, double len) {
+	meshops::rotate_up(data, BYTES2FLOATS(len));
+	return 1.0;
+}
+
 ex double meshops_mirror_axis_x(float* data, double len) {
 	meshops::mirror_axis_x(data, BYTES2FLOATS(len));
 	return 1.0;

@@ -77,7 +77,26 @@ namespace meshops {
 		}
 	}
 
-	// mirror on an axis
+	// axes
+	void rotate_up(float* data, int len) {
+		float x, y, z, nx, ny, nz;
+
+		for (int i = 0; i < len; i += meshops::vertex_size) {
+			x = data[i + 0];
+			y = data[i + 1];
+			z = data[i + 2];
+			nx = data[i + 3];
+			ny = data[i + 4];
+			nz = data[i + 5];
+			data[i + 0] = y;
+			data[i + 1] = z;
+			data[i + 2] = x;
+			data[i + 3] = ny;
+			data[i + 4] = nz;
+			data[i + 5] = nx;
+		}
+	}
+
 	void mirror_axis_x(float* data, int len) {
 		float x1, x2, x3, y1, y2, y3, z1, z2, z3;
 

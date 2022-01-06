@@ -24,7 +24,8 @@ namespace meshops {
 	void transform_rotate_z(float*, int, float);
 	void transform_scale(float*, int, float);
 
-	// mirror on axis
+	// axes
+	void rotate_up(float*, int);
 	void mirror_axis_x(float*, int);
 	void mirror_axis_y(float*, int);
 	void mirror_axis_z(float*, int);
