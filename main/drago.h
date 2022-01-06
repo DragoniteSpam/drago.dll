@@ -21,16 +21,16 @@ HWND hwnd_original;
 
 LRESULT WINAPI MsgProc(HWND, UINT, WPARAM, LPARAM);
 
-ex double reset_status();
-ex double fetch_status();
-ex double init(HWND, double);
+ex double drago_reset_status();
+ex double drago_fetch_status();
+ex double drago_init(HWND, double);
 
 ex double file_drop_count();
 ex char* file_drop_get(double n);
 ex double file_drop_flush();
 
 // no point implementing the core version, honestly
-ex const char* version();
+ex const char* drago_version();
 ex const char* file_dropper_version();
 
 #endif

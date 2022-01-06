@@ -1,7 +1,7 @@
 #include "drago.h"
 #include "FileDropper/filedropper.h"
 
-ex double init(HWND hWnd, double close) {
+ex double drago_init(HWND hWnd, double close) {
     file_dropper::init(hWnd);
     window_original = GetWindowLongPtr(hWnd, GWLP_WNDPROC);
     window_status = WINDOW_NEVERMIND;
@@ -10,12 +10,12 @@ ex double init(HWND hWnd, double close) {
     return 1.0;
 }
 
-ex double reset_status() {
+ex double drago_reset_status() {
     window_status = WINDOW_NEVERMIND;
     return 0.0;
 }
 
-ex double fetch_status() {
+ex double drago_fetch_status() {
     return window_status;
 }
 
@@ -34,7 +34,7 @@ ex double file_drop_flush() {
 
 // versioning
 
-ex const char* version() {
+ex const char* drago_version() {
     return __DRAGO_DDD_MAIN;
 }
 
