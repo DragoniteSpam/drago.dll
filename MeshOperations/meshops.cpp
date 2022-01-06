@@ -1,5 +1,9 @@
 #include "meshops.h"
 
+#define DOT(vec3) (vec3.x * vec3.x + vec3.y * vec3.y + vec3.z * vec3.z)
+#define MAGNITUDE(vec3) sqrtf(DOT(vec3))
+#define NORMALIZE(vec3) { float mag = MAGNITUDE(vec3); vec3.x /= mag; vec3.y /= mag; vec3.z /= mag; }
+
 namespace meshops {
 	float trans_x = 0;
 	float trans_y = 0;
@@ -222,48 +226,45 @@ namespace meshops {
 
 	// normals
 	void set_normals_flat(float* data, int len) {
-		float x1, x2, x3, y1, y2, y3, z1, z2, z3;
-		float v1x, v1y, v1z, v2x, v2y, v2z;
-		float cx, cy, cz;
+		Triangle triangle;
+		Vector3 cross, e1, e2;
 		float cpl;
-		float nx, ny, nz;
 
 		for (int i = 0; i < len; i += meshops::vertex_size * 3) {
-			x1 = data[i + 0];
-			y1 = data[i + 1];
-			z1 = data[i + 2];
-			x2 = data[i + 0 + meshops::vertex_size];
-			y2 = data[i + 1 + meshops::vertex_size];
-			z2 = data[i + 2 + meshops::vertex_size];
-			x3 = data[i + 0 + meshops::vertex_size * 2];
-			y3 = data[i + 1 + meshops::vertex_size * 2];
-			z3 = data[i + 2 + meshops::vertex_size * 2];
+			triangle.a.x = data[i + 0];
+			triangle.a.y = data[i + 1];
+			triangle.a.z = data[i + 2];
+			triangle.b.x = data[i + 0 + meshops::vertex_size];
+			triangle.b.y = data[i + 1 + meshops::vertex_size];
+			triangle.b.z = data[i + 2 + meshops::vertex_size];
+			triangle.c.x = data[i + 0 + meshops::vertex_size * 2];
+			triangle.c.y = data[i + 1 + meshops::vertex_size * 2];
+			triangle.c.z = data[i + 2 + meshops::vertex_size * 2];
 
-			v1x = x2 - x1;
-			v1y = y2 - y1;
-			v1z = z2 - z1;
-			v2x = x3 - x1;
-			v2y = y3 - y1;
-			v2z = z3 - z1;
-			cx = v1y * v2z - v1z * v2y;
-			cy = -v1x * v2z + v1z * v2x;
-			cz = v1x * v2y - v1y * v2x;
+			e1.x = triangle.b.x - triangle.a.x;
+			e1.y = triangle.b.y - triangle.a.y;
+			e1.z = triangle.b.z - triangle.a.z;
+			e2.x = triangle.c.x - triangle.a.x;
+			e2.y = triangle.c.y - triangle.a.y;
+			e2.z = triangle.c.z - triangle.a.z;
 
-			cpl = sqrtf(cx * cx + cy * cy + cz * cz);
+			Vector3 normal{
+				e1.y * e2.z - e1.z * e2.y,
+				-e1.x * e2.z + e1.z * e2.x,
+				e1.x * e2.y - e1.y * e2.x,
+			};
 
-			nx = cx / cpl;
-			ny = cy / cpl;
-			nz = cz / cpl;
+			NORMALIZE(normal);
 
-			data[i + 3] = nx;
-			data[i + 4] = ny;
-			data[i + 5] = nz;
-			data[i + 3 + meshops::vertex_size] = nx;
-			data[i + 4 + meshops::vertex_size] = ny;
-			data[i + 5 + meshops::vertex_size] = nz;
-			data[i + 3 + meshops::vertex_size * 2] = nx;
-			data[i + 4 + meshops::vertex_size * 2] = ny;
-			data[i + 5 + meshops::vertex_size * 2] = nz;
+			data[i + 3] = normal.x;
+			data[i + 4] = normal.y;
+			data[i + 5] = normal.z;
+			data[i + 3 + meshops::vertex_size] = normal.x;
+			data[i + 4 + meshops::vertex_size] = normal.y;
+			data[i + 5 + meshops::vertex_size] = normal.z;
+			data[i + 3 + meshops::vertex_size * 2] = normal.x;
+			data[i + 4 + meshops::vertex_size * 2] = normal.y;
+			data[i + 5 + meshops::vertex_size * 2] = normal.z;
 		}
 	}
 
@@ -271,3 +272,7 @@ namespace meshops {
 		set_normals_flat(data, len);
 	}
 }
+
+#undef DOT
+#undef CROSS
+#undef MAGNITUDE
