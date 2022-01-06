@@ -21,18 +21,12 @@
     <ClInclude Include="drago.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="../SpriteAtlas/spriteatlas.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\FileDropper\filedropper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="../SpriteAtlas/spriteatlas.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\FileDropper\filedropper.cpp">

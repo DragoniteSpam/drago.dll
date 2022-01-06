@@ -167,12 +167,10 @@
     <ClInclude Include="..\FileDropper\filedropper.h" />
     <ClInclude Include="drago.h" />
     <ClInclude Include="core.h" />
-    <ClInclude Include="../SpriteAtlas/spriteatlas.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\FileDropper\filedropper.cpp" />
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="../SpriteAtlas/spriteatlas.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
