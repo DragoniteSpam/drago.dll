@@ -38,8 +38,8 @@ namespace meshops {
 			total_y += data[i + 1];
 		}
 
-		total_x /= len;
-		total_y /= len;
+		total_x /= len / meshops::vertex_size;
+		total_y /= len / meshops::vertex_size;
 
 		for (int i = 0; i < len; i += meshops::vertex_size) {
 			data[i + 0] -= total_x;
