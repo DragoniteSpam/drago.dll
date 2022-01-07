@@ -5,6 +5,7 @@ namespace terrainops {
 	bool save_swap_zup = false;
 	bool save_swap_uv = false;
 	bool save_centered = false;
+	int save_density = 1;
 	float save_width = 1;
 	float save_height = 1;
 	float save_scale = 1;
@@ -26,10 +27,11 @@ namespace terrainops {
 		}
 	}
 
-	void build_settings(bool swap_zup, bool swap_uv, bool centered, float width, float height, float scale) {
+	void build_settings(bool swap_zup, bool swap_uv, bool centered, int density, float width, float height, float scale) {
 		terrainops::save_swap_zup = swap_zup;
 		terrainops::save_swap_uv = swap_uv;
 		terrainops::save_scale = centered;
+		terrainops::save_density = density;
 		terrainops::save_width = width;
 		terrainops::save_height = height;
 		terrainops::save_scale = scale;
