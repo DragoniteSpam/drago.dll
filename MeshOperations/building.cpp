@@ -81,23 +81,23 @@ namespace meshops {
 				out[byte++] = biz;
 			}
 			if (use_small_normal) {
-				nx = NORMALIZE(nx, 0.0, 255.0, -1.0, 1.0);
-				ny = NORMALIZE(ny, 0.0, 255.0, -1.0, 1.0);
-				nz = NORMALIZE(nz, 0.0, 255.0, -1.0, 1.0);
+				nx = ADJUST(nx, 0.0, 255.0, -1.0, 1.0);
+				ny = ADJUST(ny, 0.0, 255.0, -1.0, 1.0);
+				nz = ADJUST(nz, 0.0, 255.0, -1.0, 1.0);
 				value = nx + ny * 256.0 + nz * 65536.0;
 				((unsigned int*)out)[byte++] = (unsigned int)value;
 			}
 			if (use_small_tangent) {
-				tax = NORMALIZE(tax, 0.0, 255.0, -1.0, 1.0);
-				tay = NORMALIZE(tay, 0.0, 255.0, -1.0, 1.0);
-				taz = NORMALIZE(taz, 0.0, 255.0, -1.0, 1.0);
+				tax = ADJUST(tax, 0.0, 255.0, -1.0, 1.0);
+				tay = ADJUST(tay, 0.0, 255.0, -1.0, 1.0);
+				taz = ADJUST(taz, 0.0, 255.0, -1.0, 1.0);
 				value = tax + tay * 256.0 + taz * 65536.0;
 				((unsigned int*)out)[byte++] = (unsigned int)value;
 			}
 			if (use_small_bitangent) {
-				bix = NORMALIZE(bix, 0.0, 255.0, -1.0, 1.0);
-				biy = NORMALIZE(biy, 0.0, 255.0, -1.0, 1.0);
-				biz = NORMALIZE(biz, 0.0, 255.0, -1.0, 1.0);
+				bix = ADJUST(bix, 0.0, 255.0, -1.0, 1.0);
+				biy = ADJUST(biy, 0.0, 255.0, -1.0, 1.0);
+				biz = ADJUST(biz, 0.0, 255.0, -1.0, 1.0);
 				value = bix + biy * 256.0 + biz * 65536.0;
 				((unsigned int*)out)[byte++] = (unsigned int)value;
 			}
@@ -108,9 +108,9 @@ namespace meshops {
 				((unsigned int*)out)[byte++] = (unsigned int)value;
 			}
 			if (use_small_texcoord) {
-				nx = NORMALIZE(nx, 0.0, 255.0, -1.0, 1.0);
-				ny = NORMALIZE(ny, 0.0, 255.0, -1.0, 1.0);
-				nz = NORMALIZE(nz, 0.0, 255.0, -1.0, 1.0);
+				nx = ADJUST(nx, 0.0, 255.0, -1.0, 1.0);
+				ny = ADJUST(ny, 0.0, 255.0, -1.0, 1.0);
+				nz = ADJUST(nz, 0.0, 255.0, -1.0, 1.0);
 				u = floor(u * 255.0);
 				value = nx + ny * 256.0 + nz * 65536.0 + u * 16777216.0;
 				((unsigned int*)out)[byte++] = (unsigned int)value;

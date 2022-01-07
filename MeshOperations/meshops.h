@@ -2,6 +2,7 @@
 #define __DRAGO_MESH_OP "1.0.0"
 
 #include "main/core.h"
+#include "main/dragomath.h"
 #include <math.h>
 #include <map>
 #include <string>

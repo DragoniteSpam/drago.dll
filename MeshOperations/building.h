@@ -21,7 +21,7 @@
 #define VFX_SMALL_NORMAL_PAL    0x01000     // 4 bytes (nx ny nz and a byte representing a 256 color palette index)
 #define VFX_SMALL_BARYCENTIRC   0x02000     // 4 bytes (x y z 0)
 
-#define NORMALIZE(val, mn, mx, omin, omax) ((mn) + (((val) - (omin)) / ((omax) - (omin))) * ((mx) - (mn)))
+#define ADJUST(val, mn, mx, omin, omax) ((mn) + (((val) - (omin)) / ((omax) - (omin))) * ((mx) - (mn)))
 
 namespace meshops {
 	long vertex_formatted(float*, float*, int, int);
