@@ -3,8 +3,9 @@
 
 #include "main/core.h"
 
-namespace meshops {
-
+namespace terrainops {
+	void to_heightmap(float*, float*, int);
+	void from_heightmap(float*, float*, int);
 }
 
 #endif

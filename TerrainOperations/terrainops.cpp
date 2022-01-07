@@ -1,5 +1,11 @@
 #include "terrainops.h"
 
-namespace meshops {
+namespace terrainops {
+	void to_heightmap(float* data, float* out, int len) {
 
+	}
+
+	void from_heightmap(float* data, float* in, int len) {
+
+	}
 }
