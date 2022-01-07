@@ -2,6 +2,7 @@
 #include "terrainops.h"
 
 namespace terrainops {
+	bool save_all = true;
 	bool save_swap_zup = false;
 	bool save_swap_uv = false;
 	bool save_centered = false;
@@ -27,7 +28,8 @@ namespace terrainops {
 		}
 	}
 
-	void build_settings(bool swap_zup, bool swap_uv, bool centered, int density, float width, float height, float scale) {
+	void build_settings(bool save_all, bool swap_zup, bool swap_uv, bool centered, int density, float width, float height, float scale) {
+		terrainops::save_all = save_all;
 		terrainops::save_swap_zup = swap_zup;
 		terrainops::save_swap_uv = swap_uv;
 		terrainops::save_scale = centered;
