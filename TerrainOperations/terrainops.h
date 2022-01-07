@@ -19,6 +19,7 @@ namespace terrainops {
 	long build(float*, float*, int);
 
 	float get_z(float*, int, int);
+	inline void write_vertex(float*, int*, float, float, float, float, float, unsigned int, float, float, float);
 }
 
 #endif
