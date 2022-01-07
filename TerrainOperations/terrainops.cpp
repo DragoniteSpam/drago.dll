@@ -40,4 +40,8 @@ namespace terrainops {
 	long build(float* data, float* out, int len) {
 		return 0L;
 	}
+
+	float get_z(float* data, int x, int y) {
+		return data[x * ((int)terrainops::save_height + 1) + y];
+	}
 }

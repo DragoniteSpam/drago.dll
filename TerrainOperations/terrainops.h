@@ -16,6 +16,8 @@ namespace terrainops {
 	void from_heightmap(float*, unsigned int*, int, float);
 	void build_settings(bool, bool, bool, int, float, float, float);
 	long build(float*, float*, int);
+
+	float get_z(float*, int, int);
 }
 
 #endif
