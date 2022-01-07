@@ -40,6 +40,9 @@ namespace terrainops {
 	}
 
 	long build(float* data, float* out, int len) {
+		bool all = terrainops::save_all;
+		bool swap_uv = terrainops::save_swap_uv;
+		bool swap_zup = terrainops::save_swap_zup;
 		int density = terrainops::save_density;
 		float w = terrainops::save_width;
 		float h = terrainops::save_height;
@@ -48,8 +51,11 @@ namespace terrainops {
 		float scale = terrainops::save_scale;
 
 		float x00, x01, x10, x11, y00, y01, y10, y11, z00, z01, z10, z11;
-		float c00, c01, c10, c11;
+		unsigned int c00, c01, c10, c11;
 		float xt00, xt01, xt10, xt11, yt00, yt01, yt10, yt11;
+		float t;
+
+		int byte = 0;
 
 		for (int i = 0; i < w; i++) {
 			for (int j = 0; j < h; j++) {
@@ -65,6 +71,52 @@ namespace terrainops {
 				x11 = i + density, y11 = j + density;
 				x11 = i + density, y11 = j + density;
 				z11 = get_z(data, x11, y11);
+
+				x00 = (x00 + xoff) * scale;
+				x01 = (x01 + xoff) * scale;
+				x10 = (x10 + xoff) * scale;
+				x11 = (x11 + xoff) * scale;
+				y00 = (y00 + yoff) * scale;
+				y01 = (y01 + yoff) * scale;
+				y10 = (y10 + yoff) * scale;
+				y11 = (y11 + yoff) * scale;
+
+				// @todo figure out texture UVs
+				xt00 = 0;
+				yt00 = 0;
+				xt01 = 0;
+				yt01 = 0;
+				xt10 = 0;
+				yt10 = 0;
+				xt11 = 0;
+				yt11 = 0;
+
+				c00 = 0xffffffff;
+				c01 = 0xffffffff;
+				c10 = 0xffffffff;
+				c11 = 0xffffffff;
+
+				if (swap_uv) {
+					yt00 = 1 - yt00;
+					yt01 = 1 - yt01;
+					yt10 = 1 - yt10;
+					yt11 = 1 - yt11;
+				}
+
+				if (swap_zup) {
+					t = y00;
+					y00 = z00;
+					z00 = t;
+					t = y01;
+					y01 = z01;
+					z01 = t;
+					t = y10;
+					y10 = z10;
+					z10 = t;
+					t = y11;
+					y11 = z11;
+					z11 = t;
+				}
 			}
 		}
 		return 0L;
