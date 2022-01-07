@@ -223,8 +223,7 @@ namespace meshops {
 	// normals
 	void set_normals_flat(float* data, int len) {
 		Triangle triangle;
-		Vector3 cross, e1, e2;
-		float cpl;
+		Vector3 e1, e2;
 
 		for (int i = 0; i < len; i += meshops::vertex_size * 3) {
 			triangle.a.x = data[i + 0];
