@@ -118,6 +118,6 @@ ex double meshops_export_d3d(float* data, double len, char* out) {
 }
 
 // vertex building
-ex double meshops_vertex_formatted(float* data, float* out, double len, int format) {
-	return 1.0;
+ex double meshops_vertex_formatted(float* data, float* out, double len, double format) {
+	return (double)(meshops::vertex_formatted(data, out, BYTES2FLOATS(len), (int)format));
 }

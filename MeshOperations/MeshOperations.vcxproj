@@ -157,8 +157,10 @@
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="meshops.cpp" />
+    <ClCompile Include="building.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="building.h" />
     <ClInclude Include="meshops.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
