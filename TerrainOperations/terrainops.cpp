@@ -11,6 +11,11 @@ namespace terrainops {
 	}
 
 	void from_heightmap(float* data, unsigned int* in, int len, double scale) {
-
+		int z;
+		for (int i = 0; i < len; i++) {
+			// maybe you want to use the other channels to store some other information idk
+			z = in[i] & 0x000000ff;
+			data[i] = z / scale;
+		}
 	}
 }
