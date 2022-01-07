@@ -38,6 +38,33 @@ namespace terrainops {
 	}
 
 	long build(float* data, float* out, int len) {
+		int density = terrainops::save_density;
+		float w = terrainops::save_width;
+		float h = terrainops::save_height;
+		float xoff = terrainops::save_centered ? (-w / 2) : 0;
+		float yoff = terrainops::save_centered ? (-h / 2) : 0;
+		float scale = terrainops::save_scale;
+
+		float x00, x01, x10, x11, y00, y01, y10, y11, z00, z01, z10, z11;
+		float c00, c01, c10, c11;
+		float xt00, xt01, xt10, xt11, yt00, yt01, yt10, yt11;
+
+		for (int i = 0; i < w; i++) {
+			for (int j = 0; j < h; j++) {
+				x00 = i, y00 = j;
+				x00 = i, y00 = j;
+				z00 = get_z(data, x00, y00);
+				x01 = i, y01 = j + density;
+				x01 = i, y01 = j + density;
+				z01 = get_z(data, x01, y01);
+				x10 = i + density, y10 = j;
+				x10 = i + density, y10 = j;
+				z10 = get_z(data, x10, y10);
+				x11 = i + density, y11 = j + density;
+				x11 = i + density, y11 = j + density;
+				z11 = get_z(data, x11, y11);
+			}
+		}
 		return 0L;
 	}
 
