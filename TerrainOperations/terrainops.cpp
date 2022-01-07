@@ -2,7 +2,7 @@
 #include "terrainops.h"
 
 namespace terrainops {
-	void to_heightmap(float* data, unsigned int* out, int len, double scale) {
+	void to_heightmap(float* data, unsigned int* out, int len, float scale) {
 		int z;
 		for (int i = 0; i < len; i++) {
 			z = std::clamp((int)(data[i] * scale), 0, 255);
@@ -10,7 +10,7 @@ namespace terrainops {
 		}
 	}
 
-	void from_heightmap(float* data, unsigned int* in, int len, double scale) {
+	void from_heightmap(float* data, unsigned int* in, int len, float scale) {
 		int z;
 		for (int i = 0; i < len; i++) {
 			// maybe you want to use the other channels to store some other information idk

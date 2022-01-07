@@ -4,8 +4,8 @@
 #include "main/core.h"
 
 namespace terrainops {
-	void to_heightmap(float*, unsigned int*, int, double);
-	void from_heightmap(float*, unsigned int*, int, double);
+	void to_heightmap(float*, unsigned int*, int, float);
+	void from_heightmap(float*, unsigned int*, int, float);
 }
 
 #endif
