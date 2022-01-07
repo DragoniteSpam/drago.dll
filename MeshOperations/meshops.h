@@ -6,6 +6,7 @@
 #include <map>
 #include <string>
 #include <format>
+#include <sstream>
 
 namespace meshops {
 	extern float trans_x;
@@ -44,6 +45,9 @@ namespace meshops {
 	// normals
 	void set_normals_flat(float*, int);
 	void set_normals_smooth(float*, int, float);
+
+	// output
+	int export_d3d(float*, int, char*);
 }
 
 #endif

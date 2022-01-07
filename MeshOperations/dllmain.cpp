@@ -110,3 +110,8 @@ ex double meshops_set_normals_smooth(float* data, double len, double threshold) 
 	meshops::set_normals_smooth(data, BYTES2FLOATS(len), (float)threshold);
 	return 1.0;
 }
+
+// output
+ex double meshops_export_d3d(float* data, double len, char* out) {
+	return 1.0 * meshops::export_d3d(data, BYTES2FLOATS(len), out);
+}
