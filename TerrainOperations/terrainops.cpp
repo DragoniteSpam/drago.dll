@@ -4,6 +4,7 @@
 namespace terrainops {
 	bool swap_zup = false;
 	bool swap_uv = false;
+	float save_scale = 1;
 
 	void to_heightmap(float* data, unsigned int* out, int len, float scale) {
 		int z;
@@ -22,9 +23,10 @@ namespace terrainops {
 		}
 	}
 
-	void build_settings(bool swap_zup, bool swap_uv) {
+	void build_settings(bool swap_zup, bool swap_uv, float scale) {
 		terrainops::swap_zup = swap_zup;
 		terrainops::swap_uv = swap_uv;
+		terrainops::save_scale = scale;
 	}
 
 	long build(float* data, float* out, int len) {
