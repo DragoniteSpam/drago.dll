@@ -60,15 +60,11 @@ namespace terrainops {
 		for (int i = 0; i < w; i++) {
 			for (int j = 0; j < h; j++) {
 				x00 = i, y00 = j;
-				x00 = i, y00 = j;
 				z00 = get_z(data, x00, y00);
-				x01 = i, y01 = j + density;
 				x01 = i, y01 = j + density;
 				z01 = get_z(data, x01, y01);
 				x10 = i + density, y10 = j;
-				x10 = i + density, y10 = j;
 				z10 = get_z(data, x10, y10);
-				x11 = i + density, y11 = j + density;
 				x11 = i + density, y11 = j + density;
 				z11 = get_z(data, x11, y11);
 
@@ -83,40 +79,26 @@ namespace terrainops {
 
 				// @todo figure out texture UVs
 				xt00 = 0;
-				yt00 = 0;
 				xt01 = 0;
-				yt01 = 0;
 				xt10 = 0;
-				yt10 = 0;
 				xt11 = 0;
-				yt11 = 0;
+
+				if (swap_uv) {
+					yt00 = 1 - 0;
+					yt01 = 1 - 0;
+					yt10 = 1 - 0;
+					yt11 = 1 - 0;
+				} else {
+					yt00 = 0;
+					yt01 = 0;
+					yt10 = 0;
+					yt11 = 0;
+				}
 
 				c00 = 0xffffffff;
 				c01 = 0xffffffff;
 				c10 = 0xffffffff;
 				c11 = 0xffffffff;
-
-				if (swap_uv) {
-					yt00 = 1 - yt00;
-					yt01 = 1 - yt01;
-					yt10 = 1 - yt10;
-					yt11 = 1 - yt11;
-				}
-
-				if (swap_zup) {
-					t = y00;
-					y00 = z00;
-					z00 = t;
-					t = y01;
-					y01 = z01;
-					z01 = t;
-					t = y10;
-					y10 = z10;
-					z10 = t;
-					t = y11;
-					y11 = z11;
-					z11 = t;
-				}
 
 				if (all || z00 > 0 || z10 > 0 || z11 > 0) {
 					write_vertex(data, &byte, x00, y00, z00, xt00, yt00, c00, 1, 0, 0);
@@ -131,7 +113,8 @@ namespace terrainops {
 				}
 			}
 		}
-		return 0L;
+
+		return byte;
 	}
 
 	float get_z(float* data, int x, int y) {
