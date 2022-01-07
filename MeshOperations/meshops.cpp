@@ -350,15 +350,14 @@ namespace meshops {
 		int vertices = len / meshops::vertex_size;
 		s << "100\r\n" << (vertices + 2) << "\r\n0 4\r\n";
 
-		for (int i = 0; i < len; i++) {
-			int c = (int)data[i + 8];
-			int a = (c >> 24) / 255.0;
+		for (int i = 0; i < len; i += vertex_size) {
+			unsigned int c = ((unsigned int*)data)[i + 8];
 			s << std::format(
 				"9 {:.6f} {:.6f} {:.6f} {:.6f} {:.6f} {:.6f} {:.6f} {:.6f} {} {:.2f}\r\n",
 				data[i + 0], data[i + 1], data[i + 2],
 				data[i + 3], data[i + 4], data[i + 5],
 				data[i + 6], data[i + 7],
-				c & 0x00ffffff, a
+				c & 0x00ffffff, (c >> 24) / 255.0
 			);
 		}
 
