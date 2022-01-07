@@ -11,7 +11,7 @@ ex double macaw_set_octaves(double octaves) {
 }
 
 ex double macaw_set_height(double height) {
-	macaw::set_height(height);
+	macaw::set_height((float)height);
 	return 1.0;
 }
 

@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "terrainops.h"
 
 namespace terrainops {

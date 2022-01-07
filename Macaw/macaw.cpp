@@ -8,7 +8,7 @@
 #define GET_2D_INDEX(i, j, h) ((i) * (h) + (j))
 
 namespace macaw {
-	extern double setting_height = 1.0;
+	extern float setting_height = 1.0;
 	extern int setting_octaves = 6;
 
 	const char* version() {
@@ -19,7 +19,7 @@ namespace macaw {
 		setting_octaves = octaves;
 	}
 
-	void set_height(double height) {
+	void set_height(float height) {
 		setting_height = height;
 	}
 
