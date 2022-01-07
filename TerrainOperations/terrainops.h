@@ -4,13 +4,14 @@
 #include "main/core.h"
 
 namespace terrainops {
-	extern bool swap_zup;
-	extern bool swap_uv;
+	extern bool save_swap_zup;
+	extern bool save_swap_uv;
+	extern bool save_centered;
 	extern float save_scale;
 
 	void to_heightmap(float*, unsigned int*, int, float);
 	void from_heightmap(float*, unsigned int*, int, float);
-	void build_settings(bool, bool, double);
+	void build_settings(bool, bool, bool, double);
 	long build(float*, float*, int);
 }
 

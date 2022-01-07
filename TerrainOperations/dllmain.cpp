@@ -12,8 +12,8 @@ ex double terrainops_from_heightmap(float* data, unsigned int* in, double len, d
 	return 1.0;
 }
 
-ex double terrainops_build_settings(double swap_zup, double swap_uv, double scale) {
-	terrainops::build_settings((bool)swap_zup, (bool)swap_uv, (float)scale);
+ex double terrainops_build_settings(double swap_zup, double swap_uv, double center, double scale) {
+	terrainops::build_settings((bool)swap_zup, (bool)swap_uv, (bool)center, (float)scale);
 	return 1.0;
 }
 
