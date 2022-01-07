@@ -116,3 +116,8 @@ ex double meshops_set_normals_smooth(float* data, double len, double threshold) 
 ex double meshops_export_d3d(float* data, double len, char* out) {
 	return (double)(meshops::export_d3d(data, BYTES2FLOATS(len), out));
 }
+
+// vertex building
+ex double meshops_vertex_formatted(float* data, float* out, double len, int format) {
+	return 1.0;
+}

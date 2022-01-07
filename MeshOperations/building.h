@@ -5,7 +5,7 @@
 #include "meshops.h"
 
 namespace meshops {
-
+	void vertex_formatted(float*, float*, int, int);
 }
 
 #endif
