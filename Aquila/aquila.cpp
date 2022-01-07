@@ -49,7 +49,7 @@ namespace aquila {
 	}
 
 	Graph::Graph() {
-		id = graphs.size();
+		id = (int)graphs.size();
 	}
 
 	Graph::~Graph() {
