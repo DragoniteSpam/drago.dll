@@ -4,7 +4,8 @@
 #define ex extern "C" __declspec (dllexport)
 
 // helpers
-#define BYTES2FLOATS(bytes) (((int)bytes) / 4)
+#define BYTES2FLOATS(bytes) (((int)(bytes)) / 4)
+#define FLOATS2BYTES(floats) (((int)(floats)) * 4)
 
 // data structures
 struct Vector3 {
