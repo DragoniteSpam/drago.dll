@@ -11,6 +11,10 @@ namespace terrainops {
 	float save_height = 1;
 	float save_scale = 1;
 
+	const char* version() {
+		return __DRAGO_TERRAIN_OP;
+	}
+
 	void to_heightmap(float* data, unsigned int* out, int len, float scale) {
 		int z;
 		for (int i = 0; i < len; i++) {

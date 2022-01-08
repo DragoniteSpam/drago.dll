@@ -2,6 +2,10 @@
 #include "terrainops.h"
 #include "main/dragomath.h"
 
+ex const char* terrainops_version() {
+	return terrainops::version();
+}
+
 ex double terrainops_to_heightmap(float* data, unsigned int* out, double len, double scale) {
 	terrainops::to_heightmap(data, out, BYTES2FLOATS(len), (float)scale);
 	return 1.0;

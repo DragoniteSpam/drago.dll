@@ -13,6 +13,8 @@ namespace terrainops {
 	extern float save_height;
 	extern float save_scale;
 
+	const char* version();
+
 	void to_heightmap(float*, unsigned int*, int, float);
 	void from_heightmap(float*, unsigned int*, int, float);
 	void build_settings(bool, bool, bool, bool, int, float, float, float);
