@@ -57,9 +57,8 @@ namespace terrainops {
 		float x00, x01, x10, x11, y00, y01, y10, y11, z00, z01, z10, z11;
 		unsigned int c00, c01, c10, c11;
 		float xt00, xt01, xt10, xt11, yt00, yt01, yt10, yt11;
-		float t;
 
-		int byte = 0;
+		int float_count = 0;
 
 		for (int i = 0; i < w; i++) {
 			for (int j = 0; j < h; j++) {
@@ -103,22 +102,22 @@ namespace terrainops {
 				c01 = 0xffffffff;
 				c10 = 0xffffffff;
 				c11 = 0xffffffff;
-
+				
 				if (all || z00 > 0 || z10 > 0 || z11 > 0) {
-					write_vertex(data, &byte, x00, y00, z00, xt00, yt00, c00, 1, 0, 0);
-					write_vertex(data, &byte, x10, y10, z10, xt10, yt10, c10, 0, 1, 0);
-					write_vertex(data, &byte, x11, y11, z11, xt11, yt11, c11, 0, 0, 1);
+					write_vertex(out, &float_count, x00, y00, z00, xt00, yt00, c00, 1, 0, 0);
+					write_vertex(out, &float_count, x10, y10, z10, xt10, yt10, c10, 0, 1, 0);
+					write_vertex(out, &float_count, x11, y11, z11, xt11, yt11, c11, 0, 0, 1);
 				}
 
 				if (all || z11 > 0 || z01 > 0 || z00 > 0) {
-					write_vertex(data, &byte, x11, y11, z11, xt11, yt11, c11, 1, 0, 0);
-					write_vertex(data, &byte, x01, y01, z01, xt01, yt01, c01, 0, 1, 0);
-					write_vertex(data, &byte, x00, y00, z00, xt00, yt00, c00, 0, 0, 1);
+					write_vertex(out, &float_count, x11, y11, z11, xt11, yt11, c11, 1, 0, 0);
+					write_vertex(out, &float_count, x01, y01, z01, xt01, yt01, c01, 0, 1, 0);
+					write_vertex(out, &float_count, x00, y00, z00, xt00, yt00, c00, 0, 0, 1);
 				}
 			}
 		}
 
-		return byte;
+		return float_count * 4;
 	}
 
 	float get_z(float* data, int x, int y) {
@@ -127,27 +126,27 @@ namespace terrainops {
 
 	inline void write_vertex(float* out, int* byte, float x, float y, float z, float u, float v, unsigned int c, float bc1, float bc2, float bc3) {
 		// position
-		out[*byte++] = x;
-		out[*byte++] = y;
-		out[*byte++] = z;
+		out[(*byte)++] = x;
+		out[(*byte)++] = y;
+		out[(*byte)++] = z;
 		// normals oughta be calculated later anyway
-		out[*byte++] = 0;
-		out[*byte++] = 0;
-		out[*byte++] = 0;
+		out[(*byte)++] = 0;
+		out[(*byte)++] = 0;
+		out[(*byte)++] = 0;
 		// texture and color
-		out[*byte++] = u;
-		out[*byte++] = v;
-		((unsigned int*)out)[*byte++] = c;
+		out[(*byte)++] = u;
+		out[(*byte)++] = v;
+		((unsigned int*)out)[(*byte)++] = c;
 		// tangent and bitangent, we calculate these later
-		out[*byte++] = 0;
-		out[*byte++] = 0;
-		out[*byte++] = 0;
-		out[*byte++] = 0;
-		out[*byte++] = 0;
-		out[*byte++] = 0;
+		out[(*byte)++] = 0;
+		out[(*byte)++] = 0;
+		out[(*byte)++] = 0;
+		out[(*byte)++] = 0;
+		out[(*byte)++] = 0;
+		out[(*byte)++] = 0;
 		// barycentrics
-		out[*byte++] = bc1;
-		out[*byte++] = bc2;
-		out[*byte++] = bc3;
+		out[(*byte)++] = bc1;
+		out[(*byte)++] = bc2;
+		out[(*byte)++] = bc3;
 	}
 }
