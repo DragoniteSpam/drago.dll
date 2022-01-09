@@ -123,24 +123,24 @@ namespace terrainops {
 	void generate(float* data, float* out, int w, int h) {
 		float z00, z01, z10, z11;
 		int index = 0;
-		for (int i = 0; i < w; i++) {
-			for (int j = 0; j < h; j++) {
-				out[index++] = i;
+		for (float i = 0; i < w; i++) {
+			for (float j = 0; j < h; j++) {
+				out[index++] = 0.5 + i;
 				out[index++] = j;
 				out[index++] = get_z(data, i, j, h);
-				out[index++] = i + 1;
+				out[index++] = 0.25 + i + 1;
 				out[index++] = j;
 				out[index++] = get_z(data, i + 1, j, h);
-				out[index++] = i + 1;
+				out[index++] = 0.125 + i + 1;
 				out[index++] = j + 1;
 				out[index++] = get_z(data, i + 1, j + 1, h);
-				out[index++] = i + 1;
+				out[index++] = 0.5 + i + 1;
 				out[index++] = j + 1;
 				out[index++] = get_z(data, i + 1, j + 1, h);
-				out[index++] = i;
+				out[index++] = 0.25 + i;
 				out[index++] = j + 1;
 				out[index++] = get_z(data, i, j + 1, h);
-				out[index++] = i;
+				out[index++] = 0.125 + i;
 				out[index++] = j;
 				out[index++] = get_z(data, i, j, h);
 			}
