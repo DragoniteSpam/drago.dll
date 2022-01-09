@@ -48,8 +48,8 @@ namespace terrainops {
 		bool swap_uv = terrainops::save_swap_uv;
 		bool swap_zup = terrainops::save_swap_zup;
 		int density = terrainops::save_density;
-		int w = (int)terrainops::save_width;
-		int h = (int)terrainops::save_height;
+		float w = terrainops::save_width;
+		float h = terrainops::save_height;
 		float xoff = terrainops::save_centered ? (-terrainops::save_width / 2) : 0;
 		float yoff = terrainops::save_centered ? (-terrainops::save_height / 2) : 0;
 		float scale = terrainops::save_scale;
@@ -62,13 +62,13 @@ namespace terrainops {
 
 		for (int i = 0; i < w; i += density) {
 			for (int j = 0; j < h; j += density) {
-				x00 = i, y00 = j;
+				x00 = floor(i), y00 = floor(j);
 				z00 = get_z(data, x00, y00, h);
-				x01 = i, y01 = j + density;
+				x01 = floor(i), y01 = fmin(ceil(j + density), h);
 				z01 = get_z(data, x01, y01, h);
-				x10 = i + density, y10 = j;
+				x10 = fmin(ceil(i + density), w), y10 = floor(j);
 				z10 = get_z(data, x10, y10, h);
-				x11 = i + density, y11 = j + density;
+				x11 = fmin(ceil(i + density), w), y11 = fmin(ceil(j + density), h);
 				z11 = get_z(data, x11, y11, h);
 
 				x00 = (x00 + xoff) * scale;
