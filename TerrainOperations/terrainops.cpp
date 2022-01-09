@@ -10,6 +10,8 @@ namespace terrainops {
 	float save_width = 1;
 	float save_height = 1;
 	float save_scale = 1;
+	float gen_width = 1;
+	float gen_height = 1;
 
 	const char* version() {
 		return __DRAGO_TERRAIN_OP;
@@ -118,6 +120,16 @@ namespace terrainops {
 		}
 
 		return float_count * 4;
+	}
+
+	void generate_settings(int width, int height) {
+		terrainops::gen_width = width;
+		terrainops::gen_height = height;
+
+	}
+
+	void generate(float* data, float* out, int len) {
+
 	}
 
 	float get_z(float* data, int x, int y) {
