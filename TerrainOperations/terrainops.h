@@ -12,8 +12,6 @@ namespace terrainops {
 	extern float save_width;
 	extern float save_height;
 	extern float save_scale;
-	extern float gen_width;
-	extern float gen_height;
 
 	const char* version();
 
@@ -21,8 +19,7 @@ namespace terrainops {
 	void from_heightmap(float*, unsigned int*, int, float);
 	void build_settings(bool, bool, bool, bool, int, float, float, float);
 	long build(float*, float*, int);
-	void generate_settings(int, int);
-	void generate(float*, float*, int);
+	void generate(float*, float*, int, int);
 
 	float get_z(float*, int, int);
 	inline void write_vertex(float*, int*, float, float, float, float, float, unsigned int, float, float, float);

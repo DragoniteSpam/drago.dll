@@ -10,8 +10,6 @@ namespace terrainops {
 	float save_width = 1;
 	float save_height = 1;
 	float save_scale = 1;
-	float gen_width = 1;
-	float gen_height = 1;
 
 	const char* version() {
 		return __DRAGO_TERRAIN_OP;
@@ -122,14 +120,31 @@ namespace terrainops {
 		return float_count * 4;
 	}
 
-	void generate_settings(int width, int height) {
-		terrainops::gen_width = width;
-		terrainops::gen_height = height;
-
-	}
-
-	void generate(float* data, float* out, int len) {
-
+	void generate(float* data, float* out, int w, int h) {
+		float z00, z01, z10, z11;
+		int index = 0;
+		for (int i = 0; i < w; i++) {
+			for (int j = 0; j < h; j++) {
+				data[index++] = i;
+				data[index++] = j;
+				data[index++] = get_z(data, i, j);
+				data[index++] = i + 1;
+				data[index++] = j;
+				data[index++] = get_z(data, i, j + 1);
+				data[index++] = i + 1;
+				data[index++] = j + 1;
+				data[index++] = get_z(data, i + 1, j + 1);
+				data[index++] = i + 1;
+				data[index++] = j + 1;
+				data[index++] = get_z(data, i + 1, j + 1);
+				data[index++] = i;
+				data[index++] = j + 1;
+				data[index++] = get_z(data, i, j + 1);
+				data[index++] = i;
+				data[index++] = j;
+				data[index++] = get_z(data, i, j);
+			}
+		}
 	}
 
 	float get_z(float* data, int x, int y) {

@@ -16,13 +16,8 @@ ex double terrainops_from_heightmap(float* data, unsigned int* in, double len, d
 	return 1.0;
 }
 
-ex double terrainops_generate_settings(double width, double height) {
-	terrainops::generate_settings((int)width, (int)height);
-	return 1.0;
-}
-
-ex double terrainops_generate(float* data, float* out, double len) {
-	terrainops::generate(data, out, (int)len);
+ex double terrainops_generate(float* data, float* out, double width, double height) {
+	terrainops::generate(data, out, (int)width, (int)height);
 	return 1.0;
 }
 
