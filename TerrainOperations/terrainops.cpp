@@ -60,8 +60,8 @@ namespace terrainops {
 
 		int float_count = 0;
 
-		for (int i = 0; i < w; i++) {
-			for (int j = 0; j < h; j++) {
+		for (int i = 0; i < w; i += density) {
+			for (int j = 0; j < h; j += density) {
 				x00 = i, y00 = j;
 				z00 = get_z(data, x00, y00);
 				x01 = i, y01 = j + density;
