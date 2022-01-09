@@ -48,10 +48,10 @@ namespace terrainops {
 		bool swap_uv = terrainops::save_swap_uv;
 		bool swap_zup = terrainops::save_swap_zup;
 		int density = terrainops::save_density;
-		float w = terrainops::save_width;
-		float h = terrainops::save_height;
-		float xoff = terrainops::save_centered ? (-w / 2) : 0;
-		float yoff = terrainops::save_centered ? (-h / 2) : 0;
+		int w = (int)terrainops::save_width;
+		int h = (int)terrainops::save_height;
+		float xoff = terrainops::save_centered ? (-terrainops::save_width / 2) : 0;
+		float yoff = terrainops::save_centered ? (-terrainops::save_height / 2) : 0;
 		float scale = terrainops::save_scale;
 
 		float x00, x01, x10, x11, y00, y01, y10, y11, z00, z01, z10, z11;
@@ -63,13 +63,13 @@ namespace terrainops {
 		for (int i = 0; i < w; i += density) {
 			for (int j = 0; j < h; j += density) {
 				x00 = i, y00 = j;
-				z00 = get_z(data, x00, y00);
+				z00 = get_z(data, x00, y00, h);
 				x01 = i, y01 = j + density;
-				z01 = get_z(data, x01, y01);
+				z01 = get_z(data, x01, y01, h);
 				x10 = i + density, y10 = j;
-				z10 = get_z(data, x10, y10);
+				z10 = get_z(data, x10, y10, h);
 				x11 = i + density, y11 = j + density;
-				z11 = get_z(data, x11, y11);
+				z11 = get_z(data, x11, y11, h);
 
 				x00 = (x00 + xoff) * scale;
 				x01 = (x01 + xoff) * scale;
@@ -125,30 +125,30 @@ namespace terrainops {
 		int index = 0;
 		for (int i = 0; i < w; i++) {
 			for (int j = 0; j < h; j++) {
-				data[index++] = i;
-				data[index++] = j;
-				data[index++] = get_z(data, i, j);
-				data[index++] = i + 1;
-				data[index++] = j;
-				data[index++] = get_z(data, i, j + 1);
-				data[index++] = i + 1;
-				data[index++] = j + 1;
-				data[index++] = get_z(data, i + 1, j + 1);
-				data[index++] = i + 1;
-				data[index++] = j + 1;
-				data[index++] = get_z(data, i + 1, j + 1);
-				data[index++] = i;
-				data[index++] = j + 1;
-				data[index++] = get_z(data, i, j + 1);
-				data[index++] = i;
-				data[index++] = j;
-				data[index++] = get_z(data, i, j);
+				out[index++] = i;
+				out[index++] = j;
+				out[index++] = get_z(data, i, j, h);
+				out[index++] = i + 1;
+				out[index++] = j;
+				out[index++] = get_z(data, i + 1, j, h);
+				out[index++] = i + 1;
+				out[index++] = j + 1;
+				out[index++] = get_z(data, i + 1, j + 1, h);
+				out[index++] = i + 1;
+				out[index++] = j + 1;
+				out[index++] = get_z(data, i + 1, j + 1, h);
+				out[index++] = i;
+				out[index++] = j + 1;
+				out[index++] = get_z(data, i, j + 1, h);
+				out[index++] = i;
+				out[index++] = j;
+				out[index++] = get_z(data, i, j, h);
 			}
 		}
 	}
 
-	float get_z(float* data, int x, int y) {
-		return data[x * ((int)terrainops::save_height + 1) + y];
+	float get_z(float* data, int x, int y, int h) {
+		return data[x * (h + 1) + y];
 	}
 
 	inline void write_vertex(float* out, int* byte, float x, float y, float z, float u, float v, unsigned int c, float bc1, float bc2, float bc3) {
