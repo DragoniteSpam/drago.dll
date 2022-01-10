@@ -2,7 +2,7 @@
 #include "FileDropper/filedropper.h"
 
 ex double drago_init(HWND hWnd, double close) {
-    file_dropper::init(hWnd);
+    DragAcceptFiles(hWnd, true);
     window_original = GetWindowLongPtr(hWnd, GWLP_WNDPROC);
     window_status = WINDOW_NEVERMIND;
     disable_close = (close != 0.0);
