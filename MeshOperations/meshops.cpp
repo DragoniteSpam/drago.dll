@@ -295,10 +295,16 @@ namespace meshops {
 			};
 
 			NORMALIZE(normal);
-			
-			(Vector3)(data[i + 3]) = normal;
-			(Vector3)(data[i + 3 + meshops::vertex_size]) = normal;
-			(Vector3)(data[i + 3 + meshops::vertex_size * 2]) = normal;
+
+			data[i + 3] = normal.x;
+			data[i + 4] = normal.y;
+			data[i + 5] = normal.z;
+			data[i + 3 + meshops::vertex_size] = normal.x;
+			data[i + 4 + meshops::vertex_size] = normal.y;
+			data[i + 5 + meshops::vertex_size] = normal.z;
+			data[i + 3 + meshops::vertex_size * 2] = normal.x;
+			data[i + 4 + meshops::vertex_size * 2] = normal.y;
+			data[i + 5 + meshops::vertex_size * 2] = normal.z;
 			
 			std::string keys[] = {
 				std::format("{},{},{}", triangle.a.x, triangle.a.y, triangle.a.z),
