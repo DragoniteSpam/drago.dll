@@ -1,9 +1,11 @@
 #include "filedropper.h"
 
 namespace file_dropper {
+    LONG_PTR window_original;
     std::vector<std::string> names;
 
     void init(HWND hWnd) {
+        window_original = GetWindowLongPtr(hWnd, GWLP_WNDPROC);
         DragAcceptFiles(hWnd, true);
     }
     
