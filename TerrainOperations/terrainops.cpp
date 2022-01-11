@@ -60,15 +60,19 @@ namespace terrainops {
 
 		int float_count = 0;
 
-		for (int i = 0; i < w; i += density) {
-			for (int j = 0; j < h; j += density) {
-				x00 = floor(i), y00 = floor(j);
+		for (int i = 0; i < w - density; i += density) {
+			for (int j = 0; j < h - density; j += density) {
+				x00 = floor(i);
+				y00 = floor(j);
 				z00 = get_z(data, x00, y00, h);
-				x01 = floor(i), y01 = fmin(ceil(j + density), h);
+				x01 = floor(i);
+				y01 = fmin(ceil(j + density), h);
 				z01 = get_z(data, x01, y01, h);
-				x10 = fmin(ceil(i + density), w), y10 = floor(j);
+				x10 = fmin(ceil(i + density), w);
+				y10 = floor(j);
 				z10 = get_z(data, x10, y10, h);
-				x11 = fmin(ceil(i + density), w), y11 = fmin(ceil(j + density), h);
+				x11 = fmin(ceil(i + density), w);
+				y11 = fmin(ceil(j + density), h);
 				z11 = get_z(data, x11, y11, h);
 
 				x00 = (x00 + xoff) * scale;
@@ -121,10 +125,9 @@ namespace terrainops {
 	}
 
 	void generate(float* data, float* out, int w, int h) {
-		float z00, z01, z10, z11;
 		int index = 0;
-		for (float i = 0; i < w; i++) {
-			for (float j = 0; j < h; j++) {
+		for (float i = 0; i < w - 1; i++) {
+			for (float j = 0; j < h - 1; j++) {
 				out[index++] = 0.5 + i;
 				out[index++] = j;
 				out[index++] = get_z(data, i, j, h);
@@ -148,7 +151,7 @@ namespace terrainops {
 	}
 
 	float get_z(float* data, int x, int y, int h) {
-		return data[x * (h + 1) + y];
+		return data[x * h + y];
 	}
 
 	inline void write_vertex(float* out, int* byte, float x, float y, float z, float u, float v, unsigned int c, float bc1, float bc2, float bc3) {
