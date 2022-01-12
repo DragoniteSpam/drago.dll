@@ -126,6 +126,11 @@ namespace terrainops {
 
 	void generate(float* data, float* out, int w, int h) {
 		int index = 0;
+		// the barycentric coordinate gets squeezed into the fractional part
+		// of the X coordinate (0.5, 0.25, or 0.125);
+		// the texture offset gets squeezed into the fractional part of the
+		// Y coordinate (the first triangle uses the RG channels; the second
+		// triangle uses the BA channels)
 		for (float i = 0; i < w - 1; i++) {
 			for (float j = 0; j < h - 1; j++) {
 				out[index++] = 0.5 + i;
@@ -138,13 +143,13 @@ namespace terrainops {
 				out[index++] = j + 1;
 				out[index++] = get_z(data, i + 1, j + 1, h);
 				out[index++] = 0.5 + i + 1;
-				out[index++] = j + 1;
+				out[index++] = 0.5 + j + 1;
 				out[index++] = get_z(data, i + 1, j + 1, h);
 				out[index++] = 0.25 + i;
-				out[index++] = j + 1;
+				out[index++] = 0.5 + j + 1;
 				out[index++] = get_z(data, i, j + 1, h);
 				out[index++] = 0.125 + i;
-				out[index++] = j;
+				out[index++] = 0.5 + j;
 				out[index++] = get_z(data, i, j, h);
 			}
 		}
