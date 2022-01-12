@@ -36,7 +36,7 @@ namespace terrainops {
 		terrainops::save_all = save_all;
 		terrainops::save_swap_zup = swap_zup;
 		terrainops::save_swap_uv = swap_uv;
-		terrainops::save_scale = centered;
+		terrainops::save_centered = centered;
 		terrainops::save_density = density;
 		terrainops::save_width = width;
 		terrainops::save_height = height;
