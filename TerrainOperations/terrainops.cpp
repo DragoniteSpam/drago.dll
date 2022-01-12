@@ -50,10 +50,10 @@ namespace terrainops {
 		int density = terrainops::save_density;
 		float w = terrainops::save_width;
 		float h = terrainops::save_height;
-		float xoff = terrainops::save_centered ? (-terrainops::save_width / 2) : 0;
-		float yoff = terrainops::save_centered ? (-terrainops::save_height / 2) : 0;
+		float xoff = terrainops::save_centered ? (-w / 2) : 0;
+		float yoff = terrainops::save_centered ? (-h / 2) : 0;
 		float scale = terrainops::save_scale;
-
+		
 		float x00, x01, x10, x11, y00, y01, y10, y11, z00, z01, z10, z11;
 		unsigned int c00, c01, c10, c11;
 		float xt00, xt01, xt10, xt11, yt00, yt01, yt10, yt11;
