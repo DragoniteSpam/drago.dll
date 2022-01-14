@@ -32,6 +32,18 @@ namespace terrainops {
 		}
 	}
 
+	void apply_scale(float* data, float* vertex, int len, float scale) {
+		for (int i = 0; i < len; i++) {
+			data[i] *= scale;
+			vertex[i * 18 + 2] *= scale;
+			vertex[i * 18 + 5] *= scale;
+			vertex[i * 18 + 8] *= scale;
+			vertex[i * 18 + 11] *= scale;
+			vertex[i * 18 + 14] *= scale;
+			vertex[i * 18 + 17] *= scale;
+		}
+	}
+
 	void build_settings(bool save_all, bool swap_zup, bool swap_uv, bool centered, int density, float width, float height, float scale) {
 		terrainops::save_all = save_all;
 		terrainops::save_swap_zup = swap_zup;

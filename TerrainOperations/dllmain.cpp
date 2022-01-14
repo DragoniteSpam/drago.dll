@@ -16,6 +16,11 @@ ex double terrainops_from_heightmap(float* data, unsigned int* in, double len, d
 	return 1.0;
 }
 
+ex double terrainops_apply_scale(float* data, float* vertex, double len, double scale) {
+	terrainops::apply_scale(data, vertex, BYTES2FLOATS(len), (float)scale);
+	return 1.0;
+}
+
 ex double terrainops_generate(float* data, float* out, double width, double height) {
 	terrainops::generate(data, out, (int)width, (int)height);
 	return 1.0;
