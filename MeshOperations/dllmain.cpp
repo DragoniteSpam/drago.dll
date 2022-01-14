@@ -122,3 +122,12 @@ ex double meshops_vertex_formatted(float* data, float* out, double len, double f
 	// don't do the BYTES2FLOATS conversion here!
 	return (double)(meshops::vertex_formatted(data, out, (int)len, (int)format));
 }
+
+ex double meshops_as_chunks_settings(double size, double maxx, double maxy) {
+	meshops::chunk_settings((float)size, (float)maxx, (float)maxy);
+	return 1.0;
+}
+
+ex double meshops_as_chunks(float* data, double* len) {
+	return (double)meshops::chunks(data, BYTES2FLOATS(len));
+}

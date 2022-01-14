@@ -196,7 +196,6 @@ namespace terrainops {
 				out[index++] = get_z(data, i + 0, j + 0, h);
 			}
 		}
-	}
 
 #undef BC0
 #undef BC1
@@ -205,6 +204,8 @@ namespace terrainops {
 #undef T1
 #undef U
 #undef V
+
+	}
 
 	float get_z(float* data, int x, int y, int h) {
 		return data[x * h + y];

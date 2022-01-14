@@ -2,6 +2,10 @@
 #include "meshops.h"
 
 namespace meshops {
+	float chunk_size = 0;
+	float chunk_maxx = 0;
+	float chunk_maxy = 0;
+
 	long vertex_formatted(float* data, float* out, int len, int format) {
 		bool use_position_2d =			format & VFX_POSITION_2D;
 		bool use_position_3d =			format & VFX_POSITION_3D;
@@ -118,5 +122,15 @@ namespace meshops {
 		}
 
 		return byte;
+	}
+
+	void chunk_settings(float size, float maxx, float maxy) {
+		meshops::chunk_size = size;
+		meshops::chunk_maxx = maxx;
+		meshops::chunk_maxy = maxy;
+	}
+
+	long chunks(float* data, int len) {
+		return 1;
 	}
 }

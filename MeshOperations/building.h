@@ -24,7 +24,13 @@
 #define ADJUST(val, mn, mx, omin, omax) ((mn) + (((val) - (omin)) / ((omax) - (omin))) * ((mx) - (mn)))
 
 namespace meshops {
+	extern float chunk_size;
+	extern float chunk_maxx;
+	extern float chunk_maxy;
+
 	long vertex_formatted(float*, float*, int, int);
+	void chunk_settings(float, float, float);
+	long chunks(float*, int);
 }
 
 #endif
