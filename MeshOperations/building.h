@@ -1,6 +1,7 @@
 #ifndef __DRAGO_MESH_OP_BUILDING
 #define __DRAGO_MESH_OP_BUILDING
 
+#include <algorithm>
 #include "main/core.h"
 #include "meshops.h"
 

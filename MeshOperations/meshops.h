@@ -18,6 +18,9 @@ namespace meshops {
 	const char* version();
 	void init(int);
 
+	// general information
+	void get_bounds(float*, float*, int);
+
 	// transform
 	void transform_position_set(float, float, float);
 	void transform_position(float*, int);

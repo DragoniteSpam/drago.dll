@@ -13,6 +13,13 @@ ex const char* meshops_version() {
 	return meshops::version();
 }
 
+// general information
+ex double meshops_get_bounds(float* data, float* out, double len) {
+	meshops::get_bounds(data, out, BYTES2FLOATS(len));
+	return 1.0;
+}
+
+// basic transforms
 ex double meshops_transform_position_set(double x, double y, double z) {
 	meshops::transform_position_set((float)x, (float)y, (float)z);
 	return 1.0;

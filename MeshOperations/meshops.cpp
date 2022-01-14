@@ -14,6 +14,21 @@ namespace meshops {
 		meshops::vertex_size = vertex_size;
 	}
 
+	// get information
+	void get_bounds(float* data, float* out, int len) {
+		float minx = 10000000, miny = 10000000, maxx = -10000000, maxy = -10000000;
+		for (int i = 0; i < len; i += meshops::vertex_size) {
+			minx = std::min(minx, data[i + 0]);
+			miny = std::min(miny, data[i + 1]);
+			maxx = std::max(maxx, data[i + 0]);
+			maxy = std::max(maxy, data[i + 1]);
+		}
+		out[0] = minx;
+		out[1] = miny;
+		out[2] = maxx;
+		out[3] = maxy;
+	}
+	
 	// transform
 	void transform_position_set(float x, float y, float z) {
 		meshops::trans_x = x;
