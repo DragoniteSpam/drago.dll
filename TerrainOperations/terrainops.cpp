@@ -118,7 +118,7 @@ namespace terrainops {
 				c01 = 0xffffffff;
 				c10 = 0xffffffff;
 				c11 = 0xffffffff;
-				
+
 				if (all || z00 > 0 || z10 > 0 || z11 > 0) {
 					write_vertex(out, &float_count, x00, y00, z00, xt00, yt00, c00, 1, 0, 0);
 					write_vertex(out, &float_count, x10, y10, z10, xt10, yt10, c10, 0, 1, 0);
@@ -138,34 +138,61 @@ namespace terrainops {
 
 	void generate(float* data, float* out, int w, int h) {
 		int index = 0;
-		// the barycentric coordinate gets squeezed into the fractional part
-		// of the X coordinate (0.5, 0.25, or 0.125);
-		// the texture offset gets squeezed into the fractional part of the
-		// Y coordinate (the first triangle uses the RG channels; the second
-		// triangle uses the BA channels)
+		// the barycentric coordinate gets squeezed into the fractional part of the X coordinate:
+		//  - BC0: 0.5
+		//  - BC1: 0.25
+		//  - BC2: 0.125
+		// the texture offset gets squeezed into the fractional part of the Y coordinate
+		//  - First triangle (coordinates stored in the RG channels): 0.0
+		//  - Second triangle (coordinates stored in the BA channels): 0.5
+		// the triangle internal texture offset gets squeezed into the fractional part of the Y coordinate, also
+		//  - (U + tile size) coordinate: 0.25
+		//  - (V + tile size) coordinate: 0.125
+
+#define BC0 0.5
+#define BC1 0.25
+#define BC2 0.125
+#define T0 0.0
+#define T1 0.5
+#define U 0.25
+#define V 0.125
+
 		for (float i = 0; i < w - 1; i++) {
 			for (float j = 0; j < h - 1; j++) {
-				out[index++] = 0.5 + i;
-				out[index++] = j;
-				out[index++] = get_z(data, i, j, h);
-				out[index++] = 0.25 + i + 1;
-				out[index++] = j;
-				out[index++] = get_z(data, i + 1, j, h);
-				out[index++] = 0.125 + i + 1;
-				out[index++] = j + 1;
+				out[index++] = i + 0 + BC0;
+				out[index++] = j + 0 + T0;
+				out[index++] = get_z(data, i + 0, j + 0, h);
+
+				out[index++] = i + 1 + BC1;
+				out[index++] = j + 0 + T0 + U;
+				out[index++] = get_z(data, i + 1, j + 0, h);
+
+				out[index++] = i + 1 + BC2;
+				out[index++] = j + 1 + T0 + U + V;
 				out[index++] = get_z(data, i + 1, j + 1, h);
-				out[index++] = 0.5 + i + 1;
-				out[index++] = 0.5 + j + 1;
+
+				out[index++] = i + 1 + BC0;
+				out[index++] = j + 1 + T1 + U + V;
 				out[index++] = get_z(data, i + 1, j + 1, h);
-				out[index++] = 0.25 + i;
-				out[index++] = 0.5 + j + 1;
-				out[index++] = get_z(data, i, j + 1, h);
-				out[index++] = 0.125 + i;
-				out[index++] = 0.5 + j;
-				out[index++] = get_z(data, i, j, h);
+
+				out[index++] = i + 0 + BC1;
+				out[index++] = j + 1 + T1 + V;
+				out[index++] = get_z(data, i + 0, j + 1, h);
+
+				out[index++] = i + 0 + BC2;
+				out[index++] = j + 0 + T1;
+				out[index++] = get_z(data, i + 0, j + 0, h);
 			}
 		}
 	}
+
+#undef BC0
+#undef BC1
+#undef BC2
+#undef T0
+#undef T1
+#undef U
+#undef V
 
 	float get_z(float* data, int x, int y, int h) {
 		return data[x * h + y];
