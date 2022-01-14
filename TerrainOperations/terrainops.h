@@ -18,6 +18,7 @@ namespace terrainops {
 
 	void to_heightmap(float*, unsigned int*, int, float);
 	void from_heightmap(float*, unsigned int*, int, float);
+	void flatten(float*, float*, int, float);
 	void apply_scale(float*, float*, int, float);
 	void build_settings(bool, bool, bool, bool, int, float, float, float);
 	long build(float*, float*, int);

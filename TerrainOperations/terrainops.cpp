@@ -32,6 +32,18 @@ namespace terrainops {
 		}
 	}
 
+	void flatten(float* data, float* vertex, int len, float height) {
+		for (int i = 0; i < len; i++) {
+			data[i] = height;
+			vertex[i * 18 + 2] = height;
+			vertex[i * 18 + 5] = height;
+			vertex[i * 18 + 8] = height;
+			vertex[i * 18 + 11] = height;
+			vertex[i * 18 + 14] = height;
+			vertex[i * 18 + 17] = height;
+		}
+	}
+
 	void apply_scale(float* data, float* vertex, int len, float scale) {
 		for (int i = 0; i < len; i++) {
 			data[i] *= scale;
