@@ -130,7 +130,22 @@ namespace meshops {
 		meshops::chunk_maxy = maxy;
 	}
 
-	long chunks(float* data, int len) {
+	void chunk_analyze(float* data, float* meta, int data_len, int meta_len) {
+		int x1, y1, z1, x2, y2, z2, x3, y3, z3;
+		for (int i = 0; i < data_len; i += meshops::vertex_size * 3) {
+			x1 = data[i + meshops::vertex_size * 0 + 0];
+			y1 = data[i + meshops::vertex_size * 0 + 1];
+			z1 = data[i + meshops::vertex_size * 0 + 2];
+			x2 = data[i + meshops::vertex_size * 1 + 0];
+			y2 = data[i + meshops::vertex_size * 1 + 1];
+			z2 = data[i + meshops::vertex_size * 1 + 2];
+			x3 = data[i + meshops::vertex_size * 2 + 0];
+			y3 = data[i + meshops::vertex_size * 2 + 1];
+			z3 = data[i + meshops::vertex_size * 2 + 2];
+		}
+	}
+
+	long chunk(float* data, int len) {
 		return 1;
 	}
 }

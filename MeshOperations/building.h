@@ -31,7 +31,8 @@ namespace meshops {
 
 	long vertex_formatted(float*, float*, int, int);
 	void chunk_settings(float, float, float);
-	long chunks(float*, int);
+	void chunk_analyze(float*, float*, int, int);
+	long chunk(float*, int);
 }
 
 #endif
