@@ -3,8 +3,10 @@
 
 namespace meshops {
 	float chunk_size = 0;
-	float chunk_maxx = 0;
-	float chunk_maxy = 0;
+	float chunk_startx = 0;
+	float chunk_starty = 0;
+	float chunk_endx = 0;
+	float chunk_endy = 0;
 
 	long vertex_formatted(float* data, float* out, int len, int format) {
 		bool use_position_2d =			format & VFX_POSITION_2D;
@@ -124,10 +126,12 @@ namespace meshops {
 		return byte;
 	}
 
-	void chunk_settings(float size, float maxx, float maxy) {
-		meshops::chunk_size = size;
-		meshops::chunk_maxx = maxx;
-		meshops::chunk_maxy = maxy;
+	void chunk_settings(float chunk_size, float startx, float starty, float endx, float endy) {
+		meshops::chunk_size = chunk_size;
+		float chunk_startx = startx;
+		float chunk_starty = starty;
+		meshops::chunk_endx = endx;
+		meshops::chunk_endy = endy;
 	}
 
 	void chunk_analyze(float* data, float* meta, int data_len, int meta_len) {

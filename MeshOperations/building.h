@@ -26,11 +26,13 @@
 
 namespace meshops {
 	extern float chunk_size;
-	extern float chunk_maxx;
-	extern float chunk_maxy;
+	extern float chunk_startx;
+	extern float chunk_starty;
+	extern float chunk_endx;
+	extern float chunk_endy;
 
 	long vertex_formatted(float*, float*, int, int);
-	void chunk_settings(float, float, float);
+	void chunk_settings(float, float, float, float, float);
 	void chunk_analyze(float*, float*, int, int);
 	long chunk(float*, int);
 }

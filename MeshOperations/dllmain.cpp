@@ -130,8 +130,8 @@ ex double meshops_vertex_formatted(float* data, float* out, double len, double f
 	return (double)(meshops::vertex_formatted(data, out, (int)len, (int)format));
 }
 
-ex double meshops_as_chunks_settings(double size, double maxx, double maxy) {
-	meshops::chunk_settings((float)size, (float)maxx, (float)maxy);
+ex double meshops_chunk_settings(double chunk_size, double startx, double starty, double endx, double endy) {
+	meshops::chunk_settings((float)chunk_size, (float)startx, (float)starty, (float)endx, (float)endy);
 	return 1.0;
 }
 
