@@ -129,7 +129,7 @@ namespace meshops {
 		return byte;
 	}
 
-#define VERTEX_CHUNK_ADDRESS(x, y, h) (((x) * (h)) + (y))
+#define VERTEX_CHUNK_ADDRESS(x, y, h) (3 * (((x) * (h)) + (y)))
 
 	void chunk_settings(float chunk_size, float startx, float starty, float endx, float endy) {
 		meshops::chunk_size = chunk_size;
