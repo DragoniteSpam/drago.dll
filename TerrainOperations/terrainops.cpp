@@ -204,7 +204,6 @@ namespace terrainops {
 #undef T1
 #undef U
 #undef V
-
 	}
 
 	float get_z(float* data, int x, int y, int h) {

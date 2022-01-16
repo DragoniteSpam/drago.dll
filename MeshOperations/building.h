@@ -30,6 +30,8 @@ namespace meshops {
 	extern float chunk_starty;
 	extern float chunk_endx;
 	extern float chunk_endy;
+	extern float chunk_countx;
+	extern float chunk_county;
 
 	long vertex_formatted(float*, float*, int, int);
 	void chunk_settings(float, float, float, float, float);
