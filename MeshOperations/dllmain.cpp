@@ -135,11 +135,12 @@ ex double meshops_chunk_settings(double chunk_size, double startx, double starty
 	return 1.0;
 }
 
-ex double meshops_chunk_analyze(float* data, float* meta, double data_len, double meta_len) {
+ex double meshops_chunk_analyze(float* data, long* meta, double data_len, double meta_len) {
 	meshops::chunk_analyze(data, meta, BYTES2FLOATS(data_len), BYTES2FLOATS(meta_len));
 	return 1.0;
 }
 
-ex double meshops_chunk(float* data, double* len) {
-	return (double)meshops::chunk(data, BYTES2FLOATS(len));
+ex double meshops_chunk(float* data, long* meta, double* len) {
+	meshops::chunk(data, meta, BYTES2FLOATS(len));
+	return 1.0;
 }

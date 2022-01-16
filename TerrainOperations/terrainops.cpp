@@ -210,29 +210,29 @@ namespace terrainops {
 		return data[x * h + y];
 	}
 
-	inline void write_vertex(float* out, int* byte, float x, float y, float z, float u, float v, unsigned int c, float bc1, float bc2, float bc3) {
+	inline void write_vertex(float* out, int* address, float x, float y, float z, float u, float v, unsigned int c, float bc1, float bc2, float bc3) {
 		// position
-		out[(*byte)++] = x;
-		out[(*byte)++] = y;
-		out[(*byte)++] = z;
+		out[(*address)++] = x;
+		out[(*address)++] = y;
+		out[(*address)++] = z;
 		// normals oughta be calculated later anyway
-		out[(*byte)++] = 0;
-		out[(*byte)++] = 0;
-		out[(*byte)++] = 0;
+		out[(*address)++] = 0;
+		out[(*address)++] = 0;
+		out[(*address)++] = 0;
 		// texture and color
-		out[(*byte)++] = u;
-		out[(*byte)++] = v;
-		((unsigned int*)out)[(*byte)++] = c;
+		out[(*address)++] = u;
+		out[(*address)++] = v;
+		((unsigned int*)out)[(*address)++] = c;
 		// tangent and bitangent, we calculate these later
-		out[(*byte)++] = 0;
-		out[(*byte)++] = 0;
-		out[(*byte)++] = 0;
-		out[(*byte)++] = 0;
-		out[(*byte)++] = 0;
-		out[(*byte)++] = 0;
+		out[(*address)++] = 0;
+		out[(*address)++] = 0;
+		out[(*address)++] = 0;
+		out[(*address)++] = 0;
+		out[(*address)++] = 0;
+		out[(*address)++] = 0;
 		// barycentrics
-		out[(*byte)++] = bc1;
-		out[(*byte)++] = bc2;
-		out[(*byte)++] = bc3;
+		out[(*address)++] = bc1;
+		out[(*address)++] = bc2;
+		out[(*address)++] = bc3;
 	}
 }

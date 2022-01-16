@@ -35,8 +35,10 @@ namespace meshops {
 
 	long vertex_formatted(float*, float*, int, int);
 	void chunk_settings(float, float, float, float, float);
-	void chunk_analyze(float*, float*, int, int);
-	long chunk(float*, int);
+	void chunk_analyze(float*, long*, int, int);
+	void chunk(float*, long*, int);
+
+	void write_vertex(float*, long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float);
 }
 
 #endif
