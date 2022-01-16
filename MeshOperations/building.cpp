@@ -137,28 +137,30 @@ namespace meshops {
 		meshops::chunk_starty = starty;
 		meshops::chunk_endx = endx;
 		meshops::chunk_endy = endy;
-		meshops::chunk_countx = endx - startx;
-		meshops::chunk_county = endy - starty;
+		meshops::chunk_countx = (endx - startx) / chunk_size;
+		meshops::chunk_county = (endy - starty) / chunk_size;
 	}
 
 	void chunk_analyze(float* data, float* meta, int data_len, int meta_len) {
 		int x1, y1, z1, x2, y2, z2, x3, y3, z3;
 		int address1, address2, address3;
 		int iteration = meshops::vertex_size * 3;
+		int vsize = meshops::vertex_size;
+		int csize = meshops::chunk_size;
 		float startx = meshops::chunk_startx;
 		float starty = meshops::chunk_starty;
 		float county = meshops::chunk_county;
 
 		for (int i = 0; i < data_len; i += iteration) {
-			x1 = data[i + meshops::vertex_size * 0 + 0] - startx;
-			y1 = data[i + meshops::vertex_size * 0 + 1] - starty;
-			z1 = data[i + meshops::vertex_size * 0 + 2];
-			x2 = data[i + meshops::vertex_size * 1 + 0] - startx;
-			y2 = data[i + meshops::vertex_size * 1 + 1] - starty;
-			z2 = data[i + meshops::vertex_size * 1 + 2];
-			x3 = data[i + meshops::vertex_size * 2 + 0] - startx;
-			y3 = data[i + meshops::vertex_size * 2 + 1] - starty;
-			z3 = data[i + meshops::vertex_size * 2 + 2];
+			x1 = (data[i + vsize * 0 + 0] - startx) / csize;
+			y1 = (data[i + vsize * 0 + 1] - starty) / csize;
+			z1 = data[i + vsize * 0 + 2];
+			x2 = (data[i + vsize * 1 + 0] - startx) / csize;
+			y2 = (data[i + vsize * 1 + 1] - starty) / csize;
+			z2 = data[i + vsize * 1 + 2];
+			x3 = (data[i + vsize * 2 + 0] - startx) / csize;
+			y3 = (data[i + vsize * 2 + 1] - starty) / csize;
+			z3 = data[i + vsize * 2 + 2];
 
 			address1 = VERTEX_CHUNK_ADDRESS(x1, y1, county);
 			address2 = VERTEX_CHUNK_ADDRESS(x2, y2, county);
