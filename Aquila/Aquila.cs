@@ -14,6 +14,7 @@ namespace Aquila {
         }
         [DllExport]
         public static double DestroyGraph() {
+            GC.Collect();
             return 1;
         }
         [DllExport]
@@ -22,6 +23,7 @@ namespace Aquila {
         }
         [DllExport]
         public static double RemoveNode(double graph, double data) {
+            GC.Collect();
             return 1;
         }
         [DllExport]
