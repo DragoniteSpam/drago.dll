@@ -45,4 +45,24 @@ namespace Aquila {
             return 1;
         }
     }
+
+    public class Aquila {
+        static int id_record = 0;
+
+        public int ID { get; private set; }
+
+        public Aquila() {
+            ID = id_record++;
+        }
+    }
+
+    public class Node {
+        static int id_record = 0;
+
+        public int ID { get; private set; }
+
+        public Node() {
+            ID = id_record++;
+        }
+    }
 }
