@@ -9,6 +9,14 @@ namespace Aquila {
             return "0.0.0";
         }
         [DllExport]
+        public static double CreateGraph() {
+            return 1;
+        }
+        [DllExport]
+        public static double DestroyGraph() {
+            return 1;
+        }
+        [DllExport]
         public static double AddNode(double graph, double data) {
             return 1;
         }
