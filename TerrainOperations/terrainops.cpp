@@ -1,5 +1,6 @@
 #include <algorithm>
 #include "terrainops.h"
+#include <main/dragomath.h>
 
 namespace terrainops {
 	bool save_all = true;
@@ -81,11 +82,23 @@ namespace terrainops {
 		float x00, x01, x10, x11, y00, y01, y10, y11, z00, z01, z10, z11;
 		unsigned int c00, c01, c10, c11;
 		float xt00, xt01, xt10, xt11, yt00, yt01, yt10, yt11;
+		Vector3 e1, e2;
+		Vector3 normal, tangent, bitangent;
+
+		// we'll deal with these later
+		tangent.x = 0;
+		tangent.y = 0;
+		tangent.z = 0;
+		bitangent.x = 0;
+		bitangent.y = 0;
+		bitangent.z = 0;
 
 		// vertex count, output address, x1, y1, x2, y2
 		for (int i = 0; i < meta_len; i += 6) {
-			long long* index = (long long*)meta[i + 0];
+			long long* index = &meta[i + 0];
 			float* out = (float*)meta[i + 1];
+
+			std::cout << meta[i + 2] << ", " << meta[i + 3] << " to " << meta[i + 4] << ", " << meta[i + 5] << std::endl;
 
 			for (int x = (int)(meta[i + 2]); x <= (int)(meta[i + 4]) - density; x += density) {
 				for (int y = (int)(meta[i + 3]); y <= (int)(meta[i + 5]) - density; y += density) {
@@ -138,15 +151,41 @@ namespace terrainops {
 					c11 = 0xffffffff;
 
 					if (all || z00 > 0 || z10 > 0 || z11 > 0) {
-						write_vertex(out, index, x00, y00, z00, xt00, yt00, c00, 1, 0, 0);
-						write_vertex(out, index, x10, y10, z10, xt10, yt10, c10, 0, 1, 0);
-						write_vertex(out, index, x11, y11, z11, xt11, yt11, c11, 0, 0, 1);
+						e1.x = x10 - x00;
+						e1.y = y10 - y00;
+						e1.z = z10 - z00;
+						e2.x = x11 - x00;
+						e2.y = y11 - y00;
+						e2.z = z11 - z00;
+
+						normal.x = e1.y * e2.z - e1.z * e2.y;
+						normal.y = -e1.x * e2.z + e1.z * e2.x;
+						normal.z = e1.x * e2.y - e1.y * e2.x;
+
+						NORMALIZE(normal);
+
+						write_vertex(out, index, x00, y00, z00, normal.x, normal.y, normal.z, xt00, yt00, c00, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 1, 0, 0);
+						write_vertex(out, index, x10, y10, z10, normal.x, normal.y, normal.z, xt10, yt10, c10, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 1, 0);
+						write_vertex(out, index, x11, y11, z11, normal.x, normal.y, normal.z, xt11, yt11, c11, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 0, 1);
 					}
 
 					if (all || z11 > 0 || z01 > 0 || z00 > 0) {
-						write_vertex(out, index, x11, y11, z11, xt11, yt11, c11, 1, 0, 0);
-						write_vertex(out, index, x01, y01, z01, xt01, yt01, c01, 0, 1, 0);
-						write_vertex(out, index, x00, y00, z00, xt00, yt00, c00, 0, 0, 1);
+						e1.x = x01 - x11;
+						e1.y = y01 - y11;
+						e1.z = z01 - z11;
+						e2.x = x00 - x11;
+						e2.y = y00 - y11;
+						e2.z = z00 - z11;
+
+						normal.x = e1.y * e2.z - e1.z * e2.y;
+						normal.y = -e1.x * e2.z + e1.z * e2.x;
+						normal.z = e1.x * e2.y - e1.y * e2.x;
+
+						NORMALIZE(normal);
+
+						write_vertex(out, index, x11, y11, z11, normal.x, normal.y, normal.z, xt11, yt11, c11, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 1, 0, 0);
+						write_vertex(out, index, x01, y01, z01, normal.x, normal.y, normal.z, xt01, yt01, c01, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 1, 0);
+						write_vertex(out, index, x00, y00, z00, normal.x, normal.y, normal.z, xt00, yt00, c00, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 0, 1);
 					}
 				}
 			}
@@ -217,26 +256,35 @@ namespace terrainops {
 		return data[x * h + y];
 	}
 
-	inline void write_vertex(float* out, long long* address, float x, float y, float z, float u, float v, unsigned int c, float bc1, float bc2, float bc3) {
+	inline void write_vertex(
+				float* out, long long* address,
+				float x, float y, float z,
+				float nx, float ny, float nz,
+				float u, float v,
+				unsigned int c,
+				float tx, float ty, float tz,
+				float bx, float by, float bz,
+				float bc1, float bc2, float bc3
+			) {
 		// position
 		out[(*address)++] = x;
 		out[(*address)++] = y;
 		out[(*address)++] = z;
-		// normals oughta be calculated later anyway
-		out[(*address)++] = 0;
-		out[(*address)++] = 0;
-		out[(*address)++] = 0;
+		// normals
+		out[(*address)++] = nx;
+		out[(*address)++] = ny;
+		out[(*address)++] = nz;
 		// texture and color
 		out[(*address)++] = u;
 		out[(*address)++] = v;
 		((unsigned int*)out)[(*address)++] = c;
-		// tangent and bitangent, we calculate these later
-		out[(*address)++] = 0;
-		out[(*address)++] = 0;
-		out[(*address)++] = 0;
-		out[(*address)++] = 0;
-		out[(*address)++] = 0;
-		out[(*address)++] = 0;
+		// tangent and bitangent
+		out[(*address)++] = tx;
+		out[(*address)++] = ty;
+		out[(*address)++] = tz;
+		out[(*address)++] = bx;
+		out[(*address)++] = by;
+		out[(*address)++] = bz;
 		// barycentrics
 		out[(*address)++] = bc1;
 		out[(*address)++] = bc2;
