@@ -163,11 +163,11 @@ namespace meshops {
 			address2 = VERTEX_CHUNK_ADDRESS(floor(x2), floor(y2), county, 2);
 			address3 = VERTEX_CHUNK_ADDRESS(floor(x3), floor(y3), county, 2);
 
-			meta[address1]++;
+			meta[address1] += 3;
 			if (address1 != address2)
-				meta[address2]++;
+				meta[address2] += 3;
 			if (address1 != address3 && address2 != address3)
-				meta[address3]++;
+				meta[address3] += 3;
 		}
 	}
 
