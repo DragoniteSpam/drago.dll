@@ -244,6 +244,7 @@ namespace meshops {
 	void set_normals_flat(float* data, int len) {
 		Triangle triangle;
 		Vector3 e1, e2;
+		Vector3 normal;
 
 		for (int i = 0; i < len; i += meshops::vertex_size * 3) {
 			triangle.a.x = data[i + 0];
@@ -256,30 +257,40 @@ namespace meshops {
 			triangle.c.y = data[i + 1 + meshops::vertex_size * 2];
 			triangle.c.z = data[i + 2 + meshops::vertex_size * 2];
 
-			e1.x = triangle.b.x - triangle.a.x;
-			e1.y = triangle.b.y - triangle.a.y;
-			e1.z = triangle.b.z - triangle.a.z;
-			e2.x = triangle.c.x - triangle.a.x;
-			e2.y = triangle.c.y - triangle.a.y;
-			e2.z = triangle.c.z - triangle.a.z;
+			if (triangle.a.z == triangle.b.z && triangle.a.z == triangle.c.z) {
+				data[i + 3] = 0;
+				data[i + 4] = 0;
+				data[i + 5] = 1;
+				data[i + 3 + meshops::vertex_size] = 0;
+				data[i + 4 + meshops::vertex_size] = 0;
+				data[i + 5 + meshops::vertex_size] = 0;
+				data[i + 3 + meshops::vertex_size * 2] = 0;
+				data[i + 4 + meshops::vertex_size * 2] = 0;
+				data[i + 5 + meshops::vertex_size * 2] = 1;
+			} else {
+				e1.x = triangle.b.x - triangle.a.x;
+				e1.y = triangle.b.y - triangle.a.y;
+				e1.z = triangle.b.z - triangle.a.z;
+				e2.x = triangle.c.x - triangle.a.x;
+				e2.y = triangle.c.y - triangle.a.y;
+				e2.z = triangle.c.z - triangle.a.z;
 
-			Vector3 normal{
-				e1.y * e2.z - e1.z * e2.y,
-				-e1.x * e2.z + e1.z * e2.x,
-				e1.x * e2.y - e1.y * e2.x,
-			};
+				normal.x = e1.y * e2.z - e1.z * e2.y;
+				normal.y = -e1.x * e2.z + e1.z * e2.x;
+				normal.z = e1.x * e2.y - e1.y * e2.x;
 
-			NORMALIZE(normal);
+				NORMALIZE(normal);
 
-			data[i + 3] = normal.x;
-			data[i + 4] = normal.y;
-			data[i + 5] = normal.z;
-			data[i + 3 + meshops::vertex_size] = normal.x;
-			data[i + 4 + meshops::vertex_size] = normal.y;
-			data[i + 5 + meshops::vertex_size] = normal.z;
-			data[i + 3 + meshops::vertex_size * 2] = normal.x;
-			data[i + 4 + meshops::vertex_size * 2] = normal.y;
-			data[i + 5 + meshops::vertex_size * 2] = normal.z;
+				data[i + 3] = normal.x;
+				data[i + 4] = normal.y;
+				data[i + 5] = normal.z;
+				data[i + 3 + meshops::vertex_size] = normal.x;
+				data[i + 4 + meshops::vertex_size] = normal.y;
+				data[i + 5 + meshops::vertex_size] = normal.z;
+				data[i + 3 + meshops::vertex_size * 2] = normal.x;
+				data[i + 4 + meshops::vertex_size * 2] = normal.y;
+				data[i + 5 + meshops::vertex_size * 2] = normal.z;
+			}
 		}
 	}
 
