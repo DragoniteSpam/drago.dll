@@ -215,7 +215,7 @@ namespace terrainops {
 		return data[x * h + y];
 	}
 
-	inline void write_vertex(float* out, int* address, float x, float y, float z, float u, float v, unsigned int c, float bc1, float bc2, float bc3) {
+	inline void write_vertex(float* out, long long* address, float x, float y, float z, float u, float v, unsigned int c, float bc1, float bc2, float bc3) {
 		// position
 		out[(*address)++] = x;
 		out[(*address)++] = y;

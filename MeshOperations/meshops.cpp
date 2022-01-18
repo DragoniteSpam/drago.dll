@@ -321,8 +321,7 @@ namespace meshops {
 	void set_normals_smooth(float* data, int len, float threshold) {
 		Triangle triangle;
 		Vector3 vertex, normal, cached;
-		Vector3 cross, e1, e2;
-		float cpl;
+		Vector3 e1, e2;
 		int vsize = meshops::vertex_size;
 
 		std::map<std::string, Vector3> cache;
@@ -416,7 +415,7 @@ namespace meshops {
 
 		s << "1\r\n";
 		std::string result = s.str();
-		int bytes = result.length();
+		int bytes = (int)result.length();
 		result.copy(out, bytes);
 
 		return bytes;
