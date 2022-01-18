@@ -36,6 +36,6 @@ ex double terrainops_build_settings(double save_all, double swap_zup, double swa
 	return 1.0;
 }
 
-ex double terrainops_build(float* data, float* out, double len) {
-	return (double)terrainops::build(data, out, BYTES2FLOATS(len));
+ex double terrainops_build(float* data, long long* meta, double len, double meta_len) {
+	return (double)terrainops::build(data, meta, BYTES2FLOATS(len), BYTES2FLOATS(meta_len));
 }

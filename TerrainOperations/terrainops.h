@@ -21,7 +21,7 @@ namespace terrainops {
 	void flatten(float*, float*, int, float);
 	void apply_scale(float*, float*, int, float);
 	void build_settings(bool, bool, bool, bool, int, float, float, float);
-	long build(float*, float*, int);
+	long build(float*, long long*, int, int);
 	void generate(float*, float*, int, int);
 
 	float get_z(float*, int, int, int h);

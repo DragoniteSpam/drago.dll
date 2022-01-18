@@ -67,7 +67,7 @@ namespace terrainops {
 		terrainops::save_scale = scale;
 	}
 
-	long build(float* data, float* out, int len) {
+	long build(float* data, long long* meta, int len, int meta_len) {
 		bool all = terrainops::save_all;
 		bool swap_uv = terrainops::save_swap_uv;
 		bool swap_zup = terrainops::save_swap_zup;
@@ -81,6 +81,11 @@ namespace terrainops {
 		float x00, x01, x10, x11, y00, y01, y10, y11, z00, z01, z10, z11;
 		unsigned int c00, c01, c10, c11;
 		float xt00, xt01, xt10, xt11, yt00, yt01, yt10, yt11;
+
+		// vertex count, output address, x1, y1, x2, y2
+		for (int i = 0; i < meta_len; i += 6) {
+
+		}
 
 		int float_count = 0;
 
