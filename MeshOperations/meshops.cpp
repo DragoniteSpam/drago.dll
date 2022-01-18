@@ -296,6 +296,7 @@ namespace meshops {
 
 	void set_normals_smooth(float* data, int len, float threshold) {
 		Triangle triangle;
+		Vector3 vertex, normal, cached;
 		Vector3 cross, e1, e2;
 		float cpl;
 
@@ -318,13 +319,11 @@ namespace meshops {
 			e2.x = triangle.c.x - triangle.a.x;
 			e2.y = triangle.c.y - triangle.a.y;
 			e2.z = triangle.c.z - triangle.a.z;
-			
-			Vector3 normal {
-				e1.y * e2.z - e1.z * e2.y,
-				-e1.x * e2.z + e1.z * e2.x,
-				e1.x * e2.y - e1.y * e2.x,
-			};
 
+			normal.x = e1.y * e2.z - e1.z * e2.y;
+			normal.y = -e1.x * e2.z + e1.z * e2.x;
+			normal.z = e1.x * e2.y - e1.y * e2.x;
+			
 			NORMALIZE(normal);
 
 			data[i + 3] = normal.x;
@@ -345,20 +344,17 @@ namespace meshops {
 
 			for (int i = 0; i < 3; i++) {
 				if (cache.contains(keys[i])) {
-					Vector3* cached = &cache[keys[i]];
-					cached->x += normal.x;
-					cached->y += normal.y;
-					cached->z += normal.z;
+					Vector3* pcached = &cache[keys[i]];
+					pcached->x += normal.x;
+					pcached->y += normal.y;
+					pcached->z += normal.z;
 				} else {
 					cache.insert(std::pair(keys[i], normal));
 				}
 			}
 		}
 
-		Vector3 vertex, normal;
 		for (int i = 0; i < len; i += meshops::vertex_size) {
-			// dont do the pointer shenanigans here because you need to mess with the
-			// values later
 			vertex.x = data[i + 0];
 			vertex.y = data[i + 1];
 			vertex.z = data[i + 2];
@@ -366,7 +362,7 @@ namespace meshops {
 			normal.y = data[i + 4];
 			normal.z = data[i + 5];
 
-			Vector3 cached = cache[std::format("{},{},{}", vertex.x, vertex.y, vertex.z)];
+			cached = cache[std::format("{},{},{}", vertex.x, vertex.y, vertex.z)];
 			NORMALIZE(cached);
 			if (DOT(normal, cached) > threshold) {
 				data[i + 3] = cached.z;
