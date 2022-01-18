@@ -189,6 +189,8 @@ namespace terrainops {
 					}
 				}
 			}
+
+			*index = FLOATS2BYTES(*index);
 		}
 
 		return 0;
