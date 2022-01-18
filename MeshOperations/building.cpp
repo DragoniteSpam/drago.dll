@@ -154,17 +154,14 @@ namespace meshops {
 		for (int i = 0; i < data_len; i += iteration) {
 			x1 = (data[i + vsize * 0 + 0] - startx) / csize;
 			y1 = (data[i + vsize * 0 + 1] - starty) / csize;
-			z1 = data[i + vsize * 0 + 2];
 			x2 = (data[i + vsize * 1 + 0] - startx) / csize;
 			y2 = (data[i + vsize * 1 + 1] - starty) / csize;
-			z2 = data[i + vsize * 1 + 2];
 			x3 = (data[i + vsize * 2 + 0] - startx) / csize;
 			y3 = (data[i + vsize * 2 + 1] - starty) / csize;
-			z3 = data[i + vsize * 2 + 2];
 
-			address1 = VERTEX_CHUNK_ADDRESS(x1, y1, county, 2);
-			address2 = VERTEX_CHUNK_ADDRESS(x2, y2, county, 2);
-			address3 = VERTEX_CHUNK_ADDRESS(x3, y3, county, 2);
+			address1 = VERTEX_CHUNK_ADDRESS(floor(x1), floor(y1), county, 2);
+			address2 = VERTEX_CHUNK_ADDRESS(floor(x2), floor(y2), county, 2);
+			address3 = VERTEX_CHUNK_ADDRESS(floor(x3), floor(y3), county, 2);
 
 			meta[address1]++;
 			if (address1 != address2)
@@ -249,9 +246,9 @@ namespace meshops {
 			by3 = (data[i + vsize * 2 + 16]);
 			bz3 = (data[i + vsize * 2 + 17]);
 
-			address1 = VERTEX_CHUNK_ADDRESS(x1, y1, county, 2);
-			address2 = VERTEX_CHUNK_ADDRESS(x2, y2, county, 2);
-			address3 = VERTEX_CHUNK_ADDRESS(x3, y3, county, 2);
+			address1 = VERTEX_CHUNK_ADDRESS(floor((x1 - startx) / csize), floor((y1 - starty) / csize), county, 2);
+			address2 = VERTEX_CHUNK_ADDRESS(floor((x2 - startx) / csize), floor((y2 - starty) / csize), county, 2);
+			address3 = VERTEX_CHUNK_ADDRESS(floor((x3 - startx) / csize), floor((y3 - starty) / csize), county, 2);
 
 			long long* count1 = &meta[address1];
 			long long* count2 = &meta[address2];
