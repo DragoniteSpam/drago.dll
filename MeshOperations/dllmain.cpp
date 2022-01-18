@@ -140,7 +140,7 @@ ex double meshops_chunk_analyze(float* data, long long* meta, double data_len, d
 	return 1.0;
 }
 
-ex double meshops_chunk(float* data, long long* meta, double* len) {
+ex double meshops_chunk(float* data, long long* meta, double len) {
 	meshops::chunk(data, meta, BYTES2FLOATS(len));
 	return 1.0;
 }
