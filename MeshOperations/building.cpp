@@ -262,14 +262,15 @@ namespace meshops {
 			write_vertex(chunk1, count1, x3, y3, z3, nx3, ny3, nz3, u3, v3, c3, tx3, ty3, tz3, bx3, by3, bz3, barx3, bary3, barz3);
 
 			if (address1 != address2) {
-				write_vertex(chunk1, count1, x1, y1, z1, nx1, ny1, nz1, u1, v1, c1, tx1, ty1, tz1, bx1, by1, bz1, barx1, bary1, barz1);
-				write_vertex(chunk1, count1, x2, y2, z2, nx2, ny2, nz2, u2, v2, c2, tx2, ty2, tz2, bx2, by2, bz2, barx2, bary2, barz2);
-				write_vertex(chunk1, count1, x3, y3, z3, nx3, ny3, nz3, u3, v3, c3, tx3, ty3, tz3, bx3, by3, bz3, barx3, bary3, barz3);
+				write_vertex(chunk2, count2, x1, y1, z1, nx1, ny1, nz1, u1, v1, c1, tx1, ty1, tz1, bx1, by1, bz1, barx1, bary1, barz1);
+				write_vertex(chunk2, count2, x2, y2, z2, nx2, ny2, nz2, u2, v2, c2, tx2, ty2, tz2, bx2, by2, bz2, barx2, bary2, barz2);
+				write_vertex(chunk2, count2, x3, y3, z3, nx3, ny3, nz3, u3, v3, c3, tx3, ty3, tz3, bx3, by3, bz3, barx3, bary3, barz3);
 			}
+
 			if (address1 != address3 && address2 != address3) {
-				write_vertex(chunk1, count1, x1, y1, z1, nx1, ny1, nz1, u1, v1, c1, tx1, ty1, tz1, bx1, by1, bz1, barx1, bary1, barz1);
-				write_vertex(chunk1, count1, x2, y2, z2, nx2, ny2, nz2, u2, v2, c2, tx2, ty2, tz2, bx2, by2, bz2, barx2, bary2, barz2);
-				write_vertex(chunk1, count1, x3, y3, z3, nx3, ny3, nz3, u3, v3, c3, tx3, ty3, tz3, bx3, by3, bz3, barx3, bary3, barz3);
+				write_vertex(chunk3, count3, x1, y1, z1, nx1, ny1, nz1, u1, v1, c1, tx1, ty1, tz1, bx1, by1, bz1, barx1, bary1, barz1);
+				write_vertex(chunk3, count3, x2, y2, z2, nx2, ny2, nz2, u2, v2, c2, tx2, ty2, tz2, bx2, by2, bz2, barx2, bary2, barz2);
+				write_vertex(chunk3, count3, x3, y3, z3, nx3, ny3, nz3, u3, v3, c3, tx3, ty3, tz3, bx3, by3, bz3, barx3, bary3, barz3);
 			}
 		}
 	}
