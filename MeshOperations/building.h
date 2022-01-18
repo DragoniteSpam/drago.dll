@@ -25,7 +25,6 @@
 #define ADJUST(val, mn, mx, omin, omax) ((mn) + (((val) - (omin)) / ((omax) - (omin))) * ((mx) - (mn)))
 
 namespace meshops {
-	extern float chunk_size;
 	extern int chunk_size;
 	extern float chunk_startx;
 	extern float chunk_starty;
@@ -35,11 +34,11 @@ namespace meshops {
 	extern float chunk_county;
 
 	long vertex_formatted(float*, float*, int, int);
-	void chunk_analyze(float*, long*, int, int);
-	void chunk(float*, long*, int);
 	void chunk_settings(int, float, float, float, float);
+	void chunk_analyze(float*, long long*, int, int);
+	void chunk(float*, long long*, int);
 
-	void write_vertex(float*, long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float);
+	void write_vertex(float*, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float);
 }
 
 #endif

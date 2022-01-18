@@ -141,7 +141,7 @@ namespace meshops {
 		meshops::chunk_county = (endy - starty) / chunk_size;
 	}
 
-	void chunk_analyze(float* data, long* meta, int data_len, int meta_len) {
+	void chunk_analyze(float* data, long long* meta, int data_len, int meta_len) {
 		float x1, y1, x2, y2, x3, y3;
 		int address1, address2, address3;
 		int iteration = meshops::vertex_size * 3;
@@ -174,7 +174,7 @@ namespace meshops {
 		}
 	}
 
-	void chunk(float* data, long* meta, int length) {
+	void chunk(float* data, long long* meta, int length) {
 		float x1, y1, z1, x2, y2, z2, x3, y3, z3;
 		float nx1, ny1, nz1, nx2, ny2, nz2, nx3, ny3, nz3;
 		float u1, v1, u2, v2, u3, v3;
@@ -253,11 +253,11 @@ namespace meshops {
 			address2 = VERTEX_CHUNK_ADDRESS(x2, y2, county, 2);
 			address3 = VERTEX_CHUNK_ADDRESS(x3, y3, county, 2);
 
-			long* count1 = &meta[address1];
+			long long* count1 = &meta[address1];
+			long long* count2 = &meta[address2];
+			long long* count3 = &meta[address3];
 			float* chunk1 = ((float**)meta)[address1 + 1];
-			long* count2 = &meta[address2];
 			float* chunk2 = ((float**)meta)[address2 + 1];
-			long* count3 = &meta[address3];
 			float* chunk3 = ((float**)meta)[address3 + 1];
 
 			write_vertex(chunk1, count1, x1, y1, z1, nx1, ny1, nz1, u1, v1, c1, tx1, ty1, tz1, bx1, by1, bz1, barx1, bary1, barz1);
@@ -278,7 +278,7 @@ namespace meshops {
 	}
 
 	inline void write_vertex(
-			float* out, long* address,
+			float* out, long long* address,
 			float x, float y, float z,
 			float nx, float ny, float nz,
 			float u, float v,
