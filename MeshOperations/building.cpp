@@ -2,7 +2,7 @@
 #include "meshops.h"
 
 namespace meshops {
-	float chunk_size = 0;
+	int chunk_size = 0;
 	float chunk_startx = 0;
 	float chunk_starty = 0;
 	float chunk_endx = 0;
@@ -90,37 +90,37 @@ namespace meshops {
 				out[byte++] = biz;
 			}
 			if (use_small_normal) {
-				nx = ADJUST(nx, 0.0, 255.0, -1.0, 1.0);
-				ny = ADJUST(ny, 0.0, 255.0, -1.0, 1.0);
-				nz = ADJUST(nz, 0.0, 255.0, -1.0, 1.0);
+				nx = ADJUST(nx, 0.0f, 255.0f, -1.0f, 1.0f);
+				ny = ADJUST(ny, 0.0f, 255.0f, -1.0f, 1.0f);
+				nz = ADJUST(nz, 0.0f, 255.0f, -1.0f, 1.0f);
 				value = nx + ny * 256.0 + nz * 65536.0;
 				((unsigned int*)out)[byte++] = (unsigned int)value;
 			}
 			if (use_small_tangent) {
-				tax = ADJUST(tax, 0.0, 255.0, -1.0, 1.0);
-				tay = ADJUST(tay, 0.0, 255.0, -1.0, 1.0);
-				taz = ADJUST(taz, 0.0, 255.0, -1.0, 1.0);
+				tax = ADJUST(tax, 0.0f, 255.0f, -1.0f, 1.0f);
+				tay = ADJUST(tay, 0.0f, 255.0f, -1.0f, 1.0f);
+				taz = ADJUST(taz, 0.0f, 255.0f, -1.0f, 1.0f);
 				value = tax + tay * 256.0 + taz * 65536.0;
 				((unsigned int*)out)[byte++] = (unsigned int)value;
 			}
 			if (use_small_bitangent) {
-				bix = ADJUST(bix, 0.0, 255.0, -1.0, 1.0);
-				biy = ADJUST(biy, 0.0, 255.0, -1.0, 1.0);
-				biz = ADJUST(biz, 0.0, 255.0, -1.0, 1.0);
+				bix = ADJUST(bix, 0.0f, 255.0f, -1.0f, 1.0f);
+				biy = ADJUST(biy, 0.0f, 255.0f, -1.0f, 1.0f);
+				biz = ADJUST(biz, 0.0f, 255.0f, -1.0f, 1.0f);
 				value = bix + biy * 256.0 + biz * 65536.0;
 				((unsigned int*)out)[byte++] = (unsigned int)value;
 			}
 			if (use_small_texcoord) {
-				u = floor(u * 255.0);
-				v = floor(v * 255.0);
+				u = floor(u * 255.0f);
+				v = floor(v * 255.0f);
 				value = u + v * 256.0;
 				((unsigned int*)out)[byte++] = (unsigned int)value;
 			}
 			if (use_small_texcoord) {
-				nx = ADJUST(nx, 0.0, 255.0, -1.0, 1.0);
-				ny = ADJUST(ny, 0.0, 255.0, -1.0, 1.0);
-				nz = ADJUST(nz, 0.0, 255.0, -1.0, 1.0);
-				u = floor(u * 255.0);
+				nx = ADJUST(nx, 0.0f, 255.0f, -1.0f, 1.0f);
+				ny = ADJUST(ny, 0.0f, 255.0f, -1.0f, 1.0f);
+				nz = ADJUST(nz, 0.0f, 255.0f, -1.0f, 1.0f);
+				u = floor(u * 255.0f);
 				value = nx + ny * 256.0 + nz * 65536.0 + u * 16777216.0;
 				((unsigned int*)out)[byte++] = (unsigned int)value;
 			}
@@ -129,9 +129,9 @@ namespace meshops {
 		return byte;
 	}
 
-#define VERTEX_CHUNK_ADDRESS(x, y, h, alignment) ((alignment) * (((x) * (h)) + (y)))
+#define VERTEX_CHUNK_ADDRESS(x, y, h, alignment) ((int)((alignment) * (((x) * (h)) + (y))))
 
-	void chunk_settings(float chunk_size, float startx, float starty, float endx, float endy) {
+	void chunk_settings(int chunk_size, float startx, float starty, float endx, float endy) {
 		meshops::chunk_size = chunk_size;
 		meshops::chunk_startx = startx;
 		meshops::chunk_starty = starty;
@@ -142,7 +142,7 @@ namespace meshops {
 	}
 
 	void chunk_analyze(float* data, long* meta, int data_len, int meta_len) {
-		float x1, y1, z1, x2, y2, z2, x3, y3, z3;
+		float x1, y1, x2, y2, x3, y3;
 		int address1, address2, address3;
 		int iteration = meshops::vertex_size * 3;
 		int vsize = meshops::vertex_size;
