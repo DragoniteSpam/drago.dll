@@ -115,6 +115,45 @@ namespace spriteops {
 		return data[(int)GET_INDEX(floor(x), floor(y), w)];
 	}
 
+	// not really sampling from a sprite anymore but the math for doing it with
+	// regular floats is very similar
+	float sample_float(float* data, int w, int h, float u, float v) {
+		return sample_float_pixel(data, w, h, u * w, v * h);
+	}
+
+	float sample_float_pixel(float* data, int w, int h, float x, float y) {
+		// might implement texture wrapping some other day but right now i dont feel like it
+		x = std::clamp(x, 0.0f, w - 1.0f);
+		y = std::clamp(y, 0.0f, h - 1.0f);
+
+#define LERP(a, b, f) ((a) + (f) * ((b) - (a)))
+		int address_ul = GET_INDEX(floor(x), floor(y), w);
+		int address_ur = GET_INDEX(ceil(x), floor(y), w);
+		int address_ll = GET_INDEX(floor(x), ceil(y), w);
+		int address_lr = GET_INDEX(ceil(x), ceil(y), w);
+		float horizontal_lerp = fmod(x, 1);
+		float vertical_lerp = fmod(y, 1);
+		int value_ul = data[address_ul];
+		int value_ur = data[address_ur];
+		int value_ll = data[address_ll];
+		int value_lr = data[address_lr];
+		int value_l = LERP(value_ul, value_ll, vertical_lerp);
+		int value_r = LERP(value_ur, value_lr, vertical_lerp);
+		return LERP(value_l, value_r, horizontal_lerp);
+#undef LERP
+	}
+
+	float sample_float_unfiltered(float* data, int w, int h, float u, float v) {
+		return sample_float_pixel_unfiltered(data, w, h, u * w, v * h);
+	}
+
+	float sample_float_pixel_unfiltered(float* data, int w, int h, float x, float y) {
+		// might implement texture wrapping some other day but right now i dont feel like it
+		x = std::clamp(x, 0.0f, w - 1.0f);
+		y = std::clamp(y, 0.0f, h - 1.0f);
+		return data[(int)GET_INDEX(floor(x), floor(y), w)];
+	}
+
 	// help
 	unsigned int merge(unsigned int a, unsigned int b, float f) {
 		unsigned int rr1 = (a & 0x000000ff);

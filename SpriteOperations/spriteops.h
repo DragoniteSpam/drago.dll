@@ -22,6 +22,11 @@ namespace spriteops {
 	unsigned int sample_pixel(unsigned int*, int, int, float, float);
 	unsigned int sample_unfiltered(unsigned int*, int, int, float, float);
 	unsigned int sample_pixel_unfiltered(unsigned int*, int, int, float, float);
+
+	float sample_float(float*, int, int, float, float);
+	float sample_float_pixel(float*, int, int, float, float);
+	float sample_float_unfiltered(float*, int, int, float, float);
+	float sample_float_pixel_unfiltered(float*, int, int, float, float);
 	
 	// help
 	unsigned int merge(unsigned int, unsigned int, float);
