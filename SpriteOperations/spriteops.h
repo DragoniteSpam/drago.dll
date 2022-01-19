@@ -20,6 +20,8 @@ namespace spriteops {
 	// sprite sampling
 	unsigned int sample(unsigned int*, int, int, float, float);
 	unsigned int sample_pixel(unsigned int*, int, int, float, float);
+	unsigned int sample_unfiltered(unsigned int*, int, int, float, float);
+	unsigned int sample_pixel_unfiltered(unsigned int*, int, int, float, float);
 	
 	// help
 	unsigned int merge(unsigned int, unsigned int, float);

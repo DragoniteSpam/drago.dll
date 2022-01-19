@@ -82,7 +82,7 @@ namespace spriteops {
 
 	// sprite sampling
 	unsigned int sample(unsigned int* data, int w, int h, float u, float v) {
-		return sample_pixel(data, w, h, (u * w), (v * h));
+		return sample_pixel(data, w, h, u * w, v * h);
 	}
 
 	unsigned int sample_pixel(unsigned int* data, int w, int h, float x, float y) {
@@ -102,6 +102,17 @@ namespace spriteops {
 		int colour_l = merge(colour_ul, colour_ll, vertical_lerp);
 		int colour_r = merge(colour_ur, colour_lr, vertical_lerp);
 		return merge(colour_l, colour_r, horizontal_lerp);
+	}
+
+	unsigned int sample_unfiltered(unsigned int* data, int w, int h, float u, float v) {
+		return sample_pixel_unfiltered(data, w, h, u * w, v * h);
+	}
+
+	unsigned int sample_pixel_unfiltered(unsigned int* data, int w, int h, float x, float y) {
+		// might implement texture wrapping some other day but right now i dont feel like it
+		x = std::clamp(x, 0.0f, w - 1.0f);
+		y = std::clamp(y, 0.0f, h - 1.0f);
+		return data[(int)GET_INDEX(floor(x), floor(y), w)];
 	}
 
 	// help
