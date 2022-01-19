@@ -98,8 +98,6 @@ namespace terrainops {
 			long long* index = &meta[i + 0];
 			float* out = (float*)meta[i + 1];
 
-			std::cout << meta[i + 2] << ", " << meta[i + 3] << " to " << meta[i + 4] << ", " << meta[i + 5] << std::endl;
-
 			for (int x = (int)(meta[i + 2]); x <= (int)(meta[i + 4]) - density; x += density) {
 				for (int y = (int)(meta[i + 3]); y <= (int)(meta[i + 5]) - density; y += density) {
 					x00 = (float)x;
@@ -107,16 +105,16 @@ namespace terrainops {
 					z00 = get_z(data, x, y, h);
 
 					x01 = (float)x;
-					y01 = (float)std::min(y + density, h);
-					z01 = get_z(data, x, std::min(y + density, h), h);
+					y01 = (float)std::min(y + density, h - 1);
+					z01 = get_z(data, x, std::min(y + density, h - 1), h);
 
-					x10 = (float)std::min(x + density, w);
+					x10 = (float)std::min(x + density, w - 1);
 					y10 = (float)y;
-					z10 = get_z(data, std::min(x + density, w), y, h);
+					z10 = get_z(data, std::min(x + density, w - 1), y, h);
 
-					x11 = (float)std::min(x + density, w);
-					y11 = (float)std::min(y + density, h);
-					z11 = get_z(data, std::min(x + density, w), std::min(y + density, h), h);
+					x11 = (float)std::min(x + density, w - 1);
+					y11 = (float)std::min(y + density, h - 1);
+					z11 = get_z(data, std::min(x + density, w - 1), std::min(y + density, h - 1), h);
 
 					x00 = (x00 + xoff) * scale;
 					x01 = (x01 + xoff) * scale;
