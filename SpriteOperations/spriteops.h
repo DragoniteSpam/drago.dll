@@ -18,10 +18,11 @@ namespace spriteops {
 	void spriteops_remove_transparent_colour(int*, int, int);
 
 	// sprite sampling
-	int sample(int*, int, int, float, float);
-	int sample_pixel(int*, int, int, float, float);
+	unsigned int sample(unsigned int*, int, int, float, float);
+	unsigned int sample_pixel(unsigned int*, int, int, float, float);
 	
-	int merge(int, int, float);
+	// help
+	unsigned int merge(unsigned int, unsigned int, float);
 }
 
 #endif

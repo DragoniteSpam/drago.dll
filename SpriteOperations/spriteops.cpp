@@ -81,11 +81,11 @@ namespace spriteops {
 	}
 
 	// sprite sampling
-	int sample(int* data, int w, int h, float u, float v) {
+	unsigned int sample(unsigned int* data, int w, int h, float u, float v) {
 		return sample_pixel(data, w, h, (u * w), (v * h));
 	}
 
-	int sample_pixel(int* data, int w, int h, float x, float y) {
+	unsigned int sample_pixel(unsigned int* data, int w, int h, float x, float y) {
 		// might implement texture wrapping some other day but right now i dont feel like it
 		x = std::clamp(x, 0.0f, w - 1.0f);
 		y = std::clamp(y, 0.0f, h - 1.0f);
@@ -104,17 +104,18 @@ namespace spriteops {
 		return merge(colour_l, colour_r, horizontal_lerp);
 	}
 
-	int merge(int a, int b, float f) {
-		int rr1 = (a & 0x000000ff);
-		int gg1 = (a & 0x0000ff00) >> 8;
-		int bb1 = (a & 0x00ff0000) >> 16;
-		int aa1 = (a & 0xff000000) >> 24;
-		int rr2 = (b & 0x000000ff);
-		int gg2 = (b & 0x0000ff00) >> 8;
-		int bb2 = (b & 0x00ff0000) >> 16;
-		int aa2 = (b & 0xff000000) >> 24;
+	// help
+	unsigned int merge(unsigned int a, unsigned int b, float f) {
+		unsigned int rr1 = (a & 0x000000ff);
+		unsigned int gg1 = (a & 0x0000ff00) >> 8;
+		unsigned int bb1 = (a & 0x00ff0000) >> 16;
+		unsigned int aa1 = (a & 0xff000000) >> 24;
+		unsigned int rr2 = (b & 0x000000ff);
+		unsigned int gg2 = (b & 0x0000ff00) >> 8;
+		unsigned int bb2 = (b & 0x00ff0000) >> 16;
+		unsigned int aa2 = (b & 0xff000000) >> 24;
 
-#define LERP(a, b, f) ((int)((a) + (f) * ((b) - (a))))
+#define LERP(a, b, f) ((unsigned int)((a) + (f) * ((b) - (a))))
 
 		return LERP(rr1, rr2, f) | (LERP(gg1, gg2, f) << 8) | (LERP(bb1, bb2, f) << 16) | (LERP(aa1, aa2, f) << 24);
 
