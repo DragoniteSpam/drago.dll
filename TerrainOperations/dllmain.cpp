@@ -31,7 +31,7 @@ ex double terrainops_mutate_set_noise(float* noise, double len) {
 	return 1.0;
 }
 
-ex double terrainops_mutate_set_texture(float* texture, double len) {
+ex double terrainops_mutate_set_texture(unsigned int* texture, double len) {
 	terrainops::mutate_set_texture(texture, BYTES2FLOATS(len));
 	return 1.0;
 }

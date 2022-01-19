@@ -2,6 +2,7 @@
 #define __DRAGO_TERRAIN_OP "0.0.1"
 
 #include "main/core.h"
+#include "SpriteOperations/spriteops.h"
 #include <math.h>
 
 namespace terrainops {
@@ -17,7 +18,7 @@ namespace terrainops {
 	extern float* mutate_noise;
 	extern float mutate_noise_length;
 	extern float mutate_noise_strength;
-	extern float* mutate_texture;
+	extern unsigned int* mutate_texture;
 	extern float mutate_texture_length;
 	extern float mutate_texture_strength;
 
@@ -31,7 +32,7 @@ namespace terrainops {
 
 	// mutation
 	void mutate_set_noise(float*, int);
-	void mutate_set_texture(float*, int);
+	void mutate_set_texture(unsigned int*, int);
 	void mutate_set_parameters(float, float);
 	void mutate(float*, int, int);
 

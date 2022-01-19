@@ -15,7 +15,7 @@ namespace terrainops {
 	float* mutate_noise = nullptr;
 	float mutate_noise_length = 0;
 	float mutate_noise_strength = 0;
-	float* mutate_texture = nullptr;
+	unsigned int* mutate_texture = nullptr;
 	float mutate_texture_length = 0;
 	float mutate_texture_strength = 0;
 
@@ -71,7 +71,7 @@ namespace terrainops {
 		terrainops::mutate_noise_length = len;
 	}
 
-	void mutate_set_texture(float* texture, int len) {
+	void mutate_set_texture(unsigned int* texture, int len) {
 		terrainops::mutate_texture = texture;
 		terrainops::mutate_texture_length = len;
 	}
@@ -82,7 +82,22 @@ namespace terrainops {
 	}
 
 	void mutate(float* data, int w, int h) {
-		
+		unsigned int* texture = terrainops::mutate_texture;
+		float texture_strength = terrainops::mutate_texture_strength;
+		float* noise = terrainops::mutate_noise;
+		float noise_strength = terrainops::mutate_noise_strength;
+
+		for (int i = 0; i < w; i++) {
+			for (int j = 0; j < h; j++) {
+				float samp_noise = spriteops::sample_float_pixel(noise, w, h, i, j) - noise_strength / 2;
+				unsigned int samp_texture = spriteops::sample_pixel(texture, w, h, i, j);
+				unsigned int samp_texture_r = (((samp_texture >> 0x00) / 0x7f) - 1) * texture_strength;
+				unsigned int samp_texture_g = (((samp_texture >> 0x08) / 0x7f) - 1) * texture_strength;
+				unsigned int samp_texture_b = (((samp_texture >> 0x10) / 0x7f) - 1) * texture_strength;
+				unsigned int samp_texture_a = (((samp_texture >> 0x18) / 0x7f) - 1) * texture_strength;
+				add_z(data, i, j, h, samp_noise + samp_texture_r);
+			}
+		}
 	}
 
 	// build vertex data
@@ -286,7 +301,7 @@ namespace terrainops {
 		return data[x * h + y];
 	}
 
-	inline float get_z(float* data, int x, int y, int h, float value) {
+	inline float add_z(float* data, int x, int y, int h, float value) {
 		data[x * h + y] += value;
 	}
 
