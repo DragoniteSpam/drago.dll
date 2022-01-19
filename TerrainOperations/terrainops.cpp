@@ -315,7 +315,7 @@ namespace terrainops {
 		return data[x * h + y];
 	}
 
-	inline float add_z(float* data, int x, int y, int h, float value) {
+	inline void add_z(float* data, int x, int y, int h, float value) {
 		data[x * h + y] += value;
 	}
 
