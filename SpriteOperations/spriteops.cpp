@@ -80,6 +80,30 @@ namespace spriteops {
 		}
 	}
 
+	// sprite sampling
+	int sample(int* data, int w, int h, float u, float v) {
+		return sample_pixel(data, w, h, (u * w), (v * h));
+	}
+
+	int sample_pixel(int* data, int w, int h, float x, float y) {
+		// might implement texture wrapping some other day but right now i dont feel like it
+		x = std::clamp(x, 0.0f, w - 1.0f);
+		y = std::clamp(y, 0.0f, h - 1.0f);
+		int address_ul = GET_INDEX(floor(x), floor(y), w);
+		int address_ur = GET_INDEX(ceil(x), floor(y), w);
+		int address_ll = GET_INDEX(floor(x), ceil(y), w);
+		int address_lr = GET_INDEX(ceil(x), ceil(y), w);
+		float horizontal_lerp = fmod(x, 1);
+		float vertical_lerp = fmod(y, 1);
+		int colour_ul = data[address_ul];
+		int colour_ur = data[address_ur];
+		int colour_ll = data[address_ll];
+		int colour_lr = data[address_lr];
+		int colour_l = merge(colour_ul, colour_ll, vertical_lerp);
+		int colour_r = merge(colour_ur, colour_lr, vertical_lerp);
+		return merge(colour_l, colour_r, horizontal_lerp);
+	}
+
 	int merge(int a, int b, float f) {
 		int rr1 = (a & 0x000000ff);
 		int gg1 = (a & 0x0000ff00) >> 8;
