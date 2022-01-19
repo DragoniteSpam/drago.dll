@@ -254,8 +254,13 @@ namespace terrainops {
 #undef V
 	}
 
-	float get_z(float* data, int x, int y, int h) {
+	// helper functions
+	inline float get_z(float* data, int x, int y, int h) {
 		return data[x * h + y];
+	}
+
+	inline float get_z(float* data, int x, int y, int h, float value) {
+		data[x * h + y] += value;
 	}
 
 	inline void write_vertex(
