@@ -32,6 +32,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SpriteOperations", "..\SpriteOperations\SpriteOperations.vcxproj", "{E031B58F-1E7D-46D2-90CD-66A01A961E3D}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TerrainOperations", "..\TerrainOperations\TerrainOperations.vcxproj", "{0F6090B3-04A1-44EA-BC96-C2EC6DC5247E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E031B58F-1E7D-46D2-90CD-66A01A961E3D} = {E031B58F-1E7D-46D2-90CD-66A01A961E3D}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aquila", "..\Aquila\Aquila.csproj", "{527FE29E-A302-4F3F-A704-884FA3F25FBD}"
 EndProject

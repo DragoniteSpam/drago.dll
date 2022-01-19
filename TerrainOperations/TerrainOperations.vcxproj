@@ -161,10 +161,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\SpriteOperations\spriteops.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="terrainops.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\SpriteOperations\spriteops.h" />
     <ClInclude Include="terrainops.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
