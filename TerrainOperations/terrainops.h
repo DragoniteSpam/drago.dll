@@ -16,11 +16,9 @@ namespace terrainops {
 	extern float save_scale;
 
 	extern float* mutate_noise;
-	extern float mutate_noise_length;
-	extern float mutate_noise_strength;
+	extern Vector3 mutate_noise_data;
 	extern unsigned int* mutate_texture;
-	extern float mutate_texture_length;
-	extern float mutate_texture_strength;
+	extern Vector3 mutate_texture_data;
 
 	const char* version();
 
@@ -31,9 +29,8 @@ namespace terrainops {
 	void apply_scale(float*, float*, int, float);
 
 	// mutation
-	void mutate_set_noise(float*, int);
-	void mutate_set_texture(unsigned int*, int);
-	void mutate_set_parameters(float, float);
+	void mutate_set_noise(float*, int, int, float);
+	void mutate_set_texture(unsigned int*, int, int, float);
 	void mutate(float*, int, int);
 
 	// build vertex data

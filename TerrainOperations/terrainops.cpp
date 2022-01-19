@@ -13,11 +13,9 @@ namespace terrainops {
 	float save_scale = 1;
 
 	float* mutate_noise = nullptr;
-	float mutate_noise_length = 0;
-	float mutate_noise_strength = 0;
+	Vector3 mutate_noise_data;
 	unsigned int* mutate_texture = nullptr;
-	float mutate_texture_length = 0;
-	float mutate_texture_strength = 0;
+	Vector3 mutate_texture_data;
 
 	const char* version() {
 		return __DRAGO_TERRAIN_OP;
@@ -66,31 +64,34 @@ namespace terrainops {
 	}
 
 	// mutation
-	void mutate_set_noise(float* noise, int len) {
+	void mutate_set_noise(float* noise, int w, int h, float strength) {
 		terrainops::mutate_noise = noise;
-		terrainops::mutate_noise_length = len;
+		terrainops::mutate_noise_data.a = w;
+		terrainops::mutate_noise_data.b = h;
+		terrainops::mutate_noise_data.z = strength;
 	}
 
-	void mutate_set_texture(unsigned int* texture, int len) {
+	void mutate_set_texture(unsigned int* texture, int w, int h, float strength) {
 		terrainops::mutate_texture = texture;
-		terrainops::mutate_texture_length = len;
-	}
-
-	void mutate_set_parameters(float texture_strength, float noise_strength) {
-		terrainops::mutate_texture_strength = texture_strength;
-		terrainops::mutate_noise_strength = noise_strength;
+		terrainops::mutate_texture_data.a = w;
+		terrainops::mutate_texture_data.b = h;
+		terrainops::mutate_texture_data.z = strength;
 	}
 
 	void mutate(float* data, int w, int h) {
 		unsigned int* texture = terrainops::mutate_texture;
-		float texture_strength = terrainops::mutate_texture_strength;
+		int texture_w = terrainops::mutate_texture_data.a;
+		int texture_h = terrainops::mutate_texture_data.b;
+		float texture_strength = terrainops::mutate_texture_data.z;
 		float* noise = terrainops::mutate_noise;
-		float noise_strength = terrainops::mutate_noise_strength;
+		int noise_w = terrainops::mutate_noise_data.a;
+		int noise_h = terrainops::mutate_noise_data.b;
+		float noise_strength = terrainops::mutate_noise_data.z;
 
 		for (int i = 0; i < w; i++) {
 			for (int j = 0; j < h; j++) {
-				float samp_noise = spriteops::sample_float_pixel(noise, w, h, i, j) - noise_strength / 2;
-				unsigned int samp_texture = spriteops::sample_pixel(texture, w, h, i, j);
+				float samp_noise = spriteops::sample_float_pixel(noise, noise_w, noise_h, i, j) - noise_strength / 2;
+				unsigned int samp_texture = spriteops::sample_pixel(texture, texture_w, texture_h, i, j);
 				unsigned int samp_texture_r = (((samp_texture >> 0x00) / 0x7f) - 1) * texture_strength;
 				unsigned int samp_texture_g = (((samp_texture >> 0x08) / 0x7f) - 1) * texture_strength;
 				unsigned int samp_texture_b = (((samp_texture >> 0x10) / 0x7f) - 1) * texture_strength;
