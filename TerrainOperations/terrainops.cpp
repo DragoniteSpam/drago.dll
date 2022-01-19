@@ -16,6 +16,7 @@ namespace terrainops {
 		return __DRAGO_TERRAIN_OP;
 	}
 
+	// general
 	void to_heightmap(float* data, unsigned int* out, int len, float scale) {
 		int z;
 		for (int i = 0; i < len; i++) {
@@ -57,6 +58,24 @@ namespace terrainops {
 		}
 	}
 
+	// mutation
+	void mutate_set_noise(float* noise, double len) {
+		
+	}
+
+	void mutate_set_texture(float* texture, double len) {
+		
+	}
+
+	void mutate_set_parameters(float texture_strength, float noise_strength) {
+		
+	}
+
+	void mutate(float* data, int w, int h) {
+		
+	}
+
+	// build vertex data
 	void build_settings(bool save_all, bool swap_zup, bool swap_uv, bool centered, int density, int width, int height, float scale) {
 		terrainops::save_all = save_all;
 		terrainops::save_swap_zup = swap_zup;

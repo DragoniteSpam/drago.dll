@@ -16,10 +16,19 @@ namespace terrainops {
 
 	const char* version();
 
+	// general
 	void to_heightmap(float*, unsigned int*, int, float);
 	void from_heightmap(float*, unsigned int*, int, float);
 	void flatten(float*, float*, int, float);
 	void apply_scale(float*, float*, int, float);
+
+	// mutation
+	void mutate_set_noise(float*, double);
+	void mutate_set_texture(float*, double);
+	void mutate_set_parameters(double, double);
+	void mutate(float*, double, double);
+
+	// build vertex data
 	void build_settings(bool, bool, bool, bool, int, int, int, float);
 	long build(float*, long long*, int, int);
 	void generate(float*, float*, int, int);

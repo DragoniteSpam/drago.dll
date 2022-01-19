@@ -26,6 +26,26 @@ ex double terrainops_apply_scale(float* data, float* vertex, double len, double 
 	return 1.0;
 }
 
+ex double terrainops_mutate_set_noise(float* noise, double len) {
+	terrainops::mutate_set_noise(noise, BYTES2FLOATS(len));
+	return 1.0;
+}
+
+ex double terrainops_mutate_set_texture(float* texture, double len) {
+	terrainops::mutate_set_texture(texture, BYTES2FLOATS(len));
+	return 1.0;
+}
+
+ex double terrainops_mutate_set_parameters(double texture_strength, double noise_strength) {
+	terrainops::mutate_set_parameters((float)texture_strength, (float)noise_strength);
+	return 1.0;
+}
+
+ex double terrainops_mutate(float* data, double w, double h) {
+	terrainops::mutate(data, (int)w, (int)h);
+	return 1.0;
+}
+
 ex double terrainops_generate(float* data, float* out, double width, double height) {
 	terrainops::generate(data, out, (int)width, (int)height);
 	return 1.0;
