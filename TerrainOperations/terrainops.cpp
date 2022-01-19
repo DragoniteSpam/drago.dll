@@ -90,10 +90,10 @@ namespace terrainops {
 
 		float samp_noise = 0;
 		unsigned int samp_texture = 0;
-		unsigned int samp_texture_r = 0;
-		unsigned int samp_texture_g = 0;
-		unsigned int samp_texture_b = 0;
-		unsigned int samp_texture_a = 0;
+		float samp_texture_r = 0;
+		float samp_texture_g = 0;
+		float samp_texture_b = 0;
+		float samp_texture_a = 0;
 
 		for (int i = 0; i < w; i++) {
 			for (int j = 0; j < h; j++) {
@@ -103,10 +103,10 @@ namespace terrainops {
 				
 				if (texture != NULL) {
 					samp_texture = spriteops::sample_pixel(texture, texture_w, texture_h, i, j);
-					samp_texture_r = (((samp_texture >> 0x00) / 0x7f) - 1) * texture_strength;
-					samp_texture_g = (((samp_texture >> 0x08) / 0x7f) - 1) * texture_strength;
-					samp_texture_b = (((samp_texture >> 0x10) / 0x7f) - 1) * texture_strength;
-					samp_texture_a = (((samp_texture >> 0x18) / 0x7f) - 1) * texture_strength;
+					samp_texture_r = ((((samp_texture >> 0x00) & 0xff) / 127.0) - 1) * texture_strength;
+					samp_texture_g = ((((samp_texture >> 0x08) & 0xff) / 127.0) - 1) * texture_strength;
+					samp_texture_b = ((((samp_texture >> 0x10) & 0xff) / 127.0) - 1) * texture_strength;
+					samp_texture_a = ((((samp_texture >> 0x18) & 0xff) / 127.0) - 1) * texture_strength;
 				}
 
 				add_z(data, i, j, h, samp_noise + samp_texture_r);
