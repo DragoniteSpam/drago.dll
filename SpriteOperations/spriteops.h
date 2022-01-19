@@ -6,7 +6,7 @@
 #include <math.h>
 #include <algorithm>
 
-#define GET_INDEX(i, j, w) ((j) * (w) + (i))
+#define GET_INDEX(x, y, w) ((y) * (w) + (x))
 
 namespace spriteops {
 	extern int* cropped_dimensions_output;

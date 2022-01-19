@@ -89,18 +89,14 @@ namespace spriteops {
 		// might implement texture wrapping some other day but right now i dont feel like it
 		x = std::clamp(x, 0.0f, w - 1.0f);
 		y = std::clamp(y, 0.0f, h - 1.0f);
-		int address_ul = GET_INDEX(floor(x), floor(y), w);
-		int address_ur = GET_INDEX(ceil(x), floor(y), w);
-		int address_ll = GET_INDEX(floor(x), ceil(y), w);
-		int address_lr = GET_INDEX(ceil(x), ceil(y), w);
-		float horizontal_lerp = fmod(x, 1);
-		float vertical_lerp = fmod(y, 1);
-		int colour_ul = data[address_ul];
-		int colour_ur = data[address_ur];
-		int colour_ll = data[address_ll];
-		int colour_lr = data[address_lr];
-		int colour_l = merge(colour_ul, colour_ll, vertical_lerp);
-		int colour_r = merge(colour_ur, colour_lr, vertical_lerp);
+		float horizontal_lerp = (float)fmod(x, 1.0f);
+		float vertical_lerp = (float)fmod(y, 1.0f);
+		unsigned int colour_ul = data[(int)GET_INDEX(floor(x), floor(y), w)];
+		unsigned int colour_ur = data[(int)GET_INDEX(ceil(x), floor(y), w)];
+		unsigned int colour_ll = data[(int)GET_INDEX(floor(x), ceil(y), w)];
+		unsigned int colour_lr = data[(int)GET_INDEX(ceil(x), ceil(y), w)];
+		unsigned int colour_l = merge(colour_ul, colour_ll, vertical_lerp);
+		unsigned int colour_r = merge(colour_ur, colour_lr, vertical_lerp);
 		return merge(colour_l, colour_r, horizontal_lerp);
 	}
 
@@ -127,16 +123,12 @@ namespace spriteops {
 		y = std::clamp(y, 0.0f, h - 1.0f);
 
 #define LERP(a, b, f) ((a) + (f) * ((b) - (a)))
-		int address_ul = GET_INDEX(floor(x), floor(y), w);
-		int address_ur = GET_INDEX(ceil(x), floor(y), w);
-		int address_ll = GET_INDEX(floor(x), ceil(y), w);
-		int address_lr = GET_INDEX(ceil(x), ceil(y), w);
-		float horizontal_lerp = fmod(x, 1);
-		float vertical_lerp = fmod(y, 1);
-		float value_ul = data[address_ul];
-		float value_ur = data[address_ur];
-		float value_ll = data[address_ll];
-		float value_lr = data[address_lr];
+		float horizontal_lerp = (float)fmod(x, 1);
+		float vertical_lerp = (float)fmod(y, 1);
+		float value_ul = data[(int)GET_INDEX(floor(x), floor(y), w)];
+		float value_ur = data[(int)GET_INDEX(ceil(x), floor(y), w)];
+		float value_ll = data[(int)GET_INDEX(floor(x), ceil(y), w)];
+		float value_lr = data[(int)GET_INDEX(ceil(x), ceil(y), w)];
 		float value_l = LERP(value_ul, value_ll, vertical_lerp);
 		float value_r = LERP(value_ur, value_lr, vertical_lerp);
 		return LERP(value_l, value_r, horizontal_lerp);
@@ -165,7 +157,7 @@ namespace spriteops {
 		unsigned int bb2 = (b & 0x00ff0000) >> 16;
 		unsigned int aa2 = (b & 0xff000000) >> 24;
 
-#define LERP(a, b, f) ((unsigned int)((a) + (f) * ((b) - (a))))
+#define LERP(a, b, f) ((unsigned int)((a) + (unsigned int)((f) * ((b) - (a)))))
 
 		return LERP(rr1, rr2, f) | (LERP(gg1, gg2, f) << 8) | (LERP(bb1, bb2, f) << 16) | (LERP(aa1, aa2, f) << 24);
 
