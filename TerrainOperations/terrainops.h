@@ -34,7 +34,7 @@ namespace terrainops {
 	// mutation
 	void mutate_set_noise(float*, int, int, float);
 	void mutate_set_texture(unsigned int*, int, int, float);
-	void mutate(float*, int, int);
+	void mutate(float*, float*, int, int);
 
 	// build vertex data
 	void build_settings(bool, bool, bool, bool, int, int, int, float);

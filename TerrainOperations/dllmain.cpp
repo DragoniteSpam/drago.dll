@@ -36,8 +36,8 @@ ex double terrainops_mutate_set_texture(unsigned int* texture, double w, double 
 	return 1.0;
 }
 
-ex double terrainops_mutate(float* data, double w, double h) {
-	terrainops::mutate(data, (int)w, (int)h);
+ex double terrainops_mutate(float* data, float* vertex, double w, double h) {
+	terrainops::mutate(data, vertex, (int)w, (int)h);
 	return 1.0;
 }
 

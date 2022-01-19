@@ -78,7 +78,7 @@ namespace terrainops {
 		terrainops::mutate_texture_data.z = strength;
 	}
 
-	void mutate(float* data, int w, int h) {
+	void mutate(float* data, float* vertex, int w, int h) {
 		unsigned int* texture = terrainops::mutate_texture;
 		int texture_w = terrainops::mutate_texture_data.a;
 		int texture_h = terrainops::mutate_texture_data.b;
@@ -109,7 +109,7 @@ namespace terrainops {
 					samp_texture_a = ((((samp_texture >> 0x18) & 0xff) / 127.0) - 1) * texture_strength;
 				}
 
-				add_z(data, i, j, h, samp_noise + samp_texture_r);
+				add_z(data, vertex, i, j, h, w, samp_noise + samp_texture_r);
 			}
 		}
 	}
