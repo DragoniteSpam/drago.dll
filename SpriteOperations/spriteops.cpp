@@ -79,4 +79,21 @@ namespace spriteops {
 			}
 		}
 	}
+
+	int merge(int a, int b, float f) {
+		int rr1 = (a & 0x000000ff);
+		int gg1 = (a & 0x0000ff00) >> 8;
+		int bb1 = (a & 0x00ff0000) >> 16;
+		int aa1 = (a & 0xff000000) >> 24;
+		int rr2 = (b & 0x000000ff);
+		int gg2 = (b & 0x0000ff00) >> 8;
+		int bb2 = (b & 0x00ff0000) >> 16;
+		int aa2 = (b & 0xff000000) >> 24;
+
+#define LERP(a, b, f) ((int)((a) + (f) * ((b) - (a))))
+
+		return LERP(rr1, rr2, f) | (LERP(gg1, gg2, f) << 8) | (LERP(bb1, bb2, f) << 16) | (LERP(aa1, aa2, f) << 24);
+
+#undef LERP
+	}
 }
