@@ -312,11 +312,33 @@ namespace terrainops {
 
 	// helper functions
 	inline float get_z(float* data, int x, int y, int h) {
-		return data[x * h + y];
+		return data[DATA_INDEX(x, y, h)];
 	}
 
-	inline void add_z(float* data, int x, int y, int h, float value) {
-		data[x * h + y] += value;
+	inline void add_z(float* data, float* vertex, int x, int y, int h, int w, float value) {
+		set_z(data, vertex, x, y, h, w, value + get_z(data, x, y, h));
+	}
+
+	inline void set_z(float* data, float* vertex, int x, int y, int h, int w, float value) {
+		data[DATA_INDEX(x, y, h)] = value;
+		
+		if (x > 0 && y > 0) {
+			vertex[VERTEX_INDEX(x - 1, y - 1, h, 2) + 2] = value;
+			vertex[VERTEX_INDEX(x - 1, y - 1, h, 3) + 2] = value;
+		}
+
+		if (x < w && y > 0) {
+			vertex[VERTEX_INDEX(x, y - 1, h, 4) + 2] = value;
+		}
+
+		if (x > 0 && y < h - 1) {
+			vertex[VERTEX_INDEX(x - 1, y, h, 1) + 2] = value;
+		}
+
+		if (x < w && y < h - 1) {
+			vertex[VERTEX_INDEX(x, y, h, 0) + 2] = value;
+			vertex[VERTEX_INDEX(x, y, h, 5) + 2] = value;
+		}
 	}
 
 	inline void write_vertex(

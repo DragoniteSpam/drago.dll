@@ -43,7 +43,8 @@ namespace terrainops {
 
 	// helper functions
 	inline float get_z(float*, int, int, int);
-	inline void add_z(float*, int, int, int, float);
+	inline void add_z(float*, float*, int, int, int, int, float);
+	inline void set_z(float*, float*, int, int, int, int, float);
 	inline void write_vertex(float*, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float);
 }
 
