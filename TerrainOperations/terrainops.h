@@ -5,6 +5,9 @@
 #include "SpriteOperations/spriteops.h"
 #include <math.h>
 
+#define DATA_INDEX(x, y, h) ((x) * (h) + (y))
+#define VERTEX_INDEX(x, y, h, vertex) (3 * ((((x) * ((h) - 1) + (y)) * 6) + (vertex)))
+
 namespace terrainops {
 	extern bool save_all;
 	extern bool save_swap_zup;
