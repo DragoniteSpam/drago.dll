@@ -12,6 +12,13 @@ namespace terrainops {
 	int save_height = 1;
 	float save_scale = 1;
 
+	float* mutate_noise = nullptr;
+	float mutate_noise_length = 0;
+	float mutate_noise_strength = 0;
+	float* mutate_texture = nullptr;
+	float mutate_texture_length = 0;
+	float mutate_texture_strength = 0;
+
 	const char* version() {
 		return __DRAGO_TERRAIN_OP;
 	}
@@ -59,16 +66,19 @@ namespace terrainops {
 	}
 
 	// mutation
-	void mutate_set_noise(float* noise, double len) {
-		
+	void mutate_set_noise(float* noise, int len) {
+		terrainops::mutate_noise = noise;
+		terrainops::mutate_noise_length = len;
 	}
 
-	void mutate_set_texture(float* texture, double len) {
-		
+	void mutate_set_texture(float* texture, int len) {
+		terrainops::mutate_texture = texture;
+		terrainops::mutate_texture_length = len;
 	}
 
 	void mutate_set_parameters(float texture_strength, float noise_strength) {
-		
+		terrainops::mutate_texture_strength = texture_strength;
+		terrainops::mutate_noise_strength = noise_strength;
 	}
 
 	void mutate(float* data, int w, int h) {
