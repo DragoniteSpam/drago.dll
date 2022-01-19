@@ -133,12 +133,12 @@ namespace spriteops {
 		int address_lr = GET_INDEX(ceil(x), ceil(y), w);
 		float horizontal_lerp = fmod(x, 1);
 		float vertical_lerp = fmod(y, 1);
-		int value_ul = data[address_ul];
-		int value_ur = data[address_ur];
-		int value_ll = data[address_ll];
-		int value_lr = data[address_lr];
-		int value_l = LERP(value_ul, value_ll, vertical_lerp);
-		int value_r = LERP(value_ur, value_lr, vertical_lerp);
+		float value_ul = data[address_ul];
+		float value_ur = data[address_ur];
+		float value_ll = data[address_ll];
+		float value_lr = data[address_lr];
+		float value_l = LERP(value_ul, value_ll, vertical_lerp);
+		float value_r = LERP(value_ur, value_lr, vertical_lerp);
 		return LERP(value_l, value_r, horizontal_lerp);
 #undef LERP
 	}
