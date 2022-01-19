@@ -12,9 +12,9 @@ namespace terrainops {
 	int save_height = 1;
 	float save_scale = 1;
 
-	float* mutate_noise = nullptr;
+	float* mutate_noise = NULL;
 	Vector3 mutate_noise_data;
-	unsigned int* mutate_texture = nullptr;
+	unsigned int* mutate_texture = NULL;
 	Vector3 mutate_texture_data;
 
 	const char* version() {
@@ -88,14 +88,27 @@ namespace terrainops {
 		int noise_h = terrainops::mutate_noise_data.b;
 		float noise_strength = terrainops::mutate_noise_data.z;
 
+		float samp_noise = 0;
+		unsigned int samp_texture = 0;
+		unsigned int samp_texture_r = 0;
+		unsigned int samp_texture_g = 0;
+		unsigned int samp_texture_b = 0;
+		unsigned int samp_texture_a = 0;
+
 		for (int i = 0; i < w; i++) {
 			for (int j = 0; j < h; j++) {
-				float samp_noise = spriteops::sample_float_pixel(noise, noise_w, noise_h, i, j) - noise_strength / 2;
-				unsigned int samp_texture = spriteops::sample_pixel(texture, texture_w, texture_h, i, j);
-				unsigned int samp_texture_r = (((samp_texture >> 0x00) / 0x7f) - 1) * texture_strength;
-				unsigned int samp_texture_g = (((samp_texture >> 0x08) / 0x7f) - 1) * texture_strength;
-				unsigned int samp_texture_b = (((samp_texture >> 0x10) / 0x7f) - 1) * texture_strength;
-				unsigned int samp_texture_a = (((samp_texture >> 0x18) / 0x7f) - 1) * texture_strength;
+				if (noise != NULL) {
+					samp_noise = spriteops::sample_float_pixel(noise, noise_w, noise_h, i, j) - noise_strength / 2;
+				}
+				
+				if (texture != NULL) {
+					samp_texture = spriteops::sample_pixel(texture, texture_w, texture_h, i, j);
+					samp_texture_r = (((samp_texture >> 0x00) / 0x7f) - 1) * texture_strength;
+					samp_texture_g = (((samp_texture >> 0x08) / 0x7f) - 1) * texture_strength;
+					samp_texture_b = (((samp_texture >> 0x10) / 0x7f) - 1) * texture_strength;
+					samp_texture_a = (((samp_texture >> 0x18) / 0x7f) - 1) * texture_strength;
+				}
+
 				add_z(data, i, j, h, samp_noise + samp_texture_r);
 			}
 		}
