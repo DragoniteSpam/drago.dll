@@ -13,7 +13,18 @@
 
 // data structures
 struct Vector3 {
-	float x, y, z;
+	union {
+		float x;
+		int a;
+	};
+	union {
+		float y;
+		int b;
+	};
+	union {
+		float z;
+		int c;
+	};
 };
 
 struct Triangle {
