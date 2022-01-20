@@ -1,14 +1,47 @@
 #include "drago.h"
 #include "FileDropper/filedropper.h"
+#include "dragosys.h"
 
 ex double drago_init(HWND hWnd, double close) {
     DragAcceptFiles(hWnd, true);
     window_original = GetWindowLongPtr(hWnd, GWLP_WNDPROC);
     window_status = WINDOW_NEVERMIND;
     disable_close = (close != 0.0);
+
     SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)MsgProc);
+
+    dragosys::init();
+
     return 1.0;
 }
+
+// system info
+ex double dragosys_processor_count() {
+    return dragosys::processor_count();
+}
+
+// includes manufacturer, model and clockspeed
+ex const char* dragosys_processor_info() {
+    return dragosys::processor_info();
+}
+
+ex const char* dragosys_processor_architecture() {
+    return dragosys::processor_architecture();
+}
+
+ex double dragosys_memory_total() {
+    return dragosys::memory_total() * 1.0;
+}
+
+ex double dragosys_memory_available() {
+    return dragosys::memory_available() * 1.0;
+}
+
+ex double dragosys_memory_load() {
+    return dragosys::memory_load() * 1.0;
+}
+
+// window status
 
 ex double drago_reset_status() {
     window_status = WINDOW_NEVERMIND;
