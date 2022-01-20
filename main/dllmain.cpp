@@ -15,12 +15,16 @@ ex double drago_init(HWND hWnd, double close) {
     return 1.0;
 }
 
-// system info
+// system
+ex const char* dragosys_os_info() {
+    return dragosys::os_info();
+}
+
+// cpu
 ex double dragosys_processor_count() {
     return dragosys::processor_count();
 }
 
-// includes manufacturer, model and clockspeed
 ex const char* dragosys_processor_info() {
     return dragosys::processor_info();
 }
@@ -29,6 +33,7 @@ ex const char* dragosys_processor_architecture() {
     return dragosys::processor_architecture();
 }
 
+// memory
 ex double dragosys_memory_total() {
     return dragosys::memory_total() * 1.0;
 }
