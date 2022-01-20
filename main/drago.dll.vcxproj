@@ -169,11 +169,13 @@
     <ClInclude Include="drago.h" />
     <ClInclude Include="core.h" />
     <ClInclude Include="dragomath.h" />
+    <ClInclude Include="dragosys.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\FileDropper\filedropper.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="dragomath.cpp" />
+    <ClCompile Include="dragosys.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
