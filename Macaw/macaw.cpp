@@ -69,7 +69,7 @@ namespace macaw {
 
 		for (int octave = 0; octave < octaves; octave++) {
 			int period = 1 << octave;
-			float frequency = 1.0 / period;
+			float frequency = 1.0f / period;
 
 			for (int i = 0; i < w; i++) {
 				int i0 = (i / period) * period;
