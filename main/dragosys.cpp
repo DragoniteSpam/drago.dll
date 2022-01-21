@@ -5,7 +5,7 @@ namespace dragosys {
     SYSTEM_INFO sysInfo{};
     MEMORYSTATUSEX sysMemory;
     char sysCPU[0x40];
-    char* sysOS;
+    char sysOS[0x100];
 
     void init() {
         GetSystemInfo(&sysInfo);
@@ -182,7 +182,8 @@ namespace dragosys {
             // Get the value of the Name property
             hr = pclsObj->Get(L"Name", 0, &vtProp, 0, 0);
             _bstr_t interim_os(vtProp.bstrVal, false);
-            sysOS = (char*)interim_os;
+            char* osDescription = (char*)interim_os;
+            strncpy_s(sysOS, osDescription, interim_os.length());
             // after "windows 10 whatever" you'll find a bit of info that, in
             // all likelihood, we don't care about
             for (unsigned int i = 0; i < interim_os.length(); i++) {

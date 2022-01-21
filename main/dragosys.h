@@ -19,7 +19,7 @@ namespace dragosys {
     extern SYSTEM_INFO sysInfo;
     extern MEMORYSTATUSEX sysMemory;
     extern char sysCPU[0x40];
-    extern char* sysOS;
+    extern char sysOS[0x100];
 
 	void init();
     void init_wmi();
