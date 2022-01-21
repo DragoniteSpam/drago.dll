@@ -177,15 +177,15 @@ namespace dragosys {
                 break;
             }
 
-            VARIANT vtProp;
+            VARIANT vtProp{};
 
             // Get the value of the Name property
             hr = pclsObj->Get(L"Name", 0, &vtProp, 0, 0);
-            _bstr_t interim(vtProp.bstrVal, false);
-            sysOS = (char*)interim;
+            _bstr_t interim_os(vtProp.bstrVal, false);
+            sysOS = (char*)interim_os;
             // after "windows 10 whatever" you'll find a bit of info that, in
             // all likelihood, we don't care about
-            for (int i = 0; i < interim.length(); i++) {
+            for (unsigned int i = 0; i < interim_os.length(); i++) {
                 if (sysOS[i] == '|') {
                     sysOS[i] = '\0';
                     break;
@@ -195,6 +195,56 @@ namespace dragosys {
 
             pclsObj->Release();
         }
+
+        // Use the IWbemServices pointer to make requests of WMI ----
+        IWbemClassObject* pClass = NULL;
+        _bstr_t value = "Win32_VideoController";
+        hres = pSvc->GetObject(value, 0, NULL, &pClass, NULL);
+
+        if (FAILED(hres)) {
+            std::cout << "GetObject failed" << " Error code = 0x" << std::hex << hres << std::endl;
+            std::cout << _com_error(hres).ErrorMessage() << std::endl;
+            pSvc->Release();
+            pLoc->Release();
+            CoUninitialize();
+            return;
+        }
+
+        SAFEARRAY* psaNames = NULL;
+        hres = pClass->GetNames(
+            NULL,
+            WBEM_FLAG_ALWAYS | WBEM_FLAG_NONSYSTEM_ONLY,
+            NULL,
+            &psaNames);
+
+
+        if (FAILED(hres)) {
+            std::cout << "GetNames failed" << " Error code = 0x" << std::hex << hres << std::endl;
+            std::cout << _com_error(hres).ErrorMessage() << std::endl;
+            pSvc->Release();
+            pLoc->Release();
+            CoUninitialize();
+            return;
+        }
+
+
+        // Get the number of properties.
+        long lLower, lUpper;
+        BSTR PropName = NULL;
+        SafeArrayGetLBound(psaNames, 1, &lLower);
+        SafeArrayGetUBound(psaNames, 1, &lUpper);
+        //figure out a nice way to retrieve a specific attribute on demand (probably by putting the important ones in a map)
+        for (long i = lLower; i <= lUpper; i++) {
+            // Get this property.
+            hres = SafeArrayGetElement(
+                psaNames,
+                &i,
+                &PropName);
+
+            SysFreeString(PropName);
+        }
+
+        SafeArrayDestroy(psaNames);
 
         // Cleanup
         // ========
