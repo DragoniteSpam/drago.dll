@@ -89,8 +89,8 @@ namespace terrainops {
 	// these are a little different, in that they aren't called directly from the
 	// dll entrypoint, but rather are passed as a callback to the
 	// invoke_deformation function
-		
-		set_z(data, vertex, x, y, w, h, 0);
+	void deform_mold(float* data, float* vertex, int w, int h, int x, int y, float sampled, float velocity) {
+		add_z(data, vertex, x, y, w, h, sampled * velocity);
 	}
 
 	void deform_average(float* data, float* vertex, int w, int h, int x, int y, float sampled, float velocity) {
