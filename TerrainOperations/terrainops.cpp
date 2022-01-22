@@ -89,19 +89,19 @@ namespace terrainops {
 	// these are a little different, in that they aren't called directly from the
 	// dll entrypoint, but rather are passed as a callback to the
 	// invoke_deformation function
-	void deform_mold(float* data, float* vertex, int w, int h, int x, int y, float sampled) {
+		
+		set_z(data, vertex, x, y, w, h, 0);
+	}
+
+	void deform_average(float* data, float* vertex, int w, int h, int x, int y, float sampled, float velocity) {
 		
 	}
 
-	void deform_average(float* data, float* vertex, int w, int h, int x, int y, float sampled) {
+	void deform_average_flat(float* data, float* vertex, int w, int h, int x, int y, float sampled, float velocity) {
 		
 	}
 
-	void deform_average_flat(float* data, float* vertex, int w, int h, int x, int y, float sampled) {
-		
-	}
-
-	void deform_zero(float* data, float* vertex, int w, int h, int x, int y, float sampled) {
+	void deform_zero(float* data, float* vertex, int w, int h, int x, int y, float sampled, float velocity) {
 		set_z(data, vertex, x, y, w, h, 0);
 	}
 
@@ -418,7 +418,7 @@ namespace terrainops {
 		out[(*address)++] = bc3;
 	}
 
-	void invoke_deformation(float* data, float* vertex, int w, int h, void(*callback)(float*, float*, int, int, int, int, float)) {
+	void invoke_deformation(float* data, float* vertex, int w, int h, void(*callback)(float*, float*, int, int, int, int, float, float)) {
 		float* brush = terrainops::deform_brush_texture;
 		int bw = terrainops::deform_brush_size.x / 2;
 		int bh = terrainops::deform_brush_size.y / 2;
@@ -426,6 +426,7 @@ namespace terrainops {
 		int rh = (int)terrainops::deform_radius;
 		int x = terrainops::deform_brush_position.x;
 		int y = terrainops::deform_brush_position.y;
+		float velocity = terrainops::deform_velocity;
 
 		int x1 = std::max(0, x - rw);
 		int y1 = std::max(0, y - rh);
@@ -435,7 +436,7 @@ namespace terrainops {
 		float sampled = 0;
 		for (int i = x1; i <= x2; i++) {
 			for (int j = y1; j <= y2; j++) {
-				callback(data, vertex, w, h, i, j, sampled);
+				callback(data, vertex, w, h, i, j, sampled, velocity);
 			}
 		}
 	}
