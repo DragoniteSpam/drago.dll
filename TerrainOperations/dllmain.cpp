@@ -28,23 +28,33 @@ ex double terrainops_apply_scale(float* data, float* vertex, double len, double 
 	return 1.0;
 }
 
-ex double terrainops_deform_mold(float* data, double len, double direction, double radius) {
-	terrainops::deform_mold(data, BYTES2FLOATS(len), (float)direction, (float)radius);
+ex double terrainops_deform_brush(float* brush, double w, double h) {
+	terrainops::deform_brush(brush, (int)w, (int)h);
 	return 1.0;
 }
 
-ex double terrainops_deform_average(float* data, float len, float direction, float radius) {
-	terrainops::deform_average(data, BYTES2FLOATS(len), (float)direction, (float)radius);
+ex double terrainops_deform_settings(float radius, double velocity) {
+	terrainops::deform_settings((float)radius, (float)velocity);
 	return 1.0;
 }
 
-ex double terrainops_deform_average_flat(float* data, float len, float direction, float radius) {
-	terrainops::deform_average_flat(data, BYTES2FLOATS(len), (float)direction, (float)radius);
+ex double terrainops_deform_mold(float* data, double len) {
+	terrainops::deform_mold(data, BYTES2FLOATS(len));
 	return 1.0;
 }
 
-ex double terrainops_deform_zero(float* data, float len, float radius) {
-	terrainops::deform_zero(data, BYTES2FLOATS(len), (float)radius);
+ex double terrainops_deform_average(float* data, float len) {
+	terrainops::deform_average(data, BYTES2FLOATS(len));
+	return 1.0;
+}
+
+ex double terrainops_deform_average_flat(float* data, float len) {
+	terrainops::deform_average_flat(data, BYTES2FLOATS(len));
+	return 1.0;
+}
+
+ex double terrainops_deform_zero(float* data, float len) {
+	terrainops::deform_zero(data, BYTES2FLOATS(len));
 	return 1.0;
 }
 
