@@ -41,10 +41,10 @@ namespace terrainops {
 	void deform_brush(float*, int, int);
 	void deform_brush_settings(float, float);
 	void deform_brush_set_position(int, int);
-	void deform_mold(float*, int);
-	void deform_average(float*, int);
-	void deform_average_flat(float*, int);
-	void deform_zero(float*, int);
+	void deform_mold(float*, int, int);
+	void deform_average(float*, int, int);
+	void deform_average_flat(float*, int, int);
+	void deform_zero(float*, int, int);
 
 	// mutation
 	void mutate_set_noise(float*, int, int, float);

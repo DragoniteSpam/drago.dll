@@ -86,19 +86,19 @@ namespace terrainops {
 		terrainops::deform_brush_position.y = y;
 	}
 
-	void deform_mold(float* data, int len) {
+	void deform_mold(float* data, int w, int h) {
 		
 	}
 
-	void deform_average(float* data, int len) {
+	void deform_average(float* data, int w, int h) {
 
 	}
 
-	void deform_average_flat(float* data, int len) {
+	void deform_average_flat(float* data, int w, int h) {
 
 	}
 
-	void deform_zero(float* data, int len) {
+	void deform_zero(float* data, int w, int h) {
 		
 	}
 

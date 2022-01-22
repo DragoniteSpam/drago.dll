@@ -43,23 +43,23 @@ ex double terrainops_deform_brush_position(double x, double y) {
 	return 1.0;
 }
 
-ex double terrainops_deform_mold(float* data, double len) {
-	terrainops::deform_mold(data, BYTES2FLOATS(len));
+ex double terrainops_deform_mold(float* data, double w, double h) {
+	terrainops::deform_mold(data, (int)w, (int)h);
 	return 1.0;
 }
 
-ex double terrainops_deform_average(float* data, float len) {
-	terrainops::deform_average(data, BYTES2FLOATS(len));
+ex double terrainops_deform_average(float* data, double w, double h) {
+	terrainops::deform_average(data, (int)w, (int)h);
 	return 1.0;
 }
 
-ex double terrainops_deform_average_flat(float* data, float len) {
-	terrainops::deform_average_flat(data, BYTES2FLOATS(len));
+ex double terrainops_deform_average_flat(float* data, double w, double h) {
+	terrainops::deform_average_flat(data, (int)w, (int)h);
 	return 1.0;
 }
 
-ex double terrainops_deform_zero(float* data, float len) {
-	terrainops::deform_zero(data, BYTES2FLOATS(len));
+ex double terrainops_deform_zero(float* data, double w, double h) {
+	terrainops::deform_zero(data, (int)w, (int)h);
 	return 1.0;
 }
 
