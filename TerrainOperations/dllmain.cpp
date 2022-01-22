@@ -33,8 +33,13 @@ ex double terrainops_deform_brush(float* brush, double w, double h) {
 	return 1.0;
 }
 
-ex double terrainops_deform_settings(float radius, double velocity) {
-	terrainops::deform_settings((float)radius, (float)velocity);
+ex double terrainops_deform_brush_settings(double radius, double velocity) {
+	terrainops::deform_brush_settings((float)radius, (float)velocity);
+	return 1.0;
+}
+
+ex double terrainops_deform_brush_position(double x, double y) {
+	terrainops::deform_brush_set_position((int)x, (int)y);
 	return 1.0;
 }
 

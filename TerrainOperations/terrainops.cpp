@@ -14,6 +14,7 @@ namespace terrainops {
 
 	float* deform_brush_texture = NULL;
 	Vector3 deform_brush_data;
+	Vector3 deform_brush_position;
 	float deform_velocity = 0;
 	float deform_radius = 8;
 
@@ -75,9 +76,14 @@ namespace terrainops {
 		terrainops::deform_brush_data.y = h;
 	}
 
-	void deform_settings(float radius, float velocity) {
+	void deform_brush_settings(float radius, float velocity) {
 		terrainops::deform_radius = radius;
 		terrainops::deform_velocity = velocity;
+	}
+
+	void deform_brush_set_position(int x, int y) {
+		terrainops::deform_brush_position.x = x;
+		terrainops::deform_brush_position.y = y;
 	}
 
 	void deform_mold(float* data, int len) {
@@ -93,7 +99,7 @@ namespace terrainops {
 	}
 
 	void deform_zero(float* data, int len) {
-
+		
 	}
 
 	// mutation
