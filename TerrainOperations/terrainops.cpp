@@ -144,7 +144,7 @@ namespace terrainops {
 					samp_texture_a = ((((samp_texture >> 0x18) & 0xff) / 127.0f) - 1) * texture_strength;
 				}
 				
-				add_z(data, vertex, i, j, h, w, samp_noise + samp_texture_r);
+				add_z(data, vertex, i, j, w, h, samp_noise + samp_texture_r);
 			}
 		}
 	}
@@ -350,11 +350,11 @@ namespace terrainops {
 		return data[DATA_INDEX(x, y, h)];
 	}
 
-	inline void add_z(float* data, float* vertex, int x, int y, int h, int w, float value) {
-		set_z(data, vertex, x, y, h, w, value + get_z(data, x, y, h));
+	inline void add_z(float* data, float* vertex, int x, int y, int w, int h, float value) {
+		set_z(data, vertex, x, y, w, h, value + get_z(data, x, y, h));
 	}
 
-	inline void set_z(float* data, float* vertex, int x, int y, int h, int w, float value) {
+	inline void set_z(float* data, float* vertex, int x, int y, int w, int h, float value) {
 		data[DATA_INDEX(x, y, h)] = value;
 		
 		if (x > 0 && y > 0) {
