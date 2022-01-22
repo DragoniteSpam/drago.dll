@@ -13,7 +13,7 @@ namespace terrainops {
 	float save_scale = 1;
 
 	float* deform_brush_texture = NULL;
-	Vector3 deform_brush_data;
+	Vector3 deform_brush_size;
 	Vector3 deform_brush_position;
 	float deform_velocity = 0;
 	float deform_radius = 8;
@@ -72,8 +72,8 @@ namespace terrainops {
 
 	void deform_brush(float* brush, int w, int h) {
 		terrainops::deform_brush_texture = brush;
-		terrainops::deform_brush_data.x = w;
-		terrainops::deform_brush_data.y = h;
+		terrainops::deform_brush_size.x = w;
+		terrainops::deform_brush_size.y = h;
 	}
 
 	void deform_brush_settings(float radius, float velocity) {
@@ -86,16 +86,23 @@ namespace terrainops {
 		terrainops::deform_brush_position.y = y;
 	}
 
-	void deform_mold(float* data, float* vertex, int w, int h) {
+	// these are a little different, in that they aren't called directly from the
+	// dll entrypoint, but rather are passed as a callback to the
+	// invoke_deformation function
+	void deform_mold(float* data, float* vertex, int w, int h, int x, int y, float sampled) {
+		
 	}
 
-	void deform_average(float* data, float* vertex, int w, int h) {
+	void deform_average(float* data, float* vertex, int w, int h, int x, int y, float sampled) {
+		
 	}
 
-	void deform_average_flat(float* data, float* vertex, int w, int h) {
+	void deform_average_flat(float* data, float* vertex, int w, int h, int x, int y, float sampled) {
+		
 	}
 
-	void deform_zero(float* data, float* vertex, int w, int h) {
+	void deform_zero(float* data, float* vertex, int w, int h, int x, int y, float sampled) {
+		set_z(data, vertex, x, y, w, h, 0);
 	}
 
 	// mutation
@@ -409,5 +416,27 @@ namespace terrainops {
 		out[(*address)++] = bc1;
 		out[(*address)++] = bc2;
 		out[(*address)++] = bc3;
+	}
+
+	void invoke_deformation(float* data, float* vertex, int w, int h, void(*callback)(float*, float*, int, int, int, int, float)) {
+		float* brush = terrainops::deform_brush_texture;
+		int bw = terrainops::deform_brush_size.x / 2;
+		int bh = terrainops::deform_brush_size.y / 2;
+		int rw = (int)terrainops::deform_radius;
+		int rh = (int)terrainops::deform_radius;
+		int x = terrainops::deform_brush_position.x;
+		int y = terrainops::deform_brush_position.y;
+
+		int x1 = std::max(0, x - rw);
+		int y1 = std::max(0, y - rh);
+		int x2 = std::min(w - 1, x + rw);
+		int y2 = std::min(h - 1, y + rh);
+
+		float sampled = 0;
+		for (int i = x1; i <= x2; i++) {
+			for (int j = y1; j <= y2; j++) {
+				callback(data, vertex, w, h, i, j, sampled);
+			}
+		}
 	}
 }

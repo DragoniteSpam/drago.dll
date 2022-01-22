@@ -19,7 +19,7 @@ namespace terrainops {
 	extern float save_scale;
 
 	extern float* deform_brush_texture;
-	extern Vector3 deform_brush_data;
+	extern Vector3 deform_brush_size;
 	extern Vector3 deform_brush_position;
 	extern float deform_velocity;
 	extern float deform_radius;
@@ -41,10 +41,10 @@ namespace terrainops {
 	void deform_brush(float*, int, int);
 	void deform_brush_settings(float, float);
 	void deform_brush_set_position(int, int);
-	void deform_mold(float*, float*, int, int);
-	void deform_average(float*, float*, int, int);
-	void deform_average_flat(float*, float*, int, int);
-	void deform_zero(float*, float*, int, int);
+	void deform_mold(float*, float*, int, int, int, int, float);
+	void deform_average(float*, float*, int, int, int, int, float);
+	void deform_average_flat(float*, float*, int, int, int, int, float);
+	void deform_zero(float*, float*, int, int, int, int, float);
 
 	// mutation
 	void mutate_set_noise(float*, int, int, float);
@@ -61,6 +61,7 @@ namespace terrainops {
 	inline void add_z(float*, float*, int, int, int, int, float);
 	inline void set_z(float*, float*, int, int, int, int, float);
 	inline void write_vertex(float*, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float);
+	void invoke_deformation(float*, float*, int, int, void(float*, float*, int, int, int, int, float));
 }
 
 #endif
