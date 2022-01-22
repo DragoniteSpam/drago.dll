@@ -6,6 +6,7 @@ ex const char* terrainops_version() {
 	return terrainops::version();
 }
 
+// heightmap
 ex double terrainops_to_heightmap(float* data, unsigned int* out, double len, double scale) {
 	terrainops::to_heightmap(data, out, BYTES2FLOATS(len), (float)scale);
 	return 1.0;
@@ -16,6 +17,7 @@ ex double terrainops_from_heightmap(float* data, unsigned int* in, double len, d
 	return 1.0;
 }
 
+// deformation
 ex double terrainops_flatten(float* data, float* vertex, double len, double height) {
 	terrainops::flatten(data, vertex, BYTES2FLOATS(len), (float)height);
 	return 1.0;
@@ -26,6 +28,27 @@ ex double terrainops_apply_scale(float* data, float* vertex, double len, double 
 	return 1.0;
 }
 
+ex double terrainops_deform_mold(float* data, double len, double direction, double radius) {
+	terrainops::deform_mold(data, BYTES2FLOATS(len), (float)direction, (float)radius);
+	return 1.0;
+}
+
+ex double terrainops_deform_average(float* data, float len, float direction, float radius) {
+	terrainops::deform_average(data, BYTES2FLOATS(len), (float)direction, (float)radius);
+	return 1.0;
+}
+
+ex double terrainops_deform_average_flat(float* data, float len, float direction, float radius) {
+	terrainops::deform_average_flat(data, BYTES2FLOATS(len), (float)direction, (float)radius);
+	return 1.0;
+}
+
+ex double terrainops_deform_zero(float* data, float len, float radius) {
+	terrainops::deform_zero(data, BYTES2FLOATS(len), (float)radius);
+	return 1.0;
+}
+
+// mutation
 ex double terrainops_mutate_set_noise(float* noise, double w, double h, double strength) {
 	terrainops::mutate_set_noise(noise, (int)w, (int)h, (float)strength);
 	return 1.0;
@@ -41,6 +64,7 @@ ex double terrainops_mutate(float* data, float* vertex, double w, double h) {
 	return 1.0;
 }
 
+// vertex buffer generation
 ex double terrainops_generate(float* data, float* out, double width, double height) {
 	terrainops::generate(data, out, (int)width, (int)height);
 	return 1.0;

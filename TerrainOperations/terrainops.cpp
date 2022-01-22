@@ -39,6 +39,7 @@ namespace terrainops {
 		}
 	}
 
+	// deformation
 	void flatten(float* data, float* vertex, int len, float height) {
 		for (int i = 0; i < len; i++) {
 			data[i] = height;
@@ -61,6 +62,22 @@ namespace terrainops {
 			vertex[i * 18 + 14] *= scale;
 			vertex[i * 18 + 17] *= scale;
 		}
+	}
+
+	void deform_mold(float* data, int len, float direction, float radius) {
+
+	}
+
+	void deform_average(float* data, int len, float direction, float radius) {
+
+	}
+
+	void deform_average_flat(float* data, int len, float direction, float radius) {
+
+	}
+
+	void deform_zero(float* data, int len, float radius) {
+
 	}
 
 	// mutation

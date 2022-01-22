@@ -28,8 +28,14 @@ namespace terrainops {
 	// general
 	void to_heightmap(float*, unsigned int*, int, float);
 	void from_heightmap(float*, unsigned int*, int, float);
+
+	// deformation
 	void flatten(float*, float*, int, float);
 	void apply_scale(float*, float*, int, float);
+	void deform_mold(float*, int, float, float);
+	void deform_average(float*, int, float, float);
+	void deform_average_flat(float*, int, float, float);
+	void deform_zero(float*, int, float);
 
 	// mutation
 	void mutate_set_noise(float*, int, int, float);
