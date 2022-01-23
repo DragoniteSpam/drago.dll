@@ -3,7 +3,7 @@
 
 #include "main/core.h"
 #include "SpriteOperations/spriteops.h"
-#include <math.h>
+#include <cmath>
 
 #define DATA_INDEX(x, y, h) ((x) * (h) + (y))
 #define VERTEX_INDEX(x, y, h, vertex) (3 * ((((x) * ((h) - 1) + (y)) * 6) + (vertex)))

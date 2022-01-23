@@ -1,4 +1,3 @@
-#include <algorithm>
 #include "terrainops.h"
 #include <main/dragomath.h>
 
