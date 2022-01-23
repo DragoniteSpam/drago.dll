@@ -434,6 +434,17 @@ namespace terrainops {
 		int y2 = std::min(h - 1, y + rh);
 
 		unsigned int pixel;
+		float average = 0;
+
+		if (calculate_average) {
+			for (int i = x1; i <= x2; i++) {
+				for (int j = y1; j <= y2; j++) {
+					average += get_z(data, i, j, h);
+				}
+			}
+
+			average /= (x2 - x1) * (y2 - y1);
+		}
 
 		for (int i = x1; i <= x2; i++) {
 			for (int j = y1; j <= y2; j++) {
