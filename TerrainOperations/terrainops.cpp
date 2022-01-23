@@ -243,7 +243,7 @@ namespace terrainops {
 					c10 = 0xffffffff;
 					c11 = 0xffffffff;
 
-					if (all || z00 > 0 || z10 > 0 || z11 > 0) {
+					if (all || z00 >= 0 || z10 >= 0 || z11 >= 0) {
 						e1.x = x10 - x00;
 						e1.y = y10 - y00;
 						e1.z = z10 - z00;
@@ -262,7 +262,7 @@ namespace terrainops {
 						write_vertex(out, index, x11, y11, z11, normal.x, normal.y, normal.z, xt11, yt11, c11, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 0, 1);
 					}
 
-					if (all || z11 > 0 || z01 > 0 || z00 > 0) {
+					if (all || z11 >= 0 || z01 >= 0 || z00 >= 0) {
 						e1.x = x01 - x11;
 						e1.y = y01 - y11;
 						e1.z = z01 - z11;
