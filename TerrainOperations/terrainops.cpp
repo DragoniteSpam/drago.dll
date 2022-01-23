@@ -102,7 +102,7 @@ namespace terrainops {
 	}
 
 	void deform_zero(float* data, float* vertex, int w, int h, int x, int y, float sampled, float velocity) {
-		set_z(data, vertex, x, y, w, h, 0);
+		set_z(data, vertex, x, y, w, h, std::lerp(get_z(data, x, y, h), 0, sampled));
 	}
 
 	// mutation
