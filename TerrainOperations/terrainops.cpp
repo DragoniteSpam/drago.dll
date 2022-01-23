@@ -419,9 +419,9 @@ namespace terrainops {
 	}
 
 	void invoke_deformation(float* data, float* vertex, int w, int h, void(*callback)(float*, float*, int, int, int, int, float, float)) {
-		int bw = terrainops::deform_brush_size.x / 2;
-		int bh = terrainops::deform_brush_size.y / 2;
 		unsigned int* brush = terrainops::deform_brush_texture;
+		int bw = terrainops::deform_brush_size.x;
+		int bh = terrainops::deform_brush_size.y;
 		int rw = (int)terrainops::deform_radius;
 		int rh = (int)terrainops::deform_radius;
 		int x = terrainops::deform_brush_position.x;
@@ -433,10 +433,14 @@ namespace terrainops {
 		int x2 = std::min(w - 1, x + rw);
 		int y2 = std::min(h - 1, y + rh);
 
-		float sampled = 0;
+		unsigned int pixel;
+
 		for (int i = x1; i <= x2; i++) {
 			for (int j = y1; j <= y2; j++) {
-				callback(data, vertex, w, h, i, j, sampled, velocity);
+				// downsampling a filtered image seems to behave strangely but the brush
+				// won't likely ever be smaller than the cursor anyway
+				pixel = spriteops::sample_unfiltered(brush, bw, bh, ((float)(i - x1)) / (x2 - x1), ((float)(j - y1)) / (y2 - y1));
+				callback(data, vertex, w, h, i, j, (pixel & 0x000000ff) / 255.0, velocity);
 			}
 		}
 	}
