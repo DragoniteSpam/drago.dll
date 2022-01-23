@@ -89,19 +89,19 @@ namespace terrainops {
 	// these are a little different, in that they aren't called directly from the
 	// dll entrypoint, but rather are passed as a callback to the
 	// invoke_deformation function
-	void deform_mold(float* data, float* vertex, int w, int h, int x, int y, float sampled, float velocity) {
+	void deform_mold(float* data, float* vertex, int w, int h, int x, int y, float sampled, float velocity, float average) {
 		add_z(data, vertex, x, y, w, h, sampled * velocity);
 	}
 
-	void deform_average(float* data, float* vertex, int w, int h, int x, int y, float sampled, float velocity) {
+	void deform_average(float* data, float* vertex, int w, int h, int x, int y, float sampled, float velocity, float average) {
 		
 	}
 
-	void deform_average_flat(float* data, float* vertex, int w, int h, int x, int y, float sampled, float velocity) {
+	void deform_average_flat(float* data, float* vertex, int w, int h, int x, int y, float sampled, float velocity, float average) {
 		
 	}
 
-	void deform_zero(float* data, float* vertex, int w, int h, int x, int y, float sampled, float velocity) {
+	void deform_zero(float* data, float* vertex, int w, int h, int x, int y, float sampled, float velocity, float average) {
 		set_z(data, vertex, x, y, w, h, std::lerp(get_z(data, x, y, h), 0, sampled));
 	}
 
@@ -418,7 +418,7 @@ namespace terrainops {
 		out[(*address)++] = bc3;
 	}
 
-	void invoke_deformation(float* data, float* vertex, int w, int h, void(*callback)(float*, float*, int, int, int, int, float, float)) {
+	void invoke_deformation(float* data, float* vertex, int w, int h, bool calculate_average, void(*callback)(float*, float*, int, int, int, int, float, float, float)) {
 		unsigned int* brush = terrainops::deform_brush_texture;
 		int bw = terrainops::deform_brush_size.x;
 		int bh = terrainops::deform_brush_size.y;
@@ -440,7 +440,7 @@ namespace terrainops {
 				// downsampling a filtered image seems to behave strangely but the brush
 				// won't likely ever be smaller than the cursor anyway
 				pixel = spriteops::sample_unfiltered(brush, bw, bh, ((float)(i - x1)) / (x2 - x1), ((float)(j - y1)) / (y2 - y1));
-				callback(data, vertex, w, h, i, j, (pixel & 0x000000ff) / 255.0, velocity);
+				callback(data, vertex, w, h, i, j, (pixel & 0x000000ff) / 255.0, velocity, average);
 			}
 		}
 	}
