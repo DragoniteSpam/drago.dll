@@ -38,7 +38,7 @@ namespace terrainops {
 	// deformation
 	void flatten(float*, float*, int, float);
 	void apply_scale(float*, float*, int, float);
-	void deform_brush(unsigned int*, int, int);
+	void deform_brush(unsigned int*, float, float);
 	void deform_brush_settings(float, float);
 	void deform_brush_set_position(int, int);
 	void deform_mold(float*, float*, int, int, int, int, float, float, float);
