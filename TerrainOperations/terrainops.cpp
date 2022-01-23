@@ -431,6 +431,11 @@ namespace terrainops {
 		unsigned int pixel;
 		float average = 0;
 
+		// if the entire region is out of bounds, dont bother
+		if (x1 >= w - 1 || x2 <= 0 || y1 >= h - 1 || y2 <= 0) {
+			return;
+		}
+
 		if (calculate_average) {
 			for (int i = x1; i <= x2; i++) {
 				for (int j = y1; j <= y2; j++) {
