@@ -12,7 +12,7 @@ namespace terrainops {
 	int save_height = 1;
 	float save_scale = 1;
 
-	float* deform_brush_texture = NULL;
+	unsigned int* deform_brush_texture = NULL;
 	Vector3 deform_brush_size;
 	Vector3 deform_brush_position;
 	float deform_velocity = 0;
@@ -70,7 +70,7 @@ namespace terrainops {
 		}
 	}
 
-	void deform_brush(float* brush, int w, int h) {
+	void deform_brush(unsigned int* brush, int w, int h) {
 		terrainops::deform_brush_texture = brush;
 		terrainops::deform_brush_size.x = w;
 		terrainops::deform_brush_size.y = h;
@@ -419,9 +419,9 @@ namespace terrainops {
 	}
 
 	void invoke_deformation(float* data, float* vertex, int w, int h, void(*callback)(float*, float*, int, int, int, int, float, float)) {
-		float* brush = terrainops::deform_brush_texture;
 		int bw = terrainops::deform_brush_size.x / 2;
 		int bh = terrainops::deform_brush_size.y / 2;
+		unsigned int* brush = terrainops::deform_brush_texture;
 		int rw = (int)terrainops::deform_radius;
 		int rh = (int)terrainops::deform_radius;
 		int x = terrainops::deform_brush_position.x;

@@ -28,7 +28,7 @@ ex double terrainops_apply_scale(float* data, float* vertex, double len, double 
 	return 1.0;
 }
 
-ex double terrainops_deform_brush(float* brush, double w, double h) {
+ex double terrainops_deform_brush(unsigned int* brush, double w, double h) {
 	terrainops::deform_brush(brush, (int)w, (int)h);
 	return 1.0;
 }

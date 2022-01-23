@@ -18,7 +18,7 @@ namespace terrainops {
 	extern int save_height;
 	extern float save_scale;
 
-	extern float* deform_brush_texture;
+	extern unsigned int* deform_brush_texture;
 	extern Vector3 deform_brush_size;
 	extern Vector3 deform_brush_position;
 	extern float deform_velocity;
@@ -38,7 +38,7 @@ namespace terrainops {
 	// deformation
 	void flatten(float*, float*, int, float);
 	void apply_scale(float*, float*, int, float);
-	void deform_brush(float*, int, int);
+	void deform_brush(unsigned int*, int, int);
 	void deform_brush_settings(float, float);
 	void deform_brush_set_position(int, int);
 	void deform_mold(float*, float*, int, int, int, int, float, float);
