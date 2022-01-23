@@ -43,7 +43,6 @@ namespace terrainops {
 	void deform_brush_set_position(int, int);
 	void deform_mold(float*, float*, int, int, int, int, float, float, float);
 	void deform_average(float*, float*, int, int, int, int, float, float, float);
-	void deform_average_flat(float*, float*, int, int, int, int, float, float, float);
 	void deform_zero(float*, float*, int, int, int, int, float, float, float);
 
 	// mutation

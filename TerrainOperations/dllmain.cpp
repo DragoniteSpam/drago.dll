@@ -53,11 +53,6 @@ ex double terrainops_deform_average(float* data, float* vertex, double w, double
 	return 1.0;
 }
 
-ex double terrainops_deform_average_flat(float* data, float* vertex, double w, double h) {
-	terrainops::invoke_deformation(data, vertex, w, h, true, &terrainops::deform_average_flat);
-	return 1.0;
-}
-
 ex double terrainops_deform_zero(float* data, float* vertex, double w, double h) {
 	terrainops::invoke_deformation(data, vertex, w, h, false, &terrainops::deform_zero);
 	return 1.0;

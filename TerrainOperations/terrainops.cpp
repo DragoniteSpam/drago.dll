@@ -96,10 +96,6 @@ namespace terrainops {
 		set_z(data, vertex, x, y, w, h, std::lerp(get_z(data, x, y, h), average, (float)(std::fmax(-0.5, sampled * velocity) / 8.0)));
 	}
 
-	void deform_average_flat(float* data, float* vertex, int w, int h, int x, int y, float sampled, float velocity, float average) {
-		
-	}
-
 	void deform_zero(float* data, float* vertex, int w, int h, int x, int y, float sampled, float velocity, float average) {
 		set_z(data, vertex, x, y, w, h, std::lerp(get_z(data, x, y, h), 0, (float)(std::fmax(-0.5, sampled * velocity) / 8.0)));
 	}
