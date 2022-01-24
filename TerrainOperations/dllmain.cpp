@@ -6,25 +6,36 @@ ex const char* terrainops_version() {
 	return terrainops::version();
 }
 
-// heightmap
-ex double terrainops_to_heightmap(float* data, unsigned int* out, double len, double scale) {
-	terrainops::to_heightmap(data, out, BYTES2FLOATS(len), (float)scale);
+// setup
+ex double terrainops_set_active_data(float* data, double w, double h) {
+	terrainops::set_active_data(data, (int)w, (int)h);
 	return 1.0;
 }
 
-ex double terrainops_from_heightmap(float* data, unsigned int* in, double len, double scale) {
-	terrainops::from_heightmap(data, in, BYTES2FLOATS(len), (float)scale);
+ex double terrainops_set_active_vertex_buffers(float* vertex) {
+	terrainops::set_active_vertex_buffers(vertex);
+	return 1.0;
+}
+
+// heightmap
+ex double terrainops_to_heightmap(unsigned int* out, double scale) {
+	terrainops::to_heightmap(out, (float)scale);
+	return 1.0;
+}
+
+ex double terrainops_from_heightmap(unsigned int* in, double scale) {
+	terrainops::from_heightmap(in, (float)scale);
 	return 1.0;
 }
 
 // deformation
-ex double terrainops_flatten(float* data, float* vertex, double len, double height) {
-	terrainops::flatten(data, vertex, BYTES2FLOATS(len), (float)height);
+ex double terrainops_flatten(double height) {
+	terrainops::flatten((float)height);
 	return 1.0;
 }
 
-ex double terrainops_apply_scale(float* data, float* vertex, double len, double scale) {
-	terrainops::apply_scale(data, vertex, BYTES2FLOATS(len), (float)scale);
+ex double terrainops_apply_scale(double scale) {
+	terrainops::apply_scale((float)scale);
 	return 1.0;
 }
 
@@ -39,22 +50,22 @@ ex double terrainops_deform_brush_settings(double radius, double velocity) {
 }
 
 ex double terrainops_deform_brush_position(double x, double y) {
-	terrainops::deform_brush_set_position((int)x, (int)y);
+	terrainops::deform_brush_set_position((float)x, (float)y);
 	return 1.0;
 }
 
-ex double terrainops_deform_mold(float* data, float* vertex, double w, double h) {
-	terrainops::invoke_deformation(data, vertex, (int)w, (int)h, false, &terrainops::deform_mold);
+ex double terrainops_deform_mold() {
+	terrainops::invoke_deformation(false, &terrainops::deform_mold);
 	return 1.0;
 }
 
-ex double terrainops_deform_average(float* data, float* vertex, double w, double h) {
-	terrainops::invoke_deformation(data, vertex, (int)w, (int)h, true, &terrainops::deform_average);
+ex double terrainops_deform_average() {
+	terrainops::invoke_deformation(true, &terrainops::deform_average);
 	return 1.0;
 }
 
-ex double terrainops_deform_zero(float* data, float* vertex, double w, double h) {
-	terrainops::invoke_deformation(data, vertex, (int)w, (int)h, false, &terrainops::deform_zero);
+ex double terrainops_deform_zero() {
+	terrainops::invoke_deformation(false, &terrainops::deform_zero);
 	return 1.0;
 }
 
@@ -69,14 +80,14 @@ ex double terrainops_mutate_set_texture(unsigned int* texture, double w, double 
 	return 1.0;
 }
 
-ex double terrainops_mutate(float* data, float* vertex, double w, double h) {
-	terrainops::mutate(data, vertex, (int)w, (int)h);
+ex double terrainops_mutate() {
+	terrainops::mutate();
 	return 1.0;
 }
 
 // vertex buffer generation
-ex double terrainops_generate(float* data, float* out, double width, double height) {
-	terrainops::generate(data, out, (int)width, (int)height);
+ex double terrainops_generate_internal(float* out) {
+	terrainops::generate_internal(out);
 	return 1.0;
 }
 
@@ -85,6 +96,6 @@ ex double terrainops_build_settings(double save_all, double swap_zup, double swa
 	return 1.0;
 }
 
-ex double terrainops_build(float* data, long long* meta, double len, double meta_len) {
-	return (double)terrainops::build(data, meta, BYTES2FLOATS(len), BYTES2DOUBLES(meta_len));
+ex double terrainops_build(long long* meta, double meta_len) {
+	return (double)terrainops::build(meta, BYTES2DOUBLES(meta_len));
 }

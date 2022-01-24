@@ -30,22 +30,25 @@ namespace terrainops {
 	extern Vector3 mutate_texture_data;
 
 	extern float* data;
+	extern Vector3 data_size;
 	extern float* vertex;
 
 	const char* version();
 
 	// general
-	void set_active_data(float*, int);
+	void set_active_data(float*, int, int);
 	void set_active_vertex_buffers(float*);
-	void to_heightmap(float*, unsigned int*, int, float);
-	void from_heightmap(float*, unsigned int*, int, float);
+	void to_heightmap(unsigned int*, float);
+	void from_heightmap(unsigned int*, float);
 
 	// deformation
-	void flatten(float*, float*, int, float);
-	void apply_scale(float*, float*, int, float);
+	void flatten(float);
+	void apply_scale(float);
 	void deform_brush(unsigned int*, float, float);
 	void deform_brush_settings(float, float);
-	void deform_brush_set_position(int, int);
+	void deform_brush_set_position(float, float);
+	// the deformation functions still use the data pointers, because theyre
+	// called many times
 	void deform_mold(float*, float*, int, int, int, int, float, float, float);
 	void deform_average(float*, float*, int, int, int, int, float, float, float);
 	void deform_zero(float*, float*, int, int, int, int, float, float, float);
@@ -53,19 +56,19 @@ namespace terrainops {
 	// mutation
 	void mutate_set_noise(float*, int, int, float);
 	void mutate_set_texture(unsigned int*, int, int, float);
-	void mutate(float*, float*, int, int);
+	void mutate();
 
 	// build vertex data
 	void build_settings(bool, bool, bool, bool, int, int, int, float);
-	long build(float*, long long*, int, int);
-	void generate(float*, float*, int, int);
+	long build(long long*, int);
+	void generate_internal(float*);
 
 	// helper functions
 	inline float get_z(float*, int, int, int);
 	inline void add_z(float*, float*, int, int, int, int, float);
 	inline void set_z(float*, float*, int, int, int, int, float);
 	inline void write_vertex(float*, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float);
-	void invoke_deformation(float*, float*, int, int, bool, void(float*, float*, int, int, int, int, float, float, float));
+	void invoke_deformation(bool, void(float*, float*, int, int, int, int, float, float, float));
 }
 
 #endif

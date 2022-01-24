@@ -23,7 +23,7 @@ namespace terrainops {
 	Vector3 mutate_texture_data;
 
 	float* data = NULL;
-	int data_len = 0;
+	Vector3 data_size;
 	float* vertex = NULL;
 
 	const char* version() {
@@ -31,16 +31,20 @@ namespace terrainops {
 	}
 
 	// general
-	void set_active_data(float* data, int len) {
+	void set_active_data(float* data, int w, int h) {
 		terrainops::data = data;
-		terrainops::data_len = len;
+		terrainops::data_size.a = w;
+		terrainops::data_size.b = h;
+		terrainops::data_size.c = w * h;
 	}
 
 	void set_active_vertex_buffers(float* vertex) {
 		terrainops::vertex = vertex;
 	}
 
-	void to_heightmap(float* data, unsigned int* out, int len, float scale) {
+	void to_heightmap(unsigned int* out, float scale) {
+		float* data = terrainops::data;
+		int len = terrainops::data_size.c;
 		int z;
 		for (int i = 0; i < len; i++) {
 			z = std::clamp((int)(data[i] * scale), 0, 255);
@@ -48,7 +52,9 @@ namespace terrainops {
 		}
 	}
 
-	void from_heightmap(float* data, unsigned int* in, int len, float scale) {
+	void from_heightmap(unsigned int* in, float scale) {
+		float* data = terrainops::data;
+		int len = terrainops::data_size.c;
 		int z;
 		for (int i = 0; i < len; i++) {
 			// maybe you want to use the other channels to store some other information idk
@@ -58,7 +64,10 @@ namespace terrainops {
 	}
 
 	// deformation
-	void flatten(float* data, float* vertex, int len, float height) {
+	void flatten(float height) {
+		float* data = terrainops::data;
+		int len = terrainops::data_size.c;
+		float* vertex = terrainops::vertex;
 		for (int i = 0; i < len; i++) {
 			data[i] = height;
 			vertex[i * 18 + 2] = height;
@@ -70,7 +79,10 @@ namespace terrainops {
 		}
 	}
 
-	void apply_scale(float* data, float* vertex, int len, float scale) {
+	void apply_scale(float scale) {
+		float* data = terrainops::data;
+		int len = terrainops::data_size.c;
+		float* vertex = terrainops::vertex;
 		for (int i = 0; i < len; i++) {
 			data[i] *= scale;
 			vertex[i * 18 + 2] *= scale;
@@ -93,7 +105,7 @@ namespace terrainops {
 		terrainops::deform_velocity = velocity;
 	}
 
-	void deform_brush_set_position(int x, int y) {
+	void deform_brush_set_position(float x, float y) {
 		terrainops::deform_brush_position.x = x;
 		terrainops::deform_brush_position.y = y;
 	}
@@ -128,7 +140,12 @@ namespace terrainops {
 		terrainops::mutate_texture_data.z = strength;
 	}
 
-	void mutate(float* data, float* vertex, int w, int h) {
+	void mutate() {
+		float* data = terrainops::data;
+		int w = terrainops::data_size.a;
+		int h = terrainops::data_size.b;
+		float* vertex = terrainops::vertex;
+
 		unsigned int* texture = terrainops::mutate_texture;
 		int texture_w = terrainops::mutate_texture_data.a;
 		int texture_h = terrainops::mutate_texture_data.b;
@@ -176,7 +193,11 @@ namespace terrainops {
 		terrainops::save_scale = scale;
 	}
 
-	long build(float* data, long long* meta, int len, int meta_len) {
+	long build(long long* meta, int meta_len) {
+		float* data = terrainops::data;
+		int len = terrainops::data_size.c;
+		float* vertex = terrainops::vertex;
+
 		bool all = terrainops::save_all;
 		bool swap_uv = terrainops::save_swap_uv;
 		bool swap_zup = terrainops::save_swap_zup;
@@ -302,7 +323,12 @@ namespace terrainops {
 		return 0;
 	}
 
-	void generate(float* data, float* out, int w, int h) {
+	void generate_internal(float* out) {
+		float* data = terrainops::data;
+		int w = terrainops::data_size.a;
+		int h = terrainops::data_size.b;
+		float* vertex = terrainops::vertex;
+
 		int index = 0;
 		// the barycentric coordinate gets squeezed into the fractional part of the X coordinate:
 		//  - BC0: 0.5
@@ -426,10 +452,15 @@ namespace terrainops {
 		out[(*address)++] = bc3;
 	}
 
-	void invoke_deformation(float* data, float* vertex, int w, int h, bool calculate_average, void(*callback)(float*, float*, int, int, int, int, float, float, float)) {
+	void invoke_deformation(bool calculate_average, void(*callback)(float*, float*, int, int, int, int, float, float, float)) {
+		float* data = terrainops::data;
+		int w = terrainops::data_size.a;
+		int h = terrainops::data_size.b;
+		float* vertex = terrainops::vertex;
+
 		unsigned int* brush = terrainops::deform_brush_texture;
-		int bw = (int)terrainops::deform_brush_size.x;
-		int bh = (int)terrainops::deform_brush_size.y;
+		int bw = (int)terrainops::deform_brush_size.a;
+		int bh = (int)terrainops::deform_brush_size.b;
 		int rw = (int)terrainops::deform_radius;
 		int rh = (int)terrainops::deform_radius;
 		int x = (int)terrainops::deform_brush_position.x;
