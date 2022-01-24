@@ -29,9 +29,14 @@ namespace terrainops {
 	extern unsigned int* mutate_texture;
 	extern Vector3 mutate_texture_data;
 
+	extern float* data;
+	extern float* vertex;
+
 	const char* version();
 
 	// general
+	void set_active_data(float*, int);
+	void set_active_vertex_buffers(float*);
 	void to_heightmap(float*, unsigned int*, int, float);
 	void from_heightmap(float*, unsigned int*, int, float);
 

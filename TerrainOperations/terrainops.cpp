@@ -22,11 +22,24 @@ namespace terrainops {
 	unsigned int* mutate_texture = NULL;
 	Vector3 mutate_texture_data;
 
+	float* data = NULL;
+	int data_len = 0;
+	float* vertex = NULL;
+
 	const char* version() {
 		return __DRAGO_TERRAIN_OP;
 	}
 
 	// general
+	void set_active_data(float* data, int len) {
+		terrainops::data = data;
+		terrainops::data_len = len;
+	}
+
+	void set_active_vertex_buffers(float* vertex) {
+		terrainops::vertex = vertex;
+	}
+
 	void to_heightmap(float* data, unsigned int* out, int len, float scale) {
 		int z;
 		for (int i = 0; i < len; i++) {
