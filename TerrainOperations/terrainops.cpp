@@ -501,7 +501,7 @@ namespace terrainops {
 			for (int j = y1; j <= y2; j++) {
 				// downsampling a filtered image seems to behave strangely but the brush
 				// won't likely ever be smaller than the cursor anyway
-				pixel = spriteops::sample_unfiltered(brush, bw, bh, ((float)(i - bx1a)) / (bx2a - bx1a), ((float)(j - by1a)) / (y2 - by1a));
+				pixel = spriteops::sample_unfiltered(brush, bw, bh, ((float)(i - bx1a)) / (bx2a - bx1a), ((float)(j - by1a)) / (by2a - by1a));
 				callback(data, vertex, w, h, i, j, (pixel & 0x000000ff) / 255.0f, velocity, average);
 			}
 		}
