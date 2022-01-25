@@ -12,8 +12,8 @@ ex double terrainops_set_active_data(float* data, double w, double h) {
 	return 1.0;
 }
 
-ex double terrainops_set_active_vertex_buffers(float* vertex) {
-	terrainops::set_active_vertex_buffers(vertex);
+ex double terrainops_set_active_vertex_data(float* vertex) {
+	terrainops::set_active_vertex_data(vertex);
 	return 1.0;
 }
 

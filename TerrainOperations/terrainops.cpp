@@ -38,7 +38,7 @@ namespace terrainops {
 		terrainops::data_size.c = w * h;
 	}
 
-	void set_active_vertex_buffers(float* vertex) {
+	void set_active_vertex_data(float* vertex) {
 		terrainops::vertex = vertex;
 	}
 
@@ -459,8 +459,8 @@ namespace terrainops {
 		float* vertex = terrainops::vertex;
 
 		unsigned int* brush = terrainops::deform_brush_texture;
-		int bw = (int)terrainops::deform_brush_size.a;
-		int bh = (int)terrainops::deform_brush_size.b;
+		int bw = (int)terrainops::deform_brush_size.x;
+		int bh = (int)terrainops::deform_brush_size.y;
 		int rw = (int)terrainops::deform_radius;
 		int rh = (int)terrainops::deform_radius;
 		int x = (int)terrainops::deform_brush_position.x;

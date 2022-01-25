@@ -37,7 +37,7 @@ namespace terrainops {
 
 	// general
 	void set_active_data(float*, int, int);
-	void set_active_vertex_buffers(float*);
+	void set_active_vertex_data(float*);
 	void to_heightmap(unsigned int*, float);
 	void from_heightmap(unsigned int*, float);
 
