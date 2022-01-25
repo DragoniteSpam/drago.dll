@@ -467,10 +467,17 @@ namespace terrainops {
 		int y = (int)terrainops::deform_brush_position.y;
 		float velocity = terrainops::deform_velocity;
 
-		int x1 = std::max(0, x - rw);
-		int y1 = std::max(0, y - rh);
-		int x2 = std::min(w - 1, x + rw);
-		int y2 = std::min(h - 1, y + rh);
+		// unconstrained range of the brush
+		int bx1a = x - rw;
+		int by1a = y - rh;
+		int bx2a = x + rw;
+		int by2a = y + rh;
+
+		// inbounds range of the brush
+		int x1 = std::max(0, bx1a);
+		int y1 = std::max(0, by1a);
+		int x2 = std::min(w - 1, bx2a);
+		int y2 = std::min(h - 1, by2a);
 
 		unsigned int pixel;
 		float average = 0;
@@ -494,7 +501,7 @@ namespace terrainops {
 			for (int j = y1; j <= y2; j++) {
 				// downsampling a filtered image seems to behave strangely but the brush
 				// won't likely ever be smaller than the cursor anyway
-				pixel = spriteops::sample_unfiltered(brush, bw, bh, ((float)(i - x1)) / (x2 - x1), ((float)(j - y1)) / (y2 - y1));
+				pixel = spriteops::sample_unfiltered(brush, bw, bh, ((float)(i - bx1a)) / (bx2a - bx1a), ((float)(j - by1a)) / (y2 - by1a));
 				callback(data, vertex, w, h, i, j, (pixel & 0x000000ff) / 255.0f, velocity, average);
 			}
 		}
