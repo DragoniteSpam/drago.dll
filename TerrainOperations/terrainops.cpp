@@ -291,9 +291,9 @@ namespace terrainops {
 
 						NORMALIZE(normal);
 
-						write_vertex(out, index, x00, y00, z00, normal.x, normal.y, normal.z, xt00, yt00, c00, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 1, 0, 0);
-						write_vertex(out, index, x10, y10, z10, normal.x, normal.y, normal.z, xt10, yt10, c10, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 1, 0);
-						write_vertex(out, index, x11, y11, z11, normal.x, normal.y, normal.z, xt11, yt11, c11, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 0, 1);
+						build_write_vertex_vbuff(out, index, x00, y00, z00, normal.x, normal.y, normal.z, xt00, yt00, c00, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 1, 0, 0);
+						build_write_vertex_vbuff(out, index, x10, y10, z10, normal.x, normal.y, normal.z, xt10, yt10, c10, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 1, 0);
+						build_write_vertex_vbuff(out, index, x11, y11, z11, normal.x, normal.y, normal.z, xt11, yt11, c11, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 0, 1);
 					}
 
 					if (all || z11 >= 0 || z01 >= 0 || z00 >= 0) {
@@ -310,9 +310,9 @@ namespace terrainops {
 
 						NORMALIZE(normal);
 
-						write_vertex(out, index, x11, y11, z11, normal.x, normal.y, normal.z, xt11, yt11, c11, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 1, 0, 0);
-						write_vertex(out, index, x01, y01, z01, normal.x, normal.y, normal.z, xt01, yt01, c01, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 1, 0);
-						write_vertex(out, index, x00, y00, z00, normal.x, normal.y, normal.z, xt00, yt00, c00, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 0, 1);
+						build_write_vertex_vbuff(out, index, x11, y11, z11, normal.x, normal.y, normal.z, xt11, yt11, c11, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 1, 0, 0);
+						build_write_vertex_vbuff(out, index, x01, y01, z01, normal.x, normal.y, normal.z, xt01, yt01, c01, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 1, 0);
+						build_write_vertex_vbuff(out, index, x00, y00, z00, normal.x, normal.y, normal.z, xt00, yt00, c00, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 0, 1);
 					}
 				}
 			}
@@ -386,6 +386,65 @@ namespace terrainops {
 #undef V
 	}
 
+	// builder functions
+
+	inline void build_write_vertex_vbuff(
+		float* out, long long* address,
+		float x, float y, float z,
+		float nx, float ny, float nz,
+		float u, float v,
+		unsigned int c,
+		float tx, float ty, float tz,
+		float bx, float by, float bz,
+		float bc1, float bc2, float bc3
+	) {
+		// position
+		out[(*address)++] = x;
+		out[(*address)++] = y;
+		out[(*address)++] = z;
+		// normals
+		out[(*address)++] = nx;
+		out[(*address)++] = ny;
+		out[(*address)++] = nz;
+		// texture and color
+		out[(*address)++] = u;
+		out[(*address)++] = v;
+		((unsigned int*)out)[(*address)++] = c;
+		// tangent and bitangent
+		out[(*address)++] = tx;
+		out[(*address)++] = ty;
+		out[(*address)++] = tz;
+		out[(*address)++] = bx;
+		out[(*address)++] = by;
+		out[(*address)++] = bz;
+		// barycentrics
+		out[(*address)++] = bc1;
+		out[(*address)++] = bc2;
+		out[(*address)++] = bc3;
+	}
+
+	inline void build_write_vertex_d3d(
+		float* out, long long* address,
+		float x, float y, float z,
+		float nx, float ny, float nz,
+		float u, float v,
+		unsigned int c,
+		float tx, float ty, float tz,
+		float bx, float by, float bz,
+		float bc1, float bc2, float bc3
+	) {
+		std::stringstream s;
+
+		s << std::format(
+			"9 {:.6f} {:.6f} {:.6f} {:.6f} {:.6f} {:.6f} {:.6f} {:.6f} {} {:.2f}\r\n",
+			x, y, z, nx, ny, nz, u, v, c & 0x00ffffff, (c >> 24) / 255.0
+		);
+
+		std::string result = s.str();
+		int bytes = (int)result.length();
+		result.copy((char*)out, bytes);
+	}
+
 	// helper functions
 	inline float get_z(float* data, int x, int y, int h) {
 		return data[DATA_INDEX(x, y, h)];
@@ -415,41 +474,6 @@ namespace terrainops {
 			vertex[VERTEX_INDEX(x, y, h, 0) + 2] = value;
 			vertex[VERTEX_INDEX(x, y, h, 5) + 2] = value;
 		}
-	}
-
-	inline void write_vertex(
-				float* out, long long* address,
-				float x, float y, float z,
-				float nx, float ny, float nz,
-				float u, float v,
-				unsigned int c,
-				float tx, float ty, float tz,
-				float bx, float by, float bz,
-				float bc1, float bc2, float bc3
-			) {
-		// position
-		out[(*address)++] = x;
-		out[(*address)++] = y;
-		out[(*address)++] = z;
-		// normals
-		out[(*address)++] = nx;
-		out[(*address)++] = ny;
-		out[(*address)++] = nz;
-		// texture and color
-		out[(*address)++] = u;
-		out[(*address)++] = v;
-		((unsigned int*)out)[(*address)++] = c;
-		// tangent and bitangent
-		out[(*address)++] = tx;
-		out[(*address)++] = ty;
-		out[(*address)++] = tz;
-		out[(*address)++] = bx;
-		out[(*address)++] = by;
-		out[(*address)++] = bz;
-		// barycentrics
-		out[(*address)++] = bc1;
-		out[(*address)++] = bc2;
-		out[(*address)++] = bc3;
 	}
 
 	void invoke_deformation(bool calculate_average, void(*callback)(float*, float*, int, int, int, int, float, float, float)) {

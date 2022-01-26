@@ -4,6 +4,8 @@
 #include "main/core.h"
 #include "SpriteOperations/spriteops.h"
 #include <cmath>
+#include <sstream>
+#include <format>
 
 #define DATA_INDEX(x, y, h) ((x) * (h) + (y))
 #define VERTEX_INDEX(x, y, h, vertex) (3 * ((((x) * ((h) - 1) + (y)) * 6) + (vertex)))
@@ -63,11 +65,13 @@ namespace terrainops {
 	long build(long long*, int);
 	void generate_internal(float*);
 
+	inline void build_write_vertex_vbuff(float*, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float);
+	inline void build_write_vertex_d3d(float*, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float);
+
 	// helper functions
 	inline float get_z(float*, int, int, int);
 	inline void add_z(float*, float*, int, int, int, int, float);
 	inline void set_z(float*, float*, int, int, int, int, float);
-	inline void write_vertex(float*, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float);
 	void invoke_deformation(bool, void(float*, float*, int, int, int, int, float, float, float));
 }
 
