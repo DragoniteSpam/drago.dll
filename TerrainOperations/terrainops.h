@@ -16,8 +16,6 @@ namespace terrainops {
 	extern bool save_swap_uv;
 	extern bool save_centered;
 	extern int save_density;
-	extern int save_width;
-	extern int save_height;
 	extern float save_scale;
 
 	extern unsigned int* deform_brush_texture;
@@ -61,8 +59,8 @@ namespace terrainops {
 	void mutate();
 
 	// build vertex data
-	void build_settings(bool, bool, bool, bool, int, int, int, float);
 	long build(long long*, int);
+	void build_settings(bool, bool, bool, bool, int, float);
 	void generate_internal(float*);
 
 	inline void build_write_vertex_vbuff(float*, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float);

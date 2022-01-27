@@ -91,8 +91,8 @@ ex double terrainops_generate_internal(float* out) {
 	return 1.0;
 }
 
-ex double terrainops_build_settings(double save_all, double swap_zup, double swap_uv, double center, double density, double width, double height, double scale) {
-	terrainops::build_settings((bool)save_all, (bool)swap_zup, (bool)swap_uv, (bool)center, (int)density, (int)width, (int)height, (float)scale);
+ex double terrainops_build_settings(double save_all, double swap_zup, double swap_uv, double center, double density, double scale) {
+	terrainops::build_settings((bool)save_all, (bool)swap_zup, (bool)swap_uv, (bool)center, (int)density, (float)scale);
 	return 1.0;
 }
 

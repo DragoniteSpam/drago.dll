@@ -7,8 +7,6 @@ namespace terrainops {
 	bool save_swap_uv = false;
 	bool save_centered = false;
 	int save_density = 1;
-	int save_width = 1;
-	int save_height = 1;
 	float save_scale = 1;
 
 	unsigned int* deform_brush_texture = NULL;
@@ -182,14 +180,12 @@ namespace terrainops {
 	}
 
 	// build vertex data
-	void build_settings(bool save_all, bool swap_zup, bool swap_uv, bool centered, int density, int width, int height, float scale) {
+	void build_settings(bool save_all, bool swap_zup, bool swap_uv, bool centered, int density, float scale) {
 		terrainops::save_all = save_all;
 		terrainops::save_swap_zup = swap_zup;
 		terrainops::save_swap_uv = swap_uv;
 		terrainops::save_centered = centered;
 		terrainops::save_density = density;
-		terrainops::save_width = width;
-		terrainops::save_height = height;
 		terrainops::save_scale = scale;
 	}
 
@@ -202,8 +198,8 @@ namespace terrainops {
 		bool swap_uv = terrainops::save_swap_uv;
 		bool swap_zup = terrainops::save_swap_zup;
 		int density = terrainops::save_density;
-		int w = terrainops::save_width;
-		int h = terrainops::save_height;
+		int w = terrainops::data_size.a;
+		int h = terrainops::data_size.b;
 		float xoff = terrainops::save_centered ? (-(float)w / 2) : 0;
 		float yoff = terrainops::save_centered ? (-(float)h / 2) : 0;
 		float scale = terrainops::save_scale;
