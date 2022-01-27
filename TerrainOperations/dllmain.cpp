@@ -96,6 +96,10 @@ ex double terrainops_build_settings(double save_all, double swap_zup, double swa
 	return 1.0;
 }
 
-ex double terrainops_build(long long* meta, double meta_len) {
-	return (double)terrainops::build(meta, BYTES2DOUBLES(meta_len));
+ex double terrainops_build_d3d(long long* meta, double meta_len) {
+	return (double)terrainops::build(meta, BYTES2DOUBLES(meta_len), &terrainops::build_write_vertex_d3d);
+}
+
+ex double terrainops_build_vbuff(long long* meta, double meta_len) {
+	return (double)terrainops::build(meta, BYTES2DOUBLES(meta_len), &terrainops::build_write_vertex_vbuff);
 }

@@ -189,7 +189,7 @@ namespace terrainops {
 		terrainops::save_scale = scale;
 	}
 
-	long build(long long* meta, int meta_len) {
+	long build(long long* meta, int meta_len, void(*callback)(float*, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float)) {
 		float* data = terrainops::data;
 		int len = terrainops::data_size.c;
 		float* vertex = terrainops::vertex;
@@ -287,9 +287,9 @@ namespace terrainops {
 
 						NORMALIZE(normal);
 
-						build_write_vertex_vbuff(out, index, x00, y00, z00, normal.x, normal.y, normal.z, xt00, yt00, c00, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 1, 0, 0);
-						build_write_vertex_vbuff(out, index, x10, y10, z10, normal.x, normal.y, normal.z, xt10, yt10, c10, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 1, 0);
-						build_write_vertex_vbuff(out, index, x11, y11, z11, normal.x, normal.y, normal.z, xt11, yt11, c11, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 0, 1);
+						callback(out, index, x00, y00, z00, normal.x, normal.y, normal.z, xt00, yt00, c00, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 1, 0, 0);
+						callback(out, index, x10, y10, z10, normal.x, normal.y, normal.z, xt10, yt10, c10, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 1, 0);
+						callback(out, index, x11, y11, z11, normal.x, normal.y, normal.z, xt11, yt11, c11, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 0, 1);
 					}
 
 					if (all || z11 >= 0 || z01 >= 0 || z00 >= 0) {
@@ -306,9 +306,9 @@ namespace terrainops {
 
 						NORMALIZE(normal);
 
-						build_write_vertex_vbuff(out, index, x11, y11, z11, normal.x, normal.y, normal.z, xt11, yt11, c11, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 1, 0, 0);
-						build_write_vertex_vbuff(out, index, x01, y01, z01, normal.x, normal.y, normal.z, xt01, yt01, c01, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 1, 0);
-						build_write_vertex_vbuff(out, index, x00, y00, z00, normal.x, normal.y, normal.z, xt00, yt00, c00, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 0, 1);
+						callback(out, index, x11, y11, z11, normal.x, normal.y, normal.z, xt11, yt11, c11, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 1, 0, 0);
+						callback(out, index, x01, y01, z01, normal.x, normal.y, normal.z, xt01, yt01, c01, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 1, 0);
+						callback(out, index, x00, y00, z00, normal.x, normal.y, normal.z, xt00, yt00, c00, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 0, 1);
 					}
 				}
 			}
@@ -384,7 +384,7 @@ namespace terrainops {
 
 	// builder functions
 
-	inline void build_write_vertex_vbuff(
+	void build_write_vertex_vbuff(
 		float* out, long long* address,
 		float x, float y, float z,
 		float nx, float ny, float nz,
@@ -419,7 +419,7 @@ namespace terrainops {
 		out[(*address)++] = bc3;
 	}
 
-	inline void build_write_vertex_d3d(
+	void build_write_vertex_d3d(
 		float* out, long long* address,
 		float x, float y, float z,
 		float nx, float ny, float nz,

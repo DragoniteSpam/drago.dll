@@ -59,12 +59,12 @@ namespace terrainops {
 	void mutate();
 
 	// build vertex data
-	long build(long long*, int);
 	void build_settings(bool, bool, bool, bool, int, float);
+	long build(long long*, int, void(float*, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float));
 	void generate_internal(float*);
 
-	inline void build_write_vertex_vbuff(float*, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float);
-	inline void build_write_vertex_d3d(float*, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float);
+	void build_write_vertex_vbuff(float*, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float);
+	void build_write_vertex_d3d(float*, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float);
 
 	// helper functions
 	inline float get_z(float*, int, int, int);
