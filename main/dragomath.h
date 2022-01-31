@@ -27,6 +27,17 @@ struct Vector3 {
 	};
 };
 
+struct Vector2 {
+	union {
+		float x;
+		int a;
+	};
+	union {
+		float y;
+		int b;
+	};
+};
+
 struct Triangle {
 	Vector3 a, b, c;
 };
