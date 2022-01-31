@@ -442,10 +442,9 @@ namespace terrainops {
 		float bx, float by, float bz,
 		float bc1, float bc2, float bc3
 	) {
-		terrainops::save_result << std::format(
-			"9 {:.4f} {:.4f} {:.4f} {:.3f} {:.3f} {:.3f} {:.6f} {:.6f} {} {:.2f}\r\n",
-			x, y, z, nx, ny, nz, u, v, c & 0x00ffffff, (c >> 24) / 255.0
-		);
+		char line[160];
+		sprintf(line, "9 %.1f %.1f %.5f %.3f %.3f %.3f %.6f %.6f %d %.3f\r\n", x, y, z, nx, ny, nz, u, v, c & 0x00ffffff, (c >> 24) / 255.0);
+		terrainops::save_result << std::string(line);
 	}
 
 	void build_setup_vbuff(float* out) {
