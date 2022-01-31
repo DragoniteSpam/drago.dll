@@ -460,7 +460,7 @@ namespace terrainops {
 
 	void build_cleanup_d3d(float* out, std::stringstream* content, long long* length, int vertices) {
 		std::stringstream header, footer;
-		header << std::format("100\r\n{}\r\n0 4\r\n", vertices);
+		header << std::format("100\r\n{}\r\n0 4\r\n", vertices + 2);
 		footer << "0\r\n";
 
 		std::string result = header.str() + content->str() + footer.str();
