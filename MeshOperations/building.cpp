@@ -116,7 +116,7 @@ namespace meshops {
 				value = u + v * 256.0;
 				((unsigned int*)out)[byte++] = (unsigned int)value;
 			}
-			if (use_small_texcoord) {
+			if (use_small_normal_pal) {
 				nx = ADJUST(nx, 0.0f, 255.0f, -1.0f, 1.0f);
 				ny = ADJUST(ny, 0.0f, 255.0f, -1.0f, 1.0f);
 				nz = ADJUST(nz, 0.0f, 255.0f, -1.0f, 1.0f);
