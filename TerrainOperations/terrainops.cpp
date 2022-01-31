@@ -440,11 +440,9 @@ namespace terrainops {
 		float bc1, float bc2, float bc3
 	) {
 		terrainops::save_result << std::format(
-			"9 {:.6f} {:.6f} {:.6f} {:.6f} {:.6f} {:.6f} {:.6f} {:.6f} {} {:.2f}\r\n",
+			"9 {:.4f} {:.4f} {:.4f} {:.3f} {:.3f} {:.3f} {:.6f} {:.6f} {} {:.2f}\r\n",
 			x, y, z, nx, ny, nz, u, v, c & 0x00ffffff, (c >> 24) / 255.0
 		);
-
-		//*address = terrainops::save_result.str().length();
 	}
 
 	void build_setup_vbuff(float* out) {
@@ -456,7 +454,9 @@ namespace terrainops {
 	}
 
 	void build_setup_d3d(float* out) {
-		terrainops::save_result.str(std::string());
+		std::string reserved = std::string();
+		reserved.reserve(0x1000000);
+		terrainops::save_result.str(reserved);
 	}
 
 	void build_cleanup_d3d(float* out, long long* length) {
@@ -467,7 +467,9 @@ namespace terrainops {
 	}
 
 	void build_setup_obj(float* out) {
-		terrainops::save_result.str(std::string());
+		std::string reserved = std::string();
+		reserved.reserve(0x1000000);
+		terrainops::save_result.str(reserved);
 	}
 
 	void build_cleanup_obj(float* out, long long* length) {
