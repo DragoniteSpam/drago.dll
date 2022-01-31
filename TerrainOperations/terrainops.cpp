@@ -1,5 +1,6 @@
 #include "terrainops.h"
 #include <main/dragomath.h>
+#include <MeshOperations/building.h>
 
 namespace terrainops {
 	bool save_all = true;
@@ -10,6 +11,7 @@ namespace terrainops {
 	float save_scale = 1;
 	Vector2 save_start;
 	Vector2 save_end;
+	unsigned int save_format = VFX_POSITION_3D | VFX_NORMAL | VFX_TEXCOORD | VFX_COLOUR;
 
 	unsigned int* deform_brush_texture = NULL;
 	Vector3 deform_brush_size;
@@ -182,13 +184,14 @@ namespace terrainops {
 	}
 
 	// build vertex data
-	void build_settings(bool save_all, bool swap_zup, bool swap_uv, bool centered, int density, float scale) {
+	void build_settings(bool save_all, bool swap_zup, bool swap_uv, bool centered, int density, float scale, unsigned int format) {
 		terrainops::save_all = save_all;
 		terrainops::save_swap_zup = swap_zup;
 		terrainops::save_swap_uv = swap_uv;
 		terrainops::save_centered = centered;
 		terrainops::save_density = density;
 		terrainops::save_scale = scale;
+		terrainops::save_format = format;
 	}
 
 	void build_bounds(int x1, int y1, int x2, int y2) {
