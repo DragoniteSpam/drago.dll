@@ -201,7 +201,7 @@ namespace terrainops {
 		terrainops::save_end.b = y2;
 	}
 
-	void build(float* out, std::stringstream* content, long long* index, int* vertices, void(*callback)(float*, std::stringstream*, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float)) {
+	void build(float* out, std::stringstream* content, long long* index, int* vertices, void(*callback)(float*, std::stringstream*, unsigned int, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float)) {
 		float* data = terrainops::data;
 		int len = terrainops::data_size.c;
 		float* vertex = terrainops::vertex;
@@ -215,6 +215,7 @@ namespace terrainops {
 		float xoff = terrainops::save_centered ? (-(float)w / 2) : 0;
 		float yoff = terrainops::save_centered ? (-(float)h / 2) : 0;
 		float scale = terrainops::save_scale;
+		unsigned int format = terrainops::save_format;
 
 		int x1 = terrainops::save_start.a;
 		int y1 = terrainops::save_start.b;
@@ -301,9 +302,9 @@ namespace terrainops {
 
 					// if you do smoothed normals, it should go here
 
-					callback(out, content, index, x00, y00, z00, normal.x, normal.y, normal.z, xt00, yt00, c00, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 1, 0, 0);
-					callback(out, content, index, x10, y10, z10, normal.x, normal.y, normal.z, xt10, yt10, c10, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 1, 0);
-					callback(out, content, index, x11, y11, z11, normal.x, normal.y, normal.z, xt11, yt11, c11, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 0, 1);
+					callback(out, content, format, index, x00, y00, z00, normal.x, normal.y, normal.z, xt00, yt00, c00, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 1, 0, 0);
+					callback(out, content, format, index, x10, y10, z10, normal.x, normal.y, normal.z, xt10, yt10, c10, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 1, 0);
+					callback(out, content, format, index, x11, y11, z11, normal.x, normal.y, normal.z, xt11, yt11, c11, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 0, 1);
 					(*vertices) += 3;
 				}
 
@@ -321,9 +322,9 @@ namespace terrainops {
 
 					NORMALIZE(normal);
 
-					callback(out, content, index, x11, y11, z11, normal.x, normal.y, normal.z, xt11, yt11, c11, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 1, 0, 0);
-					callback(out, content, index, x01, y01, z01, normal.x, normal.y, normal.z, xt01, yt01, c01, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 1, 0);
-					callback(out, content, index, x00, y00, z00, normal.x, normal.y, normal.z, xt00, yt00, c00, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 0, 1);
+					callback(out, content, format, index, x11, y11, z11, normal.x, normal.y, normal.z, xt11, yt11, c11, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 1, 0, 0);
+					callback(out, content, format, index, x01, y01, z01, normal.x, normal.y, normal.z, xt01, yt01, c01, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 1, 0);
+					callback(out, content, format, index, x00, y00, z00, normal.x, normal.y, normal.z, xt00, yt00, c00, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 0, 1);
 					(*vertices) += 3;
 				}
 			}
@@ -400,7 +401,7 @@ namespace terrainops {
 	// builder functions
 
 	void build_write_vertex_vbuff(
-		float* out, std::stringstream* content, long long* address,
+		float* out, std::stringstream* content, unsigned int format, long long* address,
 		float x, float y, float z,
 		float nx, float ny, float nz,
 		float u, float v,
@@ -409,33 +410,76 @@ namespace terrainops {
 		float bx, float by, float bz,
 		float bc1, float bc2, float bc3
 	) {
-		// position
-		out[(*address)++] = x;
-		out[(*address)++] = y;
-		out[(*address)++] = z;
-		// normals
-		out[(*address)++] = nx;
-		out[(*address)++] = ny;
-		out[(*address)++] = nz;
-		// texture and color
-		out[(*address)++] = u;
-		out[(*address)++] = v;
-		((unsigned int*)out)[(*address)++] = c;
-		// tangent and bitangent
-		out[(*address)++] = tx;
-		out[(*address)++] = ty;
-		out[(*address)++] = tz;
-		out[(*address)++] = bx;
-		out[(*address)++] = by;
-		out[(*address)++] = bz;
-		// barycentrics
-		out[(*address)++] = bc1;
-		out[(*address)++] = bc2;
-		out[(*address)++] = bc3;
+		if (format & VFX_POSITION_2D) {
+			out[(*address)++] = x;
+			out[(*address)++] = y;
+		}
+		if (format & VFX_POSITION_3D) {
+			out[(*address)++] = x;
+			out[(*address)++] = y;
+			out[(*address)++] = z;
+		}
+		if (format & VFX_NORMAL) {
+			out[(*address)++] = nx;
+			out[(*address)++] = ny;
+			out[(*address)++] = nz;
+		}
+		if (format & VFX_TEXCOORD) {
+			out[(*address)++] = u;
+			out[(*address)++] = v;
+		}
+		if (format & VFX_COLOUR) {
+			((unsigned int*)out)[(*address)++] = c;
+		}
+		if (format & VFX_TANGENT) {
+			out[(*address)++] = tx;
+			out[(*address)++] = ty;
+			out[(*address)++] = tz;
+		}
+		if (format & VFX_BITANGENT) {
+			out[(*address)++] = bx;
+			out[(*address)++] = by;
+			out[(*address)++] = bz;
+		}
+		if (format & VFX_BARYCENTRIC) {
+			out[(*address)++] = bc1;
+			out[(*address)++] = bc2;
+			out[(*address)++] = bc3;
+		}
+		if (format & VFX_SMALL_NORMAL) {
+			nx = ADJUST(nx, 0.0f, 255.0f, -1.0f, 1.0f);
+			ny = ADJUST(ny, 0.0f, 255.0f, -1.0f, 1.0f);
+			nz = ADJUST(nz, 0.0f, 255.0f, -1.0f, 1.0f);
+			((unsigned int*)out)[(*address)++] = (unsigned int)(nx + ny * 256.0 + nz * 65536.0);
+		}
+		if (format & VFX_SMALL_TANGENT) {
+			tx = ADJUST(tx, 0.0f, 255.0f, -1.0f, 1.0f);
+			ty = ADJUST(ty, 0.0f, 255.0f, -1.0f, 1.0f);
+			tz = ADJUST(tz, 0.0f, 255.0f, -1.0f, 1.0f);
+			((unsigned int*)out)[(*address)++] = (unsigned int)(tx + ty * 256.0 + tz * 65536.0);
+		}
+		if (format & VFX_SMALL_BITANGENT) {
+			bx = ADJUST(bx, 0.0f, 255.0f, -1.0f, 1.0f);
+			by = ADJUST(by, 0.0f, 255.0f, -1.0f, 1.0f);
+			bz = ADJUST(bz, 0.0f, 255.0f, -1.0f, 1.0f);
+			((unsigned int*)out)[(*address)++] = (unsigned int)(bx + by * 256.0 + bz * 65536.0);
+		}
+		if (format & VFX_SMALL_TEXCOORD) {
+			u = floor(u * 255.0f);
+			v = floor(v * 255.0f);
+			((unsigned int*)out)[(*address)++] = (unsigned int)(u + v * 256.0);
+		}
+		if (format & VFX_SMALL_NORMAL_PAL) {
+			nx = ADJUST(nx, 0.0f, 255.0f, -1.0f, 1.0f);
+			ny = ADJUST(ny, 0.0f, 255.0f, -1.0f, 1.0f);
+			nz = ADJUST(nz, 0.0f, 255.0f, -1.0f, 1.0f);
+			u = floor(u * 255.0f);
+			((unsigned int*)out)[(*address)++] = (unsigned int)(nx + ny * 256.0 + nz * 65536.0 + u * 16777216.0);
+		}
 	}
 
 	void build_write_vertex_d3d(
-		float* out, std::stringstream* content, long long* address,
+		float* out, std::stringstream* content, unsigned int format, long long* address,
 		float x, float y, float z,
 		float nx, float ny, float nz,
 		float u, float v,

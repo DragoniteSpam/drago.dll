@@ -64,12 +64,12 @@ namespace terrainops {
 	// build vertex data
 	void build_settings(bool, bool, bool, bool, int, float, unsigned int);
 	void build_bounds(int, int, int, int);
-	void build(float*, std::stringstream*, long long*, int*, void(float*, std::stringstream*, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float));
+	void build(float*, std::stringstream*, long long*, int*, void(float*, std::stringstream*, unsigned int, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float));
 	void build_obj(float*, long long*, int*);
 	void generate_internal(float*);
 
-	void build_write_vertex_vbuff(float*, std::stringstream*, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float);
-	void build_write_vertex_d3d(float*, std::stringstream*, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float);
+	void build_write_vertex_vbuff(float*, std::stringstream*, unsigned int, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float);
+	void build_write_vertex_d3d(float*, std::stringstream*, unsigned int, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float);
 
 	void build_setup_vbuff(float*);
 	void build_cleanup_vbuff(float*, long long*, int);
