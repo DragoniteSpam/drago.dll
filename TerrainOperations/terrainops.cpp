@@ -8,6 +8,9 @@ namespace terrainops {
 	bool save_centered = false;
 	int save_density = 1;
 	float save_scale = 1;
+	Vector2 save_start;
+	Vector2 save_end;
+	std::stringstream save_result;
 
 	unsigned int* deform_brush_texture = NULL;
 	Vector3 deform_brush_size;
@@ -189,7 +192,14 @@ namespace terrainops {
 		terrainops::save_scale = scale;
 	}
 
-	long build(long long* meta, int meta_len, void(*callback)(float*, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float)) {
+	void build_bounds(int x1, int y1, int x2, int y2) {
+		terrainops::save_start.a = x1;
+		terrainops::save_start.b = y1;
+		terrainops::save_end.a = x2;
+		terrainops::save_end.b = y2;
+	}
+
+	long build(float* out, void(*callback)(float*, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float)) {
 		float* data = terrainops::data;
 		int len = terrainops::data_size.c;
 		float* vertex = terrainops::vertex;
@@ -203,12 +213,18 @@ namespace terrainops {
 		float xoff = terrainops::save_centered ? (-(float)w / 2) : 0;
 		float yoff = terrainops::save_centered ? (-(float)h / 2) : 0;
 		float scale = terrainops::save_scale;
+
+		int x1 = terrainops::save_start.a;
+		int y1 = terrainops::save_start.b;
+		int x2 = terrainops::save_end.a;
+		int y2 = terrainops::save_end.b;
 		
 		float x00, x01, x10, x11, y00, y01, y10, y11, z00, z01, z10, z11;
 		unsigned int c00, c01, c10, c11;
 		float xt00, xt01, xt10, xt11, yt00, yt01, yt10, yt11;
 		Vector3 e1, e2;
 		Vector3 normal, tangent, bitangent;
+		long long index = 0;
 
 		// we'll deal with these later
 		tangent.x = 0;
@@ -218,105 +234,99 @@ namespace terrainops {
 		bitangent.y = 0;
 		bitangent.z = 0;
 
-		// vertex count, output address, x1, y1, x2, y2
-		for (int i = 0; i < meta_len; i += 6) {
-			long long* index = &meta[i + 0];
-			float* out = (float*)meta[i + 1];
+		for (int x =x1; x <= x2 - density; x += density) {
+			for (int y = y1; y <= y2 - density; y += density) {
+				x00 = (float)x;
+				y00 = (float)y;
+				z00 = get_z(data, x, y, h);
 
-			for (int x = (int)(meta[i + 2]); x <= (int)(meta[i + 4]) - density; x += density) {
-				for (int y = (int)(meta[i + 3]); y <= (int)(meta[i + 5]) - density; y += density) {
-					x00 = (float)x;
-					y00 = (float)y;
-					z00 = get_z(data, x, y, h);
+				x01 = (float)x;
+				y01 = (float)std::min(y + density, h - 1);
+				z01 = get_z(data, x, std::min(y + density, h - 1), h);
 
-					x01 = (float)x;
-					y01 = (float)std::min(y + density, h - 1);
-					z01 = get_z(data, x, std::min(y + density, h - 1), h);
+				x10 = (float)std::min(x + density, w - 1);
+				y10 = (float)y;
+				z10 = get_z(data, std::min(x + density, w - 1), y, h);
 
-					x10 = (float)std::min(x + density, w - 1);
-					y10 = (float)y;
-					z10 = get_z(data, std::min(x + density, w - 1), y, h);
+				x11 = (float)std::min(x + density, w - 1);
+				y11 = (float)std::min(y + density, h - 1);
+				z11 = get_z(data, std::min(x + density, w - 1), std::min(y + density, h - 1), h);
 
-					x11 = (float)std::min(x + density, w - 1);
-					y11 = (float)std::min(y + density, h - 1);
-					z11 = get_z(data, std::min(x + density, w - 1), std::min(y + density, h - 1), h);
+				x00 = (x00 + xoff) * scale;
+				x01 = (x01 + xoff) * scale;
+				x10 = (x10 + xoff) * scale;
+				x11 = (x11 + xoff) * scale;
+				y00 = (y00 + yoff) * scale;
+				y01 = (y01 + yoff) * scale;
+				y10 = (y10 + yoff) * scale;
+				y11 = (y11 + yoff) * scale;
 
-					x00 = (x00 + xoff) * scale;
-					x01 = (x01 + xoff) * scale;
-					x10 = (x10 + xoff) * scale;
-					x11 = (x11 + xoff) * scale;
-					y00 = (y00 + yoff) * scale;
-					y01 = (y01 + yoff) * scale;
-					y10 = (y10 + yoff) * scale;
-					y11 = (y11 + yoff) * scale;
+				// @todo figure out texture UVs
+				xt00 = 0;
+				xt01 = 0;
+				xt10 = 0;
+				xt11 = 0;
 
-					// @todo figure out texture UVs
-					xt00 = 0;
-					xt01 = 0;
-					xt10 = 0;
-					xt11 = 0;
+				if (swap_uv) {
+					yt00 = 1 - 0;
+					yt01 = 1 - 0;
+					yt10 = 1 - 0;
+					yt11 = 1 - 0;
+				} else {
+					yt00 = 0;
+					yt01 = 0;
+					yt10 = 0;
+					yt11 = 0;
+				}
 
-					if (swap_uv) {
-						yt00 = 1 - 0;
-						yt01 = 1 - 0;
-						yt10 = 1 - 0;
-						yt11 = 1 - 0;
-					} else {
-						yt00 = 0;
-						yt01 = 0;
-						yt10 = 0;
-						yt11 = 0;
-					}
+				c00 = 0xffffffff;
+				c01 = 0xffffffff;
+				c10 = 0xffffffff;
+				c11 = 0xffffffff;
 
-					c00 = 0xffffffff;
-					c01 = 0xffffffff;
-					c10 = 0xffffffff;
-					c11 = 0xffffffff;
+				if (all || z00 >= 0 || z10 >= 0 || z11 >= 0) {
+					e1.x = x10 - x00;
+					e1.y = y10 - y00;
+					e1.z = z10 - z00;
+					e2.x = x11 - x00;
+					e2.y = y11 - y00;
+					e2.z = z11 - z00;
 
-					if (all || z00 >= 0 || z10 >= 0 || z11 >= 0) {
-						e1.x = x10 - x00;
-						e1.y = y10 - y00;
-						e1.z = z10 - z00;
-						e2.x = x11 - x00;
-						e2.y = y11 - y00;
-						e2.z = z11 - z00;
+					normal.x = e1.y * e2.z - e1.z * e2.y;
+					normal.y = -e1.x * e2.z + e1.z * e2.x;
+					normal.z = e1.x * e2.y - e1.y * e2.x;
 
-						normal.x = e1.y * e2.z - e1.z * e2.y;
-						normal.y = -e1.x * e2.z + e1.z * e2.x;
-						normal.z = e1.x * e2.y - e1.y * e2.x;
+					NORMALIZE(normal);
 
-						NORMALIZE(normal);
+					// if you do smoothed normals, it should go here
 
-						callback(out, index, x00, y00, z00, normal.x, normal.y, normal.z, xt00, yt00, c00, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 1, 0, 0);
-						callback(out, index, x10, y10, z10, normal.x, normal.y, normal.z, xt10, yt10, c10, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 1, 0);
-						callback(out, index, x11, y11, z11, normal.x, normal.y, normal.z, xt11, yt11, c11, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 0, 1);
-					}
+					callback(out, &index, x00, y00, z00, normal.x, normal.y, normal.z, xt00, yt00, c00, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 1, 0, 0);
+					callback(out, &index, x10, y10, z10, normal.x, normal.y, normal.z, xt10, yt10, c10, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 1, 0);
+					callback(out, &index, x11, y11, z11, normal.x, normal.y, normal.z, xt11, yt11, c11, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 0, 1);
+				}
 
-					if (all || z11 >= 0 || z01 >= 0 || z00 >= 0) {
-						e1.x = x01 - x11;
-						e1.y = y01 - y11;
-						e1.z = z01 - z11;
-						e2.x = x00 - x11;
-						e2.y = y00 - y11;
-						e2.z = z00 - z11;
+				if (all || z11 >= 0 || z01 >= 0 || z00 >= 0) {
+					e1.x = x01 - x11;
+					e1.y = y01 - y11;
+					e1.z = z01 - z11;
+					e2.x = x00 - x11;
+					e2.y = y00 - y11;
+					e2.z = z00 - z11;
 
-						normal.x = e1.y * e2.z - e1.z * e2.y;
-						normal.y = -e1.x * e2.z + e1.z * e2.x;
-						normal.z = e1.x * e2.y - e1.y * e2.x;
+					normal.x = e1.y * e2.z - e1.z * e2.y;
+					normal.y = -e1.x * e2.z + e1.z * e2.x;
+					normal.z = e1.x * e2.y - e1.y * e2.x;
 
-						NORMALIZE(normal);
+					NORMALIZE(normal);
 
-						callback(out, index, x11, y11, z11, normal.x, normal.y, normal.z, xt11, yt11, c11, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 1, 0, 0);
-						callback(out, index, x01, y01, z01, normal.x, normal.y, normal.z, xt01, yt01, c01, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 1, 0);
-						callback(out, index, x00, y00, z00, normal.x, normal.y, normal.z, xt00, yt00, c00, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 0, 1);
-					}
+					callback(out, &index, x11, y11, z11, normal.x, normal.y, normal.z, xt11, yt11, c11, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 1, 0, 0);
+					callback(out, &index, x01, y01, z01, normal.x, normal.y, normal.z, xt01, yt01, c01, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 1, 0);
+					callback(out, &index, x00, y00, z00, normal.x, normal.y, normal.z, xt00, yt00, c00, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 0, 1);
 				}
 			}
-
-			*index = FLOATS2BYTES(*index);
 		}
 
-		return 0;
+		return FLOATS2BYTES(index);
 	}
 
 	void generate_internal(float* out) {
@@ -429,16 +439,42 @@ namespace terrainops {
 		float bx, float by, float bz,
 		float bc1, float bc2, float bc3
 	) {
-		std::stringstream s;
-
-		s << std::format(
+		terrainops::save_result << std::format(
 			"9 {:.6f} {:.6f} {:.6f} {:.6f} {:.6f} {:.6f} {:.6f} {:.6f} {} {:.2f}\r\n",
 			x, y, z, nx, ny, nz, u, v, c & 0x00ffffff, (c >> 24) / 255.0
 		);
 
-		std::string result = s.str();
+		//*address = terrainops::save_result.str().length();
+	}
+
+	void build_setup_vbuff(float* out) {
+
+	}
+
+	void build_cleanup_vbuff(float* out, long long* length) {
+
+	}
+
+	void build_setup_d3d(float* out) {
+		terrainops::save_result.str(std::string());
+	}
+
+	void build_cleanup_d3d(float* out, long long* length) {
+		std::string result = terrainops::save_result.str();
+		long long bytes = (int)result.length();
+		result.copy((char*)out, bytes);
+		*length = bytes;
+	}
+
+	void build_setup_obj(float* out) {
+		terrainops::save_result.str(std::string());
+	}
+
+	void build_cleanup_obj(float* out, long long* length) {
+		std::string result = terrainops::save_result.str();
 		int bytes = (int)result.length();
 		result.copy((char*)out, bytes);
+		*length = bytes;
 	}
 
 	// helper functions

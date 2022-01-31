@@ -96,10 +96,29 @@ ex double terrainops_build_settings(double save_all, double swap_zup, double swa
 	return 1.0;
 }
 
-ex double terrainops_build_d3d(long long* meta, double meta_len) {
-	return (double)terrainops::build(meta, BYTES2DOUBLES(meta_len), &terrainops::build_write_vertex_d3d);
+ex double terrainops_build_bounds(double x1, double y1, double x2, double y2) {
+	terrainops::build_bounds((int)x1, (int)y1, (int)x2, (int)y2);
+	return 1.0;
 }
 
-ex double terrainops_build_vbuff(long long* meta, double meta_len) {
-	return (double)terrainops::build(meta, BYTES2DOUBLES(meta_len), &terrainops::build_write_vertex_vbuff);
+ex double terrainops_build_d3d(float* out) {
+	terrainops::build_setup_d3d(out);
+	long long length = terrainops::build(out, &terrainops::build_write_vertex_d3d);
+	terrainops::build_cleanup_d3d(out, &length);
+	return (double)length;
+}
+
+// output
+ex double terrainops_build_obj(float* out) {
+	terrainops::build_setup_obj(out);
+	long long length = 0;
+	terrainops::build_cleanup_obj(out, &length);
+	return (double)length;
+}
+
+ex double terrainops_build_vbuff(float* out) {
+	terrainops::build_setup_vbuff(out);
+	long long length = terrainops::build(out, &terrainops::build_write_vertex_vbuff);
+	terrainops::build_cleanup_vbuff(out, &length);
+	return (double)length;
 }
