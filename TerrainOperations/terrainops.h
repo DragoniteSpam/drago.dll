@@ -19,7 +19,6 @@ namespace terrainops {
 	extern float save_scale;
 	extern Vector2 save_start;
 	extern Vector2 save_end;
-	extern std::stringstream save_result;
 
 	extern unsigned int* deform_brush_texture;
 	extern Vector3 deform_brush_size;
@@ -64,19 +63,19 @@ namespace terrainops {
 	// build vertex data
 	void build_settings(bool, bool, bool, bool, int, float);
 	void build_bounds(int, int, int, int);
-	void build(float*, long long*, int*, void(float*, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float));
+	void build(float*, std::stringstream*, long long*, int*, void(float*, std::stringstream*, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float));
 	void build_obj(float*, long long*, int*);
 	void generate_internal(float*);
 
-	void build_write_vertex_vbuff(float*, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float);
-	void build_write_vertex_d3d(float*, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float);
+	void build_write_vertex_vbuff(float*, std::stringstream*, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float);
+	void build_write_vertex_d3d(float*, std::stringstream*, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float);
 
 	void build_setup_vbuff(float*);
 	void build_cleanup_vbuff(float*, long long*, int);
 	void build_setup_d3d(float*);
-	void build_cleanup_d3d(float*, long long*, int);
+	void build_cleanup_d3d(float*, std::stringstream*, long long*, int);
 	void build_setup_obj(float*);
-	void build_cleanup_obj(float*, long long*, int);
+	void build_cleanup_obj(float*, std::stringstream*, long long*, int);
 
 	// helper functions
 	inline float get_z(float*, int, int, int);

@@ -10,7 +10,6 @@ namespace terrainops {
 	float save_scale = 1;
 	Vector2 save_start;
 	Vector2 save_end;
-	std::stringstream save_result;
 
 	unsigned int* deform_brush_texture = NULL;
 	Vector3 deform_brush_size;
@@ -199,7 +198,7 @@ namespace terrainops {
 		terrainops::save_end.b = y2;
 	}
 
-	void build(float* out, long long* index, int* vertices, void(*callback)(float*, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float)) {
+	void build(float* out, std::stringstream* content, long long* index, int* vertices, void(*callback)(float*, std::stringstream*, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float)) {
 		float* data = terrainops::data;
 		int len = terrainops::data_size.c;
 		float* vertex = terrainops::vertex;
@@ -299,9 +298,9 @@ namespace terrainops {
 
 					// if you do smoothed normals, it should go here
 
-					callback(out, index, x00, y00, z00, normal.x, normal.y, normal.z, xt00, yt00, c00, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 1, 0, 0);
-					callback(out, index, x10, y10, z10, normal.x, normal.y, normal.z, xt10, yt10, c10, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 1, 0);
-					callback(out, index, x11, y11, z11, normal.x, normal.y, normal.z, xt11, yt11, c11, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 0, 1);
+					callback(out, content, index, x00, y00, z00, normal.x, normal.y, normal.z, xt00, yt00, c00, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 1, 0, 0);
+					callback(out, content, index, x10, y10, z10, normal.x, normal.y, normal.z, xt10, yt10, c10, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 1, 0);
+					callback(out, content, index, x11, y11, z11, normal.x, normal.y, normal.z, xt11, yt11, c11, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 0, 1);
 					(*vertices) += 3;
 				}
 
@@ -319,9 +318,9 @@ namespace terrainops {
 
 					NORMALIZE(normal);
 
-					callback(out, index, x11, y11, z11, normal.x, normal.y, normal.z, xt11, yt11, c11, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 1, 0, 0);
-					callback(out, index, x01, y01, z01, normal.x, normal.y, normal.z, xt01, yt01, c01, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 1, 0);
-					callback(out, index, x00, y00, z00, normal.x, normal.y, normal.z, xt00, yt00, c00, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 0, 1);
+					callback(out, content, index, x11, y11, z11, normal.x, normal.y, normal.z, xt11, yt11, c11, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 1, 0, 0);
+					callback(out, content, index, x01, y01, z01, normal.x, normal.y, normal.z, xt01, yt01, c01, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 1, 0);
+					callback(out, content, index, x00, y00, z00, normal.x, normal.y, normal.z, xt00, yt00, c00, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 0, 1);
 					(*vertices) += 3;
 				}
 			}
@@ -398,7 +397,7 @@ namespace terrainops {
 	// builder functions
 
 	void build_write_vertex_vbuff(
-		float* out, long long* address,
+		float* out, std::stringstream* content, long long* address,
 		float x, float y, float z,
 		float nx, float ny, float nz,
 		float u, float v,
@@ -433,7 +432,7 @@ namespace terrainops {
 	}
 
 	void build_write_vertex_d3d(
-		float* out, long long* address,
+		float* out, std::stringstream* content, long long* address,
 		float x, float y, float z,
 		float nx, float ny, float nz,
 		float u, float v,
@@ -444,7 +443,7 @@ namespace terrainops {
 	) {
 		char line[160];
 		sprintf(line, "9 %.1f %.1f %.5f %.3f %.3f %.3f %.6f %.6f %d %.3f\r\n", x, y, z, nx, ny, nz, u, v, c & 0x00ffffff, (c >> 24) / 255.0);
-		terrainops::save_result << std::string(line);
+		*content << std::string(line);
 	}
 
 	void build_setup_vbuff(float* out) {
@@ -456,33 +455,28 @@ namespace terrainops {
 	}
 
 	void build_setup_d3d(float* out) {
-		std::string reserved = std::string();
-		reserved.reserve(0x10000);
-		terrainops::save_result.str(reserved);
+		
 	}
 
-	void build_cleanup_d3d(float* out, long long* length, int vertices) {
+	void build_cleanup_d3d(float* out, std::stringstream* content, long long* length, int vertices) {
 		std::stringstream header, footer;
 		header << std::format("100\r\n{}\r\n0 4\r\n", vertices);
 		footer << "0\r\n";
 
-		std::string result = header.str() + terrainops::save_result.str() + footer.str();
-		long long bytes = (int)result.length();
-		*length = FLOATS2BYTES(bytes);
-		result.copy((char*)out, bytes);
+		std::string result = header.str() + content->str() + footer.str();
+		*length = (int)result.length();
+		result.copy((char*)out, *length);
 	}
 
 	void build_setup_obj(float* out) {
-		std::string reserved = std::string();
-		reserved.reserve(0x10000);
-		terrainops::save_result.str(reserved);
+		
 	}
 
-	void build_cleanup_obj(float* out, long long* length, int vertices) {
-		std::string result = terrainops::save_result.str();
+	void build_cleanup_obj(float* out, std::stringstream* content, long long* length, int vertices) {
+		std::string result = content->str();
 		long long bytes = (int)result.length();
-		*length = FLOATS2BYTES(bytes);
-		result.copy((char*)out, bytes);
+		*length = (int)result.length();
+		result.copy((char*)out, *length);
 	}
 
 	// helper functions

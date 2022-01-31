@@ -108,8 +108,9 @@ ex double terrainops_build_d3d(float* out) {
 	terrainops::build_setup_d3d(out);
 	long long length = 0;
 	int vertices = 0;
-	terrainops::build(out, &length, &vertices, &terrainops::build_write_vertex_d3d);
-	terrainops::build_cleanup_d3d(out, &length, vertices);
+	std::stringstream content;
+	terrainops::build(out, &content, &length, &vertices, &terrainops::build_write_vertex_d3d);
+	terrainops::build_cleanup_d3d(out, &content, &length, vertices);
 	return (double)length;
 }
 
@@ -117,7 +118,8 @@ ex double terrainops_build_obj(float* out) {
 	terrainops::build_setup_obj(out);
 	long long length = 0;
 	int vertices = 0;
-	terrainops::build_cleanup_obj(out, &length, vertices);
+	std::stringstream content;
+	terrainops::build_cleanup_obj(out, &content, &length, vertices);
 	return (double)length;
 }
 
@@ -125,7 +127,7 @@ ex double terrainops_build_vbuff(float* out) {
 	terrainops::build_setup_vbuff(out);
 	long long length = 0;
 	int vertices = 0;
-	terrainops::build(out, &length, &vertices, &terrainops::build_write_vertex_vbuff);
+	terrainops::build(out, NULL, &length, &vertices, &terrainops::build_write_vertex_vbuff);
 	terrainops::build_cleanup_vbuff(out, &length, vertices);
 	return (double)length;
 }
