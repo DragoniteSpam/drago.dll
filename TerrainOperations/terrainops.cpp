@@ -199,7 +199,7 @@ namespace terrainops {
 		terrainops::save_end.b = y2;
 	}
 
-	long build(float* out, void(*callback)(float*, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float)) {
+	void build(float* out, long long* index, int* vertices, void(*callback)(float*, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float)) {
 		float* data = terrainops::data;
 		int len = terrainops::data_size.c;
 		float* vertex = terrainops::vertex;
@@ -224,7 +224,6 @@ namespace terrainops {
 		float xt00, xt01, xt10, xt11, yt00, yt01, yt10, yt11;
 		Vector3 e1, e2;
 		Vector3 normal, tangent, bitangent;
-		long long index = 0;
 
 		// we'll deal with these later
 		tangent.x = 0;
@@ -300,9 +299,10 @@ namespace terrainops {
 
 					// if you do smoothed normals, it should go here
 
-					callback(out, &index, x00, y00, z00, normal.x, normal.y, normal.z, xt00, yt00, c00, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 1, 0, 0);
-					callback(out, &index, x10, y10, z10, normal.x, normal.y, normal.z, xt10, yt10, c10, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 1, 0);
-					callback(out, &index, x11, y11, z11, normal.x, normal.y, normal.z, xt11, yt11, c11, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 0, 1);
+					callback(out, index, x00, y00, z00, normal.x, normal.y, normal.z, xt00, yt00, c00, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 1, 0, 0);
+					callback(out, index, x10, y10, z10, normal.x, normal.y, normal.z, xt10, yt10, c10, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 1, 0);
+					callback(out, index, x11, y11, z11, normal.x, normal.y, normal.z, xt11, yt11, c11, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 0, 1);
+					(*vertices) += 3;
 				}
 
 				if (all || z11 >= 0 || z01 >= 0 || z00 >= 0) {
@@ -319,14 +319,17 @@ namespace terrainops {
 
 					NORMALIZE(normal);
 
-					callback(out, &index, x11, y11, z11, normal.x, normal.y, normal.z, xt11, yt11, c11, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 1, 0, 0);
-					callback(out, &index, x01, y01, z01, normal.x, normal.y, normal.z, xt01, yt01, c01, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 1, 0);
-					callback(out, &index, x00, y00, z00, normal.x, normal.y, normal.z, xt00, yt00, c00, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 0, 1);
+					callback(out, index, x11, y11, z11, normal.x, normal.y, normal.z, xt11, yt11, c11, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 1, 0, 0);
+					callback(out, index, x01, y01, z01, normal.x, normal.y, normal.z, xt01, yt01, c01, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 1, 0);
+					callback(out, index, x00, y00, z00, normal.x, normal.y, normal.z, xt00, yt00, c00, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 0, 1);
+					(*vertices) += 3;
 				}
 			}
 		}
+	}
 
-		return FLOATS2BYTES(index);
+	void build_obj(float* out, long long* index, int* vertices) {
+
 	}
 
 	void generate_internal(float* out) {
@@ -449,34 +452,38 @@ namespace terrainops {
 
 	}
 
-	void build_cleanup_vbuff(float* out, long long* length) {
-
+	void build_cleanup_vbuff(float* out, long long* length, int) {
+		*length = FLOATS2BYTES(*length);
 	}
 
 	void build_setup_d3d(float* out) {
 		std::string reserved = std::string();
-		reserved.reserve(0x1000000);
+		reserved.reserve(0x10000);
 		terrainops::save_result.str(reserved);
 	}
 
-	void build_cleanup_d3d(float* out, long long* length) {
-		std::string result = terrainops::save_result.str();
+	void build_cleanup_d3d(float* out, long long* length, int vertices) {
+		std::stringstream header, footer;
+		header << std::format("100\r\n{}\r\n0 4\r\n", vertices);
+		footer << "0\r\n";
+
+		std::string result = header.str() + terrainops::save_result.str() + footer.str();
 		long long bytes = (int)result.length();
+		*length = FLOATS2BYTES(bytes);
 		result.copy((char*)out, bytes);
-		*length = bytes;
 	}
 
 	void build_setup_obj(float* out) {
 		std::string reserved = std::string();
-		reserved.reserve(0x1000000);
+		reserved.reserve(0x10000);
 		terrainops::save_result.str(reserved);
 	}
 
-	void build_cleanup_obj(float* out, long long* length) {
+	void build_cleanup_obj(float* out, long long* length, int vertices) {
 		std::string result = terrainops::save_result.str();
-		int bytes = (int)result.length();
+		long long bytes = (int)result.length();
+		*length = FLOATS2BYTES(bytes);
 		result.copy((char*)out, bytes);
-		*length = bytes;
 	}
 
 	// helper functions

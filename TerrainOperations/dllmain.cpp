@@ -2,6 +2,8 @@
 #include "terrainops.h"
 #include "main/dragomath.h"
 
+#include <iostream>
+
 ex const char* terrainops_version() {
 	return terrainops::version();
 }
@@ -101,24 +103,29 @@ ex double terrainops_build_bounds(double x1, double y1, double x2, double y2) {
 	return 1.0;
 }
 
+// output
 ex double terrainops_build_d3d(float* out) {
 	terrainops::build_setup_d3d(out);
-	long long length = terrainops::build(out, &terrainops::build_write_vertex_d3d);
-	terrainops::build_cleanup_d3d(out, &length);
+	long long length = 0;
+	int vertices = 0;
+	terrainops::build(out, &length, &vertices, &terrainops::build_write_vertex_d3d);
+	terrainops::build_cleanup_d3d(out, &length, vertices);
 	return (double)length;
 }
 
-// output
 ex double terrainops_build_obj(float* out) {
 	terrainops::build_setup_obj(out);
 	long long length = 0;
-	terrainops::build_cleanup_obj(out, &length);
+	int vertices = 0;
+	terrainops::build_cleanup_obj(out, &length, vertices);
 	return (double)length;
 }
 
 ex double terrainops_build_vbuff(float* out) {
 	terrainops::build_setup_vbuff(out);
-	long long length = terrainops::build(out, &terrainops::build_write_vertex_vbuff);
-	terrainops::build_cleanup_vbuff(out, &length);
+	long long length = 0;
+	int vertices = 0;
+	terrainops::build(out, &length, &vertices, &terrainops::build_write_vertex_vbuff);
+	terrainops::build_cleanup_vbuff(out, &length, vertices);
 	return (double)length;
 }

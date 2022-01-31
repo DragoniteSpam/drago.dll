@@ -64,18 +64,19 @@ namespace terrainops {
 	// build vertex data
 	void build_settings(bool, bool, bool, bool, int, float);
 	void build_bounds(int, int, int, int);
-	long build(float*, void(float*, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float));
+	void build(float*, long long*, int*, void(float*, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float));
+	void build_obj(float*, long long*, int*);
 	void generate_internal(float*);
 
 	void build_write_vertex_vbuff(float*, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float);
 	void build_write_vertex_d3d(float*, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float);
 
 	void build_setup_vbuff(float*);
-	void build_cleanup_vbuff(float*, long long*);
+	void build_cleanup_vbuff(float*, long long*, int);
 	void build_setup_d3d(float*);
-	void build_cleanup_d3d(float*, long long*);
+	void build_cleanup_d3d(float*, long long*, int);
 	void build_setup_obj(float*);
-	void build_cleanup_obj(float*, long long*);
+	void build_cleanup_obj(float*, long long*, int);
 
 	// helper functions
 	inline float get_z(float*, int, int, int);
