@@ -12,6 +12,8 @@ namespace terrainops {
 	Vector2 save_start;
 	Vector2 save_end;
 	unsigned int save_format = VFX_POSITION_3D | VFX_NORMAL | VFX_TEXCOORD | VFX_COLOUR;
+	extern unsigned int* save_texture_map = 0;
+	extern unsigned int* save_colour_map = 0;
 
 	unsigned int* deform_brush_texture = NULL;
 	Vector3 deform_brush_size;
@@ -199,6 +201,14 @@ namespace terrainops {
 		terrainops::save_start.b = y1;
 		terrainops::save_end.a = x2;
 		terrainops::save_end.b = y2;
+	}
+
+	void build_set_texture(unsigned int* save_texture_map) {
+		terrainops::save_texture_map = save_texture_map;
+	}
+
+	void build_set_vertex_colour(unsigned int* save_colour_map) {
+		terrainops::save_colour_map = save_colour_map;
 	}
 
 	void build(float* out, std::stringstream* content, long long* index, int* vertices, void(*callback)(float*, std::stringstream*, unsigned int, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float)) {

@@ -20,6 +20,8 @@ namespace terrainops {
 	extern Vector2 save_start;
 	extern Vector2 save_end;
 	extern unsigned int save_format;
+	extern unsigned int* save_texture_map;
+	extern unsigned int* save_colour_map;
 
 	extern unsigned int* deform_brush_texture;
 	extern Vector3 deform_brush_size;
@@ -63,6 +65,8 @@ namespace terrainops {
 
 	// build vertex data
 	void build_settings(bool, bool, bool, bool, int, float, unsigned int);
+	void build_set_texture(unsigned int*);
+	void build_set_vertex_colour(unsigned int*);
 	void build_bounds(int, int, int, int);
 	void build(float*, std::stringstream*, long long*, int*, void(float*, std::stringstream*, unsigned int, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float));
 	void build_obj(float*, std::stringstream*, long long*, int*);

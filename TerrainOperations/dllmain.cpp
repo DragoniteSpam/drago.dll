@@ -98,6 +98,16 @@ ex double terrainops_build_settings(double save_all, double swap_zup, double swa
 	return 1.0;
 }
 
+ex double terrainops_build_set_texture(unsigned int* save_texture_map) {
+	terrainops::build_set_texture(save_texture_map);
+	return 1.0;
+}
+
+ex double terrainops_build_set_vertex_colour(unsigned int* save_colour_map) {
+	terrainops::build_set_vertex_colour(save_colour_map);
+	return 1.0;
+}
+
 ex double terrainops_build_bounds(double x1, double y1, double x2, double y2) {
 	terrainops::build_bounds((int)x1, (int)y1, (int)x2, (int)y2);
 	return 1.0;
