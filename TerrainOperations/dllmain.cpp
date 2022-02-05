@@ -119,6 +119,7 @@ ex double terrainops_build_obj(float* out) {
 	long long length = 0;
 	int vertices = 0;
 	std::stringstream content;
+	terrainops::build_obj(out, &content, &length, &vertices);
 	terrainops::build_cleanup_obj(out, &content, &length, vertices);
 	return (double)length;
 }

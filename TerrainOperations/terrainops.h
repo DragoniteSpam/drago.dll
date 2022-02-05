@@ -65,7 +65,7 @@ namespace terrainops {
 	void build_settings(bool, bool, bool, bool, int, float, unsigned int);
 	void build_bounds(int, int, int, int);
 	void build(float*, std::stringstream*, long long*, int*, void(float*, std::stringstream*, unsigned int, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float));
-	void build_obj(float*, long long*, int*);
+	void build_obj(float*, std::stringstream*, long long*, int*);
 	void generate_internal(float*);
 
 	void build_write_vertex_vbuff(float*, std::stringstream*, unsigned int, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float);

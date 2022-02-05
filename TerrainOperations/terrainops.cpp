@@ -204,7 +204,6 @@ namespace terrainops {
 	void build(float* out, std::stringstream* content, long long* index, int* vertices, void(*callback)(float*, std::stringstream*, unsigned int, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float)) {
 		float* data = terrainops::data;
 		int len = terrainops::data_size.c;
-		float* vertex = terrainops::vertex;
 
 		bool all = terrainops::save_all;
 		bool swap_uv = terrainops::save_swap_uv;
@@ -331,8 +330,117 @@ namespace terrainops {
 		}
 	}
 
-	void build_obj(float* out, long long* index, int* vertices) {
+	void build_obj(float* out, std::stringstream* content, long long* index, int* vertices) {
+		float* data = terrainops::data;
+		int len = terrainops::data_size.c;
 
+		bool all = terrainops::save_all;
+		bool swap_uv = terrainops::save_swap_uv;
+		bool swap_zup = terrainops::save_swap_zup;
+		int density = terrainops::save_density;
+		int w = terrainops::data_size.a;
+		int h = terrainops::data_size.b;
+		float xoff = terrainops::save_centered ? (-(float)w / 2) : 0;
+		float yoff = terrainops::save_centered ? (-(float)h / 2) : 0;
+		float scale = terrainops::save_scale;
+		unsigned int format = terrainops::save_format;
+
+		int x1 = terrainops::save_start.a;
+		int y1 = terrainops::save_start.b;
+		int x2 = terrainops::save_end.a;
+		int y2 = terrainops::save_end.b;
+
+		float x00, x01, x10, x11, y00, y01, y10, y11, z00, z01, z10, z11;
+		unsigned int c00, c01, c10, c11;
+		float xt00, xt01, xt10, xt11, yt00, yt01, yt10, yt11;
+		Vector3 e1, e2;
+		Vector3 normal, tangent, bitangent;
+
+		std::map<std::string, Vector3> normal_map;
+		std::map<std::string, Vector2> texture_map;
+
+		// we'll deal with these later
+		tangent.x = 0;
+		tangent.y = 0;
+		tangent.z = 0;
+		bitangent.x = 0;
+		bitangent.y = 0;
+		bitangent.z = 0;
+
+		for (int x = x1; x <= x2; x += density) {
+			for (int y = y1; y <= y2; y += density) {
+				char line[100];
+				sprintf(line, "v %.1f %.1f %.1f\r\n", x * scale, y * scale, get_z(data, x, y, h) * scale);
+				*content << std::string(line);
+			}
+		}
+
+		return;
+
+		for (int x = x1; x <= x2 - density; x += density) {
+			for (int y = y1; y <= y2 - density; y += density) {
+				x00 = (float)x;
+				y00 = (float)y;
+				z00 = get_z(data, x, y, h);
+
+				x01 = (float)x;
+				y01 = (float)std::min(y + density, h - 1);
+				z01 = get_z(data, x, std::min(y + density, h - 1), h);
+
+				x10 = (float)std::min(x + density, w - 1);
+				y10 = (float)y;
+				z10 = get_z(data, std::min(x + density, w - 1), y, h);
+
+				x11 = (float)std::min(x + density, w - 1);
+				y11 = (float)std::min(y + density, h - 1);
+				z11 = get_z(data, std::min(x + density, w - 1), std::min(y + density, h - 1), h);
+
+				x00 = (x00 + xoff) * scale;
+				x01 = (x01 + xoff) * scale;
+				x10 = (x10 + xoff) * scale;
+				x11 = (x11 + xoff) * scale;
+				y00 = (y00 + yoff) * scale;
+				y01 = (y01 + yoff) * scale;
+				y10 = (y10 + yoff) * scale;
+				y11 = (y11 + yoff) * scale;
+
+				if (all || z00 >= 0 || z10 >= 0 || z11 >= 0) {
+					e1.x = x10 - x00;
+					e1.y = y10 - y00;
+					e1.z = z10 - z00;
+					e2.x = x11 - x00;
+					e2.y = y11 - y00;
+					e2.z = z11 - z00;
+
+					normal.x = e1.y * e2.z - e1.z * e2.y;
+					normal.y = -e1.x * e2.z + e1.z * e2.x;
+					normal.z = e1.x * e2.y - e1.y * e2.x;
+
+					NORMALIZE(normal);
+
+					// if you do smoothed normals, it should go here
+
+					(*vertices) += 3;
+				}
+
+				if (all || z11 >= 0 || z01 >= 0 || z00 >= 0) {
+					e1.x = x01 - x11;
+					e1.y = y01 - y11;
+					e1.z = z01 - z11;
+					e2.x = x00 - x11;
+					e2.y = y00 - y11;
+					e2.z = z00 - z11;
+
+					normal.x = e1.y * e2.z - e1.z * e2.y;
+					normal.y = -e1.x * e2.z + e1.z * e2.x;
+					normal.z = e1.x * e2.y - e1.y * e2.x;
+
+					NORMALIZE(normal);
+
+					(*vertices) += 3;
+				}
+			}
+		}
 	}
 
 	void generate_internal(float* out) {
@@ -516,7 +624,7 @@ namespace terrainops {
 	}
 
 	void build_setup_obj(float* out) {
-		
+
 	}
 
 	void build_cleanup_obj(float* out, std::stringstream* content, long long* length, int vertices) {
