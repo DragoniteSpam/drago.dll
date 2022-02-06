@@ -307,10 +307,7 @@ namespace terrainops {
 					e2.y = y11 - y00;
 					e2.z = z11 - z00;
 
-					normal.x = e1.y * e2.z - e1.z * e2.y;
-					normal.y = -e1.x * e2.z + e1.z * e2.x;
-					normal.z = e1.x * e2.y - e1.y * e2.x;
-
+					CROSS(normal, e1, e2);
 					NORMALIZE(normal);
 
 					// if you do smoothed normals, it should go here
@@ -329,10 +326,7 @@ namespace terrainops {
 					e2.y = y00 - y11;
 					e2.z = z00 - z11;
 
-					normal.x = e1.y * e2.z - e1.z * e2.y;
-					normal.y = -e1.x * e2.z + e1.z * e2.x;
-					normal.z = e1.x * e2.y - e1.y * e2.x;
-
+					CROSS(normal, e1, e2);
 					NORMALIZE(normal);
 
 					callback(out, content, format, index, x11, y11, z11, normal.x, normal.y, normal.z, xt11, yt11, c11, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 1, 0, 0);
@@ -501,10 +495,7 @@ namespace terrainops {
 					e2.y = y11 - y00;
 					e2.z = z11 - z00;
 
-					normal.x = e1.y * e2.z - e1.z * e2.y;
-					normal.y = -e1.x * e2.z + e1.z * e2.x;
-					normal.z = e1.x * e2.y - e1.y * e2.x;
-
+					CROSS(normal, e1, e2);
 					NORMALIZE(normal);
 
 					// if you do smoothed normals, it should go here
@@ -520,10 +511,7 @@ namespace terrainops {
 					e2.y = y00 - y11;
 					e2.z = z00 - z11;
 
-					normal.x = e1.y * e2.z - e1.z * e2.y;
-					normal.y = -e1.x * e2.z + e1.z * e2.x;
-					normal.z = e1.x * e2.y - e1.y * e2.x;
-
+					CROSS(normal, e1, e2);
 					NORMALIZE(normal);
 
 					(*vertices) += 3;

@@ -288,10 +288,7 @@ namespace meshops {
 			e2.y = triangle.c.y - triangle.a.y;
 			e2.z = triangle.c.z - triangle.a.z;
 
-			normal.x = e1.y * e2.z - e1.z * e2.y;
-			normal.y = -e1.x * e2.z + e1.z * e2.x;
-			normal.z = e1.x * e2.y - e1.y * e2.x;
-
+			CROSS(normal, e1, e2);
 			NORMALIZE(normal);
 
 			data[i + 3] = normal.x;
@@ -332,10 +329,7 @@ namespace meshops {
 			e2.y = triangle.c.y - triangle.a.y;
 			e2.z = triangle.c.z - triangle.a.z;
 
-			normal.x = e1.y * e2.z - e1.z * e2.y;
-			normal.y = -e1.x * e2.z + e1.z * e2.x;
-			normal.z = e1.x * e2.y - e1.y * e2.x;
-			
+			CROSS(normal, e1, e2);
 			NORMALIZE(normal);
 
 			data[i + 3] = normal.x;
