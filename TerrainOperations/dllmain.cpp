@@ -93,18 +93,18 @@ ex double terrainops_generate_internal(float* out) {
 	return 1.0;
 }
 
-ex double terrainops_build_settings(double save_all, double swap_zup, double swap_uv, double center, double density, double scale, double format) {
-	terrainops::build_settings((bool)save_all, (bool)swap_zup, (bool)swap_uv, (bool)center, (int)density, (float)scale, (unsigned int)format);
+ex double terrainops_build_settings(double save_all, double swap_zup, double swap_uv, double center, double density, double scale, double tex_size, double format) {
+	terrainops::build_settings((bool)save_all, (bool)swap_zup, (bool)swap_uv, (bool)center, (int)density, (float)scale, (float) tex_size, (unsigned int)format);
 	return 1.0;
 }
 
-ex double terrainops_build_set_texture(unsigned int* save_texture_map) {
-	terrainops::build_set_texture(save_texture_map);
+ex double terrainops_build_texture(unsigned int* save_texture_map) {
+	terrainops::build_texture(save_texture_map);
 	return 1.0;
 }
 
-ex double terrainops_build_set_vertex_colour(unsigned int* save_colour_map) {
-	terrainops::build_set_vertex_colour(save_colour_map);
+ex double terrainops_build_vertex_colour(unsigned int* save_colour_map) {
+	terrainops::build_vertex_colour(save_colour_map);
 	return 1.0;
 }
 

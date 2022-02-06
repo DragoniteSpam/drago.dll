@@ -2,6 +2,8 @@
 #include <main/dragomath.h>
 #include <MeshOperations/building.h>
 
+#include <iostream>
+
 namespace terrainops {
 	bool save_all = true;
 	bool save_swap_zup = false;
@@ -9,6 +11,7 @@ namespace terrainops {
 	bool save_centered = false;
 	int save_density = 1;
 	float save_scale = 1;
+	float save_tex_size = 0.0625;
 	Vector2 save_start;
 	Vector2 save_end;
 	unsigned int save_format = VFX_POSITION_3D | VFX_NORMAL | VFX_TEXCOORD | VFX_COLOUR;
@@ -186,13 +189,14 @@ namespace terrainops {
 	}
 
 	// build vertex data
-	void build_settings(bool save_all, bool swap_zup, bool swap_uv, bool centered, int density, float scale, unsigned int format) {
+	void build_settings(bool save_all, bool swap_zup, bool swap_uv, bool centered, int density, float scale, float tex_size, unsigned int format) {
 		terrainops::save_all = save_all;
 		terrainops::save_swap_zup = swap_zup;
 		terrainops::save_swap_uv = swap_uv;
 		terrainops::save_centered = centered;
 		terrainops::save_density = density;
 		terrainops::save_scale = scale;
+		terrainops::save_tex_size = tex_size;
 		terrainops::save_format = format;
 	}
 
@@ -203,11 +207,11 @@ namespace terrainops {
 		terrainops::save_end.b = y2;
 	}
 
-	void build_set_texture(unsigned int* save_texture_map) {
+	void build_texture(unsigned int* save_texture_map) {
 		terrainops::save_texture_map = save_texture_map;
 	}
 
-	void build_set_vertex_colour(unsigned int* save_colour_map) {
+	void build_vertex_colour(unsigned int* save_colour_map) {
 		terrainops::save_colour_map = save_colour_map;
 	}
 
