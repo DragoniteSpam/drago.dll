@@ -388,6 +388,8 @@ namespace terrainops {
 
 				texcoord.x = (tex & 0xff) / 256.0f;
 				texcoord.y = ((tex >> 8) & 0xff) / 256.0f;
+				if (swap_uv)
+					texcoord.y = 1.0 - texcoord.y;
 
 				// tex00
 				memset(line, 0, sizeof(line));
@@ -534,6 +536,8 @@ namespace terrainops {
 
 				texcoord.x = (tex & 0xff) / 256.0f;
 				texcoord.y = ((tex >> 8) & 0xff) / 256.0f;
+				if (swap_uv)
+					texcoord.y = 1.0 - texcoord.y;
 
 				// tex00
 				memset(line, 0, sizeof(line));
