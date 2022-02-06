@@ -375,15 +375,15 @@ namespace terrainops {
 #define FORMATTED_TEXCOORD "%.8f %.8f"
 #define FORMATTED_NORMAL "%.4f %.4f %.4f"
 
-		for (int x = x1; x <= x2; x += density) {
-			for (int y = y1; y <= y2; y += density) {
-				char line[100];
+		for (int x = x1; x <= x2 - density; x += density) {
+			for (int y = y1; y <= y2 - density; y += density) {
+				char line[100]{ };
 
 				sprintf_s(line, FORMATTED_POSITION, (x + xoff) * scale, (y + yoff) * scale, get_z(data, x, y, h) * scale);
 				position_hash = std::string(line);
 				position_map.insert(std::pair(position_hash, (int)position_map.size()));
 
-				if (x == x2 || y == y2) continue;
+				if (x >= x2 - density || y >= y2 - density) continue;
 
 				unsigned int tex = texture_data[DATA_INDEX(x + 0, y + 0, h)];
 
@@ -469,9 +469,9 @@ namespace terrainops {
 		}
 
 		delete[] normal_hashes;
-
-		for (int x = x1; x <= x2 - density; x += density) {
-			for (int y = y1; y <= y2 - density; y += density) {
+		
+		for (int x = x1; x < std::min(x2 - density, w - 1); x += density) {
+			for (int y = y1; y < std::max(y2 - density, h - 1); y += density) {
 				x00 = (float)x;
 				y00 = (float)y;
 				z00 = get_z(data, x, y, h);
@@ -487,7 +487,7 @@ namespace terrainops {
 				x11 = (float)std::min(x + density, w - 1);
 				y11 = (float)std::min(y + density, h - 1);
 				z11 = get_z(data, std::min(x + density, w - 1), std::min(y + density, h - 1), h);
-
+				
 				x00 = (x00 + xoff) * scale;
 				x01 = (x01 + xoff) * scale;
 				x10 = (x10 + xoff) * scale;
@@ -522,7 +522,6 @@ namespace terrainops {
 
 				sprintf_s(line, FORMATTED_POSITION, x00, y00, z00);
 				std::string v1pos = std::string(line);
-				std::cout << x00 << y00 << z00 << " : " << v1pos << std::endl;
 				memset(line, 0, sizeof(line));
 				sprintf_s(line, FORMATTED_POSITION, x10, y10, z10);
 				std::string v2pos = std::string(line);
@@ -535,14 +534,14 @@ namespace terrainops {
 
 				if (all || ((z00 >= 0 || z10 >= 0 || z11 >= 0) && (z11 >= 0 || z01 >= 0 || z00 >= 0))) {
 					*content << "f " <<
-						position_map[v1pos] << " " <<
-						position_map[v2pos] << " " <<
-						position_map[v3pos] << " " <<
-						position_map[v4pos] << "\r\n";
+						position_map[v1pos] + 1 << " " <<
+						position_map[v2pos] + 1 << " " <<
+						position_map[v3pos] + 1 << " " <<
+						position_map[v4pos] + 1 << "\r\n";
 				} else if (z00 >= 0 || z10 >= 0 || z11 >= 0) {
-					*content << "f " << position_map[v1pos] << " " << position_map[v2pos] << " " << position_map[v3pos] << "\r\n";
+					*content << "f " << position_map[v1pos] + 1 << " " << position_map[v2pos] + 1 << " " << position_map[v3pos] + 1 << "\r\n";
 				} else if (z11 >= 0 || z01 >= 0 || z00 >= 0) {
-					*content << "f " << position_map[v3pos] << " " << position_map[v4pos] << " " << position_map[v1pos] << "\r\n";
+					*content << "f " << position_map[v3pos] + 1 << " " << position_map[v4pos] + 1 << " " << position_map[v1pos] + 1 << "\r\n";
 				}
 			}
 		}
