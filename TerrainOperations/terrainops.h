@@ -88,6 +88,7 @@ namespace terrainops {
 	inline void add_z(float*, float*, int, int, int, int, float);
 	inline void set_z(float*, float*, int, int, int, int, float);
 	void invoke_deformation(bool, void(float*, float*, int, int, int, int, float, float, float));
+	void get_normal(float* data, Vector3* results, int, int, int, int, int, int, int);
 }
 
 #endif

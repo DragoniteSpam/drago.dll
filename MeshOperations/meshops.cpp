@@ -64,8 +64,8 @@ namespace meshops {
 			total_y += data[i + 1];
 		}
 
-		total_x /= len / vsize;
-		total_y /= len / vsize;
+		total_x /= (float)(len / vsize);
+		total_y /= (float)(len / vsize);
 
 		for (int i = 0; i < len; i += vsize) {
 			data[i + 0] -= total_x;
@@ -265,9 +265,9 @@ namespace meshops {
 
 	// normals
 	void set_normals_flat(float* data, int len) {
-		Triangle triangle;
-		Vector3 e1, e2;
-		Vector3 normal;
+		Triangle triangle{ };
+		Vector3 e1{ }, e2{ };
+		Vector3 normal{ };
 		int vsize = meshops::vertex_size;
 
 		for (int i = 0; i < len; i += meshops::vertex_size * 3) {
@@ -307,9 +307,9 @@ namespace meshops {
 	}
 
 	void set_normals_smooth(float* data, int len, float threshold) {
-		Triangle triangle;
-		Vector3 vertex, normal, cached;
-		Vector3 e1, e2;
+		Triangle triangle{ };
+		Vector3 vertex{ }, normal{ }, cached{ };
+		Vector3 e1{ }, e2{ };
 		int vsize = meshops::vertex_size;
 
 		std::map<std::string, Vector3> cache;

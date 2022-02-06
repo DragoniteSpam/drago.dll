@@ -373,7 +373,7 @@ namespace terrainops {
 
 		std::map<std::string, int> normal_map;
 		std::map<std::string, int> texture_map;
-		std::string vertex_hash;
+		std::string vertex_hash, normal_hash;
 
 		// we'll deal with these later
 		tangent.x = 0;
@@ -384,6 +384,7 @@ namespace terrainops {
 		bitangent.z = 0;
 
 		Vector2 texcoord{ };
+		Vector3 t1norm{ }, t2norm{ };
 
 		for (int x = x1; x <= x2; x += density) {
 			for (int y = y1; y <= y2; y += density) {
@@ -418,24 +419,51 @@ namespace terrainops {
 				sprintf_s(line, "%.8f %.8f", texcoord.x, texcoord.y + tex_size);
 				vertex_hash = std::string(line);
 				texture_map.insert(std::pair(vertex_hash, (int)texture_map.size()));
+
+				get_normal(data, &t1norm, x, y, x + density, y, x + density, y + density, h);
+				get_normal(data, &t2norm, x + density, y + density, x, y + density, x, y, h);
+
+				// getting smooth normals in here is going to be a bit more work but hopefully not too much
+				memset(line, 0, sizeof(line));
+				sprintf_s(line, "%.4f %.4f %.4f", t1norm.x, t1norm.y, t1norm.z);
+				normal_hash = std::string(line);
+				normal_map.insert(std::pair(normal_hash, (int)normal_map.size()));
+
+				memset(line, 0, sizeof(line));
+				sprintf_s(line, "%.4f %.4f %.4f", t2norm.x, t2norm.y, t2norm.z);
+				normal_hash = std::string(line);
+				normal_map.insert(std::pair(normal_hash, (int)normal_map.size()));
 			}
 		}
 
 		*content << "\r\n";
 
 		int tex_count = (int)texture_map.size();
-		std::string* hashes = new std::string[tex_count];
+		std::string* tex_hashes = new std::string[tex_count];
 		for (auto const& [key, val] : texture_map) {
-			hashes[val] = key;
+			tex_hashes[val] = key;
 		}
 
 		for (int i = 0; i < tex_count; i++) {
-			*content << "vt " << hashes[i] << "\r\n";
+			*content << "vt " << tex_hashes[i] << "\r\n";
 		}
 		
-		delete[] hashes;
+		delete[] tex_hashes;
 
 		*content << "\r\n";
+
+		int normal_count = (int)normal_map.size();
+		std::string* normal_hashes = new std::string[normal_count];
+		for (auto const& [key, val] : normal_map) {
+			normal_hashes[val] = key;
+		}
+
+		for (int i = 0; i < normal_count; i++) {
+			*content << "vn " << normal_hashes[i] << "\r\n";
+		}
+
+		delete[] normal_hashes;
+
 		return;
 
 		for (int x = x1; x <= x2 - density; x += density) {
@@ -779,5 +807,22 @@ namespace terrainops {
 				callback(data, vertex, w, h, i, j, (pixel & 0x000000ff) / 255.0f, velocity, average);
 			}
 		}
+	}
+
+	void get_normal(float* data, Vector3* results, int x1, int y1, int x2, int y2, int x3, int y3, int h) {
+		float z1 = get_z(data, x1, y1, h);
+		float z2 = get_z(data, x2, y2, h);
+		float z3 = get_z(data, x3, y3, h);
+
+		Vector3 e1{ }, e2{ };
+		e1.x = (float)(x2 - x1);
+		e1.y = (float)(y2 - y1);
+		e1.z = (float)(z2 - z1);
+		e2.x = (float)(x3 - x1);
+		e2.y = (float)(y3 - y1);
+		e2.z = (float)(z3 - z1);
+
+		CROSS(*results, e1, e2);
+		NORMALIZE(*results);
 	}
 }

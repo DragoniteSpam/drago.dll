@@ -9,7 +9,13 @@
 
 #define DOT(a, b) (a.x * b.x + a.y * b.y + a.z * b.z)
 #define MAGNITUDE(vec3) sqrtf(DOT(vec3, vec3))
-#define NORMALIZE(vec3) { float mag = MAGNITUDE(vec3); vec3.x /= mag; vec3.y /= mag; vec3.z /= mag; }
+#define NORMALIZE(vec3) { float mag = MAGNITUDE((vec3)); (vec3).x /= mag; (vec3).y /= mag; (vec3).z /= mag; }
+
+#define CROSS(result, a, b) { \
+	(result).x = e1.y * e2.z - e1.z * e2.y; \
+	(result).y = -e1.x * e2.z + e1.z * e2.x; \
+	(result).z = e1.x * e2.y - e1.y * e2.x; \
+}
 
 // data structures
 struct Vector3 {
