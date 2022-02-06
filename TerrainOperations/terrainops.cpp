@@ -365,9 +365,8 @@ namespace terrainops {
 		Vector3 e1{ }, e2{ };
 		Vector3 normal{ }, tangent{ }, bitangent{ };
 
-		std::map<std::string, int> normal_map;
-		std::map<std::string, int> texture_map;
-		std::string vertex_hash, normal_hash;
+		std::map<std::string, int> position_map, normal_map, texture_map;
+		std::string position_hash, texture_hash, normal_hash;
 
 		// we'll deal with these later
 		tangent.x = 0;
@@ -380,11 +379,17 @@ namespace terrainops {
 		Vector2 texcoord{ };
 		Vector3 t1norm{ }, t2norm{ };
 
+#define FORMATTED_POSITION "%.4f %.4f %.4f"
+#define FORMATTED_TEXCOORD "%.8f %.8f"
+#define FORMATTED_NORMAL "%.4f %.4f %.4f"
+
 		for (int x = x1; x <= x2; x += density) {
 			for (int y = y1; y <= y2; y += density) {
 				char line[100];
-				sprintf_s(line, "v %.1f %.1f %.1f\r\n", x * scale, y * scale, get_z(data, x, y, h) * scale);
-				*content << std::string(line);
+
+				sprintf_s(line, FORMATTED_POSITION, x * scale, y * scale, get_z(data, x, y, h) * scale);
+				position_hash = std::string(line);
+				position_map.insert(std::pair(position_hash, (int)position_map.size()));
 
 				if (x == x2 || y == y2) continue;
 
@@ -395,40 +400,55 @@ namespace terrainops {
 
 				// tex00
 				memset(line, 0, sizeof(line));
-				sprintf_s(line, "%.8f %.8f", texcoord.x, texcoord.y);
-				vertex_hash = std::string(line);
-				texture_map.insert(std::pair(vertex_hash, (int)texture_map.size()));
+				sprintf_s(line, FORMATTED_TEXCOORD, texcoord.x, texcoord.y);
+				texture_hash = std::string(line);
+				texture_map.insert(std::pair(texture_hash, (int)texture_map.size()));
 				// tex10
 				memset(line, 0, sizeof(line));
-				sprintf_s(line, "%.8f %.8f", texcoord.x + tex_size, texcoord.y);
-				vertex_hash = std::string(line);
-				texture_map.insert(std::pair(vertex_hash, (int)texture_map.size()));
+				sprintf_s(line, FORMATTED_TEXCOORD, texcoord.x + tex_size, texcoord.y);
+				texture_hash = std::string(line);
+				texture_map.insert(std::pair(texture_hash, (int)texture_map.size()));
 				// tex11
 				memset(line, 0, sizeof(line));
-				sprintf_s(line, "%.8f %.8f", texcoord.x + tex_size, texcoord.y + tex_size);
-				vertex_hash = std::string(line);
-				texture_map.insert(std::pair(vertex_hash, (int)texture_map.size()));
+				sprintf_s(line, FORMATTED_TEXCOORD, texcoord.x + tex_size, texcoord.y + tex_size);
+				texture_hash = std::string(line);
+				texture_map.insert(std::pair(texture_hash, (int)texture_map.size()));
 				// tex01
 				memset(line, 0, sizeof(line));
-				sprintf_s(line, "%.8f %.8f", texcoord.x, texcoord.y + tex_size);
-				vertex_hash = std::string(line);
-				texture_map.insert(std::pair(vertex_hash, (int)texture_map.size()));
+				sprintf_s(line, FORMATTED_TEXCOORD, texcoord.x, texcoord.y + tex_size);
+				texture_hash = std::string(line);
+				texture_map.insert(std::pair(texture_hash, (int)texture_map.size()));
 
 				get_normal(data, &t1norm, x, y, x + density, y, x + density, y + density, h);
 				get_normal(data, &t2norm, x + density, y + density, x, y + density, x, y, h);
 
 				// getting smooth normals in here is going to be a bit more work but hopefully not too much
 				memset(line, 0, sizeof(line));
-				sprintf_s(line, "%.4f %.4f %.4f", t1norm.x, t1norm.y, t1norm.z);
+				sprintf_s(line, FORMATTED_NORMAL, t1norm.x, t1norm.y, t1norm.z);
 				normal_hash = std::string(line);
 				normal_map.insert(std::pair(normal_hash, (int)normal_map.size()));
 
 				memset(line, 0, sizeof(line));
-				sprintf_s(line, "%.4f %.4f %.4f", t2norm.x, t2norm.y, t2norm.z);
+				sprintf_s(line, FORMATTED_NORMAL, t2norm.x, t2norm.y, t2norm.z);
 				normal_hash = std::string(line);
 				normal_map.insert(std::pair(normal_hash, (int)normal_map.size()));
 			}
 		}
+
+		// technically it'd be more efficient to figure this out with math because we
+		// know the structure of the grid, but also i can't be bothered to do that
+		// and i don't think it'll affect performance that badly
+		int position_count = (int)position_map.size();
+		std::string* position_hashes = new std::string[position_count];
+		for (auto const& [key, val] : position_map) {
+			position_hashes[val] = key;
+		}
+
+		for (int i = 0; i < position_count; i++) {
+			*content << "v " << position_hashes[i] << "\r\n";
+		}
+
+		delete[] position_hashes;
 
 		*content << "\r\n";
 
@@ -518,6 +538,10 @@ namespace terrainops {
 				}
 			}
 		}
+
+#undef FORMATTED_POSITION
+#undef FORMATTED_TEXCOORD
+#undef FORMATTED_NORMAL
 	}
 
 	void generate_internal(float* out) {
