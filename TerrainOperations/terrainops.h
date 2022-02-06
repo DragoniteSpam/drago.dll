@@ -78,9 +78,9 @@ namespace terrainops {
 
 	void build_setup_vbuff(float*);
 	void build_cleanup_vbuff(float*, long long*, int);
-	void build_setup_d3d(float*);
+	void build_setup_d3d(float*, std::stringstream*);
 	void build_cleanup_d3d(float*, std::stringstream*, long long*, int);
-	void build_setup_obj(float*);
+	void build_setup_obj(float*, std::stringstream*);
 	void build_cleanup_obj(float*, std::stringstream*, long long*, int);
 
 	// helper functions

@@ -113,29 +113,29 @@ ex double terrainops_build_bounds(double x1, double y1, double x2, double y2) {
 
 // output
 ex double terrainops_build_d3d(float* out) {
-	terrainops::build_setup_d3d(out);
 	long long length = 0;
 	int vertices = 0;
 	std::stringstream content;
+	terrainops::build_setup_d3d(out, &content);
 	terrainops::build(out, &content, &length, &vertices, &terrainops::build_write_vertex_d3d);
 	terrainops::build_cleanup_d3d(out, &content, &length, vertices);
 	return (double)length;
 }
 
 ex double terrainops_build_obj(float* out) {
-	terrainops::build_setup_obj(out);
 	long long length = 0;
 	int vertices = 0;
 	std::stringstream content;
+	terrainops::build_setup_obj(out, &content);
 	terrainops::build_obj(out, &content, &length, &vertices);
 	terrainops::build_cleanup_obj(out, &content, &length, vertices);
 	return (double)length;
 }
 
 ex double terrainops_build_vbuff(float* out) {
-	terrainops::build_setup_vbuff(out);
 	long long length = 0;
 	int vertices = 0;
+	terrainops::build_setup_vbuff(out);
 	terrainops::build(out, NULL, &length, &vertices, &terrainops::build_write_vertex_vbuff);
 	terrainops::build_cleanup_vbuff(out, &length, vertices);
 	return (double)length;
