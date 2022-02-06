@@ -361,13 +361,11 @@ namespace terrainops {
 		int x2 = terrainops::save_end.a;
 		int y2 = terrainops::save_end.b;
 
-		Vector3 e1{ }, e2{ };
-		Vector3 normal1{ }, normal2{ };
-
 		std::map<std::string, int> position_map, normal_map, texture_map;
 		std::string position_hash, texture_hash, normal_hash;
 
 		Vector2 texcoord{ };
+		Vector3 e1{ }, e2{ };
 		Vector3 t1norm{ }, t2norm{ };
 
 #define FORMATTED_POSITION "%.4f %.4f %.4f"
@@ -378,7 +376,12 @@ namespace terrainops {
 			for (int y = y1; y <= y2 - density; y += density) {
 				char line[100]{ };
 
-				sprintf_s(line, FORMATTED_POSITION, (x + xoff) * scale, (y + yoff) * scale, get_z(data, x, y, h) * scale);
+				if (swap_zup) {
+					sprintf_s(line, FORMATTED_POSITION, (x + xoff) * scale, get_z(data, x, y, h) * scale, (y + yoff) * scale);
+				} else {
+					sprintf_s(line, FORMATTED_POSITION, (x + xoff) * scale, (y + yoff) * scale, get_z(data, x, y, h) * scale);
+				}
+
 				position_hash = std::string(line);
 				position_map.insert(std::pair(position_hash, (int)position_map.size()));
 
@@ -497,6 +500,25 @@ namespace terrainops {
 				y01 = (y01 + yoff) * scale;
 				y10 = (y10 + yoff) * scale;
 				y11 = (y11 + yoff) * scale;
+				z00 *= scale;
+				z10 *= scale;
+				z01 *= scale;
+				z11 *= scale;
+
+				if (swap_zup) {
+					float t = y00;
+					y00 = z00;
+					z00 = t;
+					t = y01;
+					y01 = z01;
+					z01 = t;
+					t = y11;
+					y11 = z11;
+					z11 = t;
+					t = y10;
+					y10 = z10;
+					z10 = t;
+				}
 
 				e1.x = x10 - x00;
 				e1.y = y10 - y00;
@@ -505,8 +527,8 @@ namespace terrainops {
 				e2.y = y11 - y00;
 				e2.z = z11 - z00;
 
-				CROSS(normal1, e1, e2);
-				NORMALIZE(normal1);
+				CROSS(t1norm, e1, e2);
+				NORMALIZE(t1norm);
 
 				e1.x = x01 - x11;
 				e1.y = y01 - y11;
@@ -515,9 +537,19 @@ namespace terrainops {
 				e2.y = y00 - y11;
 				e2.z = z00 - z11;
 
-				CROSS(normal2, e1, e2);
-				NORMALIZE(normal2);
+				CROSS(t2norm, e1, e2);
+				NORMALIZE(t2norm);
+
 				// if you do smoothed normals, it should go here
+
+				if (swap_zup) {
+					float t = t1norm.z;
+					t1norm.z = t1norm.y;
+					t1norm.y = t;
+					t = t2norm.z;
+					t2norm.z = t2norm.y;
+					t2norm.y = t;
+				}
 
 				char line[100];
 				sprintf_s(line, FORMATTED_POSITION, x00, y00, z00);
