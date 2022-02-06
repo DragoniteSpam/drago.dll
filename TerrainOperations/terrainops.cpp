@@ -275,6 +275,25 @@ namespace terrainops {
 				y01 = (y01 + yoff) * scale;
 				y10 = (y10 + yoff) * scale;
 				y11 = (y11 + yoff) * scale;
+				z00 *= scale;
+				z10 *= scale;
+				z01 *= scale;
+				z11 *= scale;
+
+				if (swap_zup) {
+					float t = y00;
+					y00 = z00;
+					z00 = t;
+					t = y01;
+					y01 = z01;
+					z01 = t;
+					t = y11;
+					y11 = z11;
+					z11 = t;
+					t = y10;
+					y10 = z10;
+					z10 = t;
+				}
 
 				// @todo figure out texture UVs
 				xt00 = 0;
@@ -310,6 +329,12 @@ namespace terrainops {
 					CROSS(normal, e1, e2);
 					NORMALIZE(normal);
 
+					if (swap_zup) {
+						float t = normal.z;
+						normal.z = normal.y;
+						normal.y = t;
+					}
+
 					// if you do smoothed normals, it should go here
 
 					callback(out, content, format, index, x00, y00, z00, normal.x, normal.y, normal.z, xt00, yt00, c00, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 1, 0, 0);
@@ -328,6 +353,12 @@ namespace terrainops {
 
 					CROSS(normal, e1, e2);
 					NORMALIZE(normal);
+
+					if (swap_zup) {
+						float t = normal.z;
+						normal.z = normal.y;
+						normal.y = t;
+					}
 
 					callback(out, content, format, index, x11, y11, z11, normal.x, normal.y, normal.z, xt11, yt11, c11, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 1, 0, 0);
 					callback(out, content, format, index, x01, y01, z01, normal.x, normal.y, normal.z, xt01, yt01, c01, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 1, 0);
