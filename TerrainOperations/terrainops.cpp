@@ -238,8 +238,8 @@ namespace terrainops {
 		float x00, x01, x10, x11, y00, y01, y10, y11, z00, z01, z10, z11;
 		unsigned int c00, c01, c10, c11;
 		float xt00, xt01, xt10, xt11, yt00, yt01, yt10, yt11;
-		Vector3 e1, e2;
-		Vector3 normal, tangent, bitangent;
+		Vector3 e1{ }, e2{ };
+		Vector3 normal{ }, tangent{ }, bitangent{ };
 
 		// we'll deal with these later
 		tangent.x = 0;
@@ -358,6 +358,9 @@ namespace terrainops {
 		float yoff = terrainops::save_centered ? (-(float)h / 2) : 0;
 		float scale = terrainops::save_scale;
 		unsigned int format = terrainops::save_format;
+		unsigned int* texture_data = terrainops::save_texture_map;
+		unsigned int* colour_data = terrainops::save_colour_map;
+		float tex_size = terrainops::save_tex_size;
 
 		int x1 = terrainops::save_start.a;
 		int y1 = terrainops::save_start.b;
@@ -365,13 +368,12 @@ namespace terrainops {
 		int y2 = terrainops::save_end.b;
 
 		float x00, x01, x10, x11, y00, y01, y10, y11, z00, z01, z10, z11;
-		unsigned int c00, c01, c10, c11;
-		float xt00, xt01, xt10, xt11, yt00, yt01, yt10, yt11;
-		Vector3 e1, e2;
-		Vector3 normal, tangent, bitangent;
+		Vector3 e1{ }, e2{ };
+		Vector3 normal{ }, tangent{ }, bitangent{ };
 
-		std::map<std::string, Vector3> normal_map;
-		std::map<std::string, Vector2> texture_map;
+		std::map<std::string, int> normal_map;
+		std::map<std::string, int> texture_map;
+		std::string vertex_hash;
 
 		// we'll deal with these later
 		tangent.x = 0;
@@ -381,14 +383,59 @@ namespace terrainops {
 		bitangent.y = 0;
 		bitangent.z = 0;
 
+		Vector2 texcoord{ };
+
 		for (int x = x1; x <= x2; x += density) {
 			for (int y = y1; y <= y2; y += density) {
 				char line[100];
-				sprintf(line, "v %.1f %.1f %.1f\r\n", x * scale, y * scale, get_z(data, x, y, h) * scale);
+				sprintf_s(line, "v %.1f %.1f %.1f\r\n", x * scale, y * scale, get_z(data, x, y, h) * scale);
 				*content << std::string(line);
+
+				if (x == x2 || y == y2) continue;
+
+				unsigned int tex = texture_data[DATA_INDEX(x + 0, y + 0, h)];
+
+				texcoord.x = (tex & 0xff) / 256.0f;
+				texcoord.y = ((tex >> 8) & 0xff) / 256.0f;
+
+				// tex00
+				memset(line, 0, sizeof(line));
+				sprintf_s(line, "%.8f %.8f", texcoord.x, texcoord.y);
+				vertex_hash = std::string(line);
+				texture_map.insert(std::pair(vertex_hash, (int)texture_map.size()));
+				// tex10
+				memset(line, 0, sizeof(line));
+				sprintf_s(line, "%.8f %.8f", texcoord.x + tex_size, texcoord.y);
+				vertex_hash = std::string(line);
+				texture_map.insert(std::pair(vertex_hash, (int)texture_map.size()));
+				// tex11
+				memset(line, 0, sizeof(line));
+				sprintf_s(line, "%.8f %.8f", texcoord.x + tex_size, texcoord.y + tex_size);
+				vertex_hash = std::string(line);
+				texture_map.insert(std::pair(vertex_hash, (int)texture_map.size()));
+				// tex01
+				memset(line, 0, sizeof(line));
+				sprintf_s(line, "%.8f %.8f", texcoord.x, texcoord.y + tex_size);
+				vertex_hash = std::string(line);
+				texture_map.insert(std::pair(vertex_hash, (int)texture_map.size()));
 			}
 		}
 
+		*content << "\r\n";
+
+		int tex_count = (int)texture_map.size();
+		std::string* hashes = new std::string[tex_count];
+		for (auto const& [key, val] : texture_map) {
+			hashes[val] = key;
+		}
+
+		for (int i = 0; i < tex_count; i++) {
+			*content << "vt " << hashes[i] << "\r\n";
+		}
+		
+		delete[] hashes;
+
+		*content << "\r\n";
 		return;
 
 		for (int x = x1; x <= x2 - density; x += density) {
@@ -611,7 +658,7 @@ namespace terrainops {
 		float bc1, float bc2, float bc3
 	) {
 		char line[160];
-		sprintf(line, "9 %.1f %.1f %.5f %.3f %.3f %.3f %.6f %.6f %d %.3f\r\n", x, y, z, nx, ny, nz, u, v, c & 0x00ffffff, (c >> 24) / 255.0);
+		sprintf_s(line, "9 %.1f %.1f %.5f %.3f %.3f %.3f %.6f %.6f %d %.3f\r\n", x, y, z, nx, ny, nz, u, v, c & 0x00ffffff, (c >> 24) / 255.0);
 		*content << std::string(line);
 	}
 
@@ -620,7 +667,7 @@ namespace terrainops {
 	}
 
 	void build_cleanup_vbuff(float* out, long long* length, int) {
-		*length = FLOATS2BYTES(*length);
+		*length = (long long)FLOATS2BYTES(*length);
 	}
 
 	void build_setup_d3d(float* out) {

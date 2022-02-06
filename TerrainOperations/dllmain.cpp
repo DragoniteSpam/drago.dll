@@ -2,8 +2,6 @@
 #include "terrainops.h"
 #include "main/dragomath.h"
 
-#include <iostream>
-
 ex const char* terrainops_version() {
 	return terrainops::version();
 }
