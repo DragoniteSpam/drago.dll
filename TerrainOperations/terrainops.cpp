@@ -361,7 +361,6 @@ namespace terrainops {
 		int x2 = terrainops::save_end.a;
 		int y2 = terrainops::save_end.b;
 
-		float x00, x01, x10, x11, y00, y01, y10, y11, z00, z01, z10, z11;
 		Vector3 e1{ }, e2{ };
 		Vector3 normal1{ }, normal2{ };
 
@@ -472,21 +471,21 @@ namespace terrainops {
 		
 		for (int x = x1; x < std::min(x2 - density, w - 1); x += density) {
 			for (int y = y1; y < std::max(y2 - density, h - 1); y += density) {
-				x00 = (float)x;
-				y00 = (float)y;
-				z00 = get_z(data, x, y, h);
+				float x00 = (float)x;
+				float y00 = (float)y;
+				float z00 = get_z(data, x, y, h);
 
-				x01 = (float)x;
-				y01 = (float)std::min(y + density, h - 1);
-				z01 = get_z(data, x, std::min(y + density, h - 1), h);
+				float x01 = (float)x;
+				float y01 = (float)std::min(y + density, h - 1);
+				float z01 = get_z(data, x, std::min(y + density, h - 1), h);
 
-				x10 = (float)std::min(x + density, w - 1);
-				y10 = (float)y;
-				z10 = get_z(data, std::min(x + density, w - 1), y, h);
+				float x10 = (float)std::min(x + density, w - 1);
+				float y10 = (float)y;
+				float z10 = get_z(data, std::min(x + density, w - 1), y, h);
 
-				x11 = (float)std::min(x + density, w - 1);
-				y11 = (float)std::min(y + density, h - 1);
-				z11 = get_z(data, std::min(x + density, w - 1), std::min(y + density, h - 1), h);
+				float x11 = (float)std::min(x + density, w - 1);
+				float y11 = (float)std::min(y + density, h - 1);
+				float z11 = get_z(data, std::min(x + density, w - 1), std::min(y + density, h - 1), h);
 				
 				x00 = (x00 + xoff) * scale;
 				x01 = (x01 + xoff) * scale;
@@ -519,7 +518,6 @@ namespace terrainops {
 				// if you do smoothed normals, it should go here
 
 				char line[100];
-
 				sprintf_s(line, FORMATTED_POSITION, x00, y00, z00);
 				std::string v1pos = std::string(line);
 				memset(line, 0, sizeof(line));
@@ -532,16 +530,53 @@ namespace terrainops {
 				sprintf_s(line, FORMATTED_POSITION, x01, y01, z01);
 				std::string v4pos = std::string(line);
 
-				if (all || ((z00 >= 0 || z10 >= 0 || z11 >= 0) && (z11 >= 0 || z01 >= 0 || z00 >= 0))) {
+				unsigned int tex = texture_data[DATA_INDEX(x + 0, y + 0, h)];
+
+				texcoord.x = (tex & 0xff) / 256.0f;
+				texcoord.y = ((tex >> 8) & 0xff) / 256.0f;
+
+				// tex00
+				memset(line, 0, sizeof(line));
+				sprintf_s(line, FORMATTED_TEXCOORD, texcoord.x, texcoord.y);
+				std::string v1tex = std::string(line);
+				// tex10
+				memset(line, 0, sizeof(line));
+				sprintf_s(line, FORMATTED_TEXCOORD, texcoord.x + tex_size, texcoord.y);
+				std::string v2tex = std::string(line);
+				// tex11
+				memset(line, 0, sizeof(line));
+				sprintf_s(line, FORMATTED_TEXCOORD, texcoord.x + tex_size, texcoord.y + tex_size);
+				std::string v3tex = std::string(line);
+				// tex01
+				memset(line, 0, sizeof(line));
+				sprintf_s(line, FORMATTED_TEXCOORD, texcoord.x, texcoord.y + tex_size);
+				std::string v4tex = std::string(line);
+
+				get_normal(data, &t1norm, x, y, x + density, y, x + density, y + density, h);
+				get_normal(data, &t2norm, x + density, y + density, x, y + density, x, y, h);
+
+				// getting smooth normals in here is going to be a bit more work but hopefully not too much
+				memset(line, 0, sizeof(line));
+				sprintf_s(line, FORMATTED_NORMAL, t1norm.x, t1norm.y, t1norm.z);
+				std::string normt1 = std::string(line);
+
+				memset(line, 0, sizeof(line));
+				sprintf_s(line, FORMATTED_NORMAL, t2norm.x, t2norm.y, t2norm.z);
+				std::string normt2 = std::string(line);
+
+				// would use a four-vertex face for these but trying to do flat normals with that doesnt
+				// seem to work very well
+				if (all || (z00 >= 0 || z10 >= 0 || z11 >= 0)) {
 					*content << "f " <<
-						position_map[v1pos] + 1 << " " <<
-						position_map[v2pos] + 1 << " " <<
-						position_map[v3pos] + 1 << " " <<
-						position_map[v4pos] + 1 << "\r\n";
-				} else if (z00 >= 0 || z10 >= 0 || z11 >= 0) {
-					*content << "f " << position_map[v1pos] + 1 << " " << position_map[v2pos] + 1 << " " << position_map[v3pos] + 1 << "\r\n";
-				} else if (z11 >= 0 || z01 >= 0 || z00 >= 0) {
-					*content << "f " << position_map[v3pos] + 1 << " " << position_map[v4pos] + 1 << " " << position_map[v1pos] + 1 << "\r\n";
+						position_map[v1pos] + 1 << "/" << texture_map[v1tex] + 1 << "/" << normal_map[normt1] + 1 << " " <<
+						position_map[v2pos] + 1 << "/" << texture_map[v2tex] + 1 << "/" << normal_map[normt1] + 1 << " " <<
+						position_map[v3pos] + 1 << "/" << texture_map[v3tex] + 1 << "/" << normal_map[normt1] + 1 << " \r\n";
+				}
+				if (all || (z11 >= 0 || z01 >= 0 || z00 >= 0)) {
+					*content << "f " <<
+						position_map[v3pos] + 1 << "/" << texture_map[v3tex] + 1 << "/" << normal_map[normt2] + 1 << " " <<
+						position_map[v4pos] + 1 << "/" << texture_map[v4tex] + 1 << "/" << normal_map[normt2] + 1 << " " <<
+						position_map[v1pos] + 1 << "/" << texture_map[v1tex] + 1 << "/" << normal_map[normt2] + 1 << "\r\n";
 				}
 			}
 		}
