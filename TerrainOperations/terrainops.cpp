@@ -363,18 +363,10 @@ namespace terrainops {
 
 		float x00, x01, x10, x11, y00, y01, y10, y11, z00, z01, z10, z11;
 		Vector3 e1{ }, e2{ };
-		Vector3 normal{ }, tangent{ }, bitangent{ };
+		Vector3 normal1{ }, normal2{ };
 
 		std::map<std::string, int> position_map, normal_map, texture_map;
 		std::string position_hash, texture_hash, normal_hash;
-
-		// we'll deal with these later
-		tangent.x = 0;
-		tangent.y = 0;
-		tangent.z = 0;
-		bitangent.x = 0;
-		bitangent.y = 0;
-		bitangent.z = 0;
 
 		Vector2 texcoord{ };
 		Vector3 t1norm{ }, t2norm{ };
@@ -387,7 +379,7 @@ namespace terrainops {
 			for (int y = y1; y <= y2; y += density) {
 				char line[100];
 
-				sprintf_s(line, FORMATTED_POSITION, x * scale, y * scale, get_z(data, x, y, h) * scale);
+				sprintf_s(line, FORMATTED_POSITION, (x + xoff) * scale, (y + yoff) * scale, get_z(data, x, y, h) * scale);
 				position_hash = std::string(line);
 				position_map.insert(std::pair(position_hash, (int)position_map.size()));
 
@@ -478,8 +470,6 @@ namespace terrainops {
 
 		delete[] normal_hashes;
 
-		return;
-
 		for (int x = x1; x <= x2 - density; x += density) {
 			for (int y = y1; y <= y2 - density; y += density) {
 				x00 = (float)x;
@@ -507,34 +497,52 @@ namespace terrainops {
 				y10 = (y10 + yoff) * scale;
 				y11 = (y11 + yoff) * scale;
 
-				if (all || z00 >= 0 || z10 >= 0 || z11 >= 0) {
-					e1.x = x10 - x00;
-					e1.y = y10 - y00;
-					e1.z = z10 - z00;
-					e2.x = x11 - x00;
-					e2.y = y11 - y00;
-					e2.z = z11 - z00;
+				e1.x = x10 - x00;
+				e1.y = y10 - y00;
+				e1.z = z10 - z00;
+				e2.x = x11 - x00;
+				e2.y = y11 - y00;
+				e2.z = z11 - z00;
 
-					CROSS(normal, e1, e2);
-					NORMALIZE(normal);
+				CROSS(normal1, e1, e2);
+				NORMALIZE(normal1);
 
-					// if you do smoothed normals, it should go here
+				e1.x = x01 - x11;
+				e1.y = y01 - y11;
+				e1.z = z01 - z11;
+				e2.x = x00 - x11;
+				e2.y = y00 - y11;
+				e2.z = z00 - z11;
 
-					(*vertices) += 3;
-				}
+				CROSS(normal2, e1, e2);
+				NORMALIZE(normal2);
+				// if you do smoothed normals, it should go here
 
-				if (all || z11 >= 0 || z01 >= 0 || z00 >= 0) {
-					e1.x = x01 - x11;
-					e1.y = y01 - y11;
-					e1.z = z01 - z11;
-					e2.x = x00 - x11;
-					e2.y = y00 - y11;
-					e2.z = z00 - z11;
+				char line[100];
 
-					CROSS(normal, e1, e2);
-					NORMALIZE(normal);
+				sprintf_s(line, FORMATTED_POSITION, x00, y00, z00);
+				std::string v1pos = std::string(line);
+				std::cout << x00 << y00 << z00 << " : " << v1pos << std::endl;
+				memset(line, 0, sizeof(line));
+				sprintf_s(line, FORMATTED_POSITION, x10, y10, z10);
+				std::string v2pos = std::string(line);
+				memset(line, 0, sizeof(line));
+				sprintf_s(line, FORMATTED_POSITION, x11, y11, z11);
+				std::string v3pos = std::string(line);
+				memset(line, 0, sizeof(line));
+				sprintf_s(line, FORMATTED_POSITION, x01, y01, z01);
+				std::string v4pos = std::string(line);
 
-					(*vertices) += 3;
+				if (all || ((z00 >= 0 || z10 >= 0 || z11 >= 0) && (z11 >= 0 || z01 >= 0 || z00 >= 0))) {
+					*content << "f " <<
+						position_map[v1pos] << " " <<
+						position_map[v2pos] << " " <<
+						position_map[v3pos] << " " <<
+						position_map[v4pos] << "\r\n";
+				} else if (z00 >= 0 || z10 >= 0 || z11 >= 0) {
+					*content << "f " << position_map[v1pos] << " " << position_map[v2pos] << " " << position_map[v3pos] << "\r\n";
+				} else if (z11 >= 0 || z01 >= 0 || z00 >= 0) {
+					*content << "f " << position_map[v3pos] << " " << position_map[v4pos] << " " << position_map[v1pos] << "\r\n";
 				}
 			}
 		}
