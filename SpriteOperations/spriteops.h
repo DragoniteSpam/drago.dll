@@ -16,6 +16,7 @@ namespace spriteops {
 	void set_cropped_dimensions_output(int*);
 	void get_cropped_dimensions(int*, int, int, int);
 	void spriteops_remove_transparent_colour(int*, int, int);
+	void set_alpha(unsigned int*, int, int);
 
 	// sprite sampling
 	unsigned int sample(unsigned int*, int, int, float, float);

@@ -80,6 +80,13 @@ namespace spriteops {
 		}
 	}
 
+	void set_alpha(unsigned int* data, int length, int alpha) {
+		unsigned int alpha_mask = alpha << 24;
+		for (int i = 0; i < length; i++) {
+			data[i] = (data[i] & 0x00ffffff) | alpha_mask;
+		}
+	}
+
 	// sprite sampling
 	unsigned int sample(unsigned int* data, int w, int h, float u, float v) {
 		return sample_pixel(data, w, h, u * w, v * h);
