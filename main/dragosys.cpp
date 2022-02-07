@@ -289,7 +289,8 @@ namespace dragosys {
         case PROCESSOR_ARCHITECTURE_INTEL: {
             return "x86";
         };
-        case PROCESSOR_ARCHITECTURE_UNKNOWN: {
+        case PROCESSOR_ARCHITECTURE_UNKNOWN:
+        default: {
             return "dunno lol";
         };
         }

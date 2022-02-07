@@ -229,6 +229,8 @@ namespace terrainops {
 		float yoff = terrainops::save_centered ? (-(float)h / 2) : 0;
 		float scale = terrainops::save_scale;
 		unsigned int format = terrainops::save_format;
+		unsigned int* texture_data = terrainops::save_texture_map;
+		float tex_size = terrainops::save_tex_size;
 
 		int x1 = terrainops::save_start.a;
 		int y1 = terrainops::save_start.b;
@@ -237,9 +239,9 @@ namespace terrainops {
 		
 		float x00, x01, x10, x11, y00, y01, y10, y11, z00, z01, z10, z11;
 		unsigned int c00, c01, c10, c11;
-		float xt00, xt01, xt10, xt11, yt00, yt01, yt10, yt11;
 		Vector3 e1{ }, e2{ };
 		Vector3 normal{ }, tangent{ }, bitangent{ };
+		Vector2 texcoord{ };
 
 		// we'll deal with these later
 		tangent.x = 0;
@@ -295,23 +297,7 @@ namespace terrainops {
 					z10 = t;
 				}
 
-				// @todo figure out texture UVs
-				xt00 = 0;
-				xt01 = 0;
-				xt10 = 0;
-				xt11 = 0;
-
-				if (swap_uv) {
-					yt00 = 1 - 0;
-					yt01 = 1 - 0;
-					yt10 = 1 - 0;
-					yt11 = 1 - 0;
-				} else {
-					yt00 = 0;
-					yt01 = 0;
-					yt10 = 0;
-					yt11 = 0;
-				}
+				get_texcoord(texture_data, &texcoord, x, y, h, swap_uv);
 
 				c00 = 0xffffffff;
 				c01 = 0xffffffff;
@@ -337,9 +323,9 @@ namespace terrainops {
 
 					// if you do smoothed normals, it should go here
 
-					callback(out, content, format, index, x00, y00, z00, normal.x, normal.y, normal.z, xt00, yt00, c00, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 1, 0, 0);
-					callback(out, content, format, index, x10, y10, z10, normal.x, normal.y, normal.z, xt10, yt10, c10, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 1, 0);
-					callback(out, content, format, index, x11, y11, z11, normal.x, normal.y, normal.z, xt11, yt11, c11, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 0, 1);
+					callback(out, content, format, index, x00, y00, z00, normal.x, normal.y, normal.z, texcoord.x, texcoord.y, c00, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 1, 0, 0);
+					callback(out, content, format, index, x10, y10, z10, normal.x, normal.y, normal.z, texcoord.x + tex_size, texcoord.y, c10, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 1, 0);
+					callback(out, content, format, index, x11, y11, z11, normal.x, normal.y, normal.z, texcoord.x + tex_size, texcoord.y + tex_size, c11, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 0, 1);
 					(*vertices) += 3;
 				}
 
@@ -360,9 +346,9 @@ namespace terrainops {
 						normal.y = t;
 					}
 
-					callback(out, content, format, index, x11, y11, z11, normal.x, normal.y, normal.z, xt11, yt11, c11, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 1, 0, 0);
-					callback(out, content, format, index, x01, y01, z01, normal.x, normal.y, normal.z, xt01, yt01, c01, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 1, 0);
-					callback(out, content, format, index, x00, y00, z00, normal.x, normal.y, normal.z, xt00, yt00, c00, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 0, 1);
+					callback(out, content, format, index, x11, y11, z11, normal.x, normal.y, normal.z, texcoord.x + tex_size, texcoord.y + tex_size, c11, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 1, 0, 0);
+					callback(out, content, format, index, x01, y01, z01, normal.x, normal.y, normal.z, texcoord.x, texcoord.y + tex_size, c01, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 1, 0);
+					callback(out, content, format, index, x00, y00, z00, normal.x, normal.y, normal.z, texcoord.x, texcoord.y, c00, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 0, 1);
 					(*vertices) += 3;
 				}
 			}
@@ -418,12 +404,7 @@ namespace terrainops {
 
 				if (x >= x2 - density || y >= y2 - density) continue;
 
-				unsigned int tex = texture_data[DATA_INDEX(x + 0, y + 0, h)];
-
-				texcoord.x = (tex & 0xff) / 256.0f;
-				texcoord.y = ((tex >> 8) & 0xff) / 256.0f;
-				if (swap_uv)
-					texcoord.y = 1.0 - texcoord.y;
+				get_texcoord(texture_data, &texcoord, x, y, h, swap_uv);
 
 				// tex00
 				memset(line, 0, sizeof(line));
@@ -595,12 +576,7 @@ namespace terrainops {
 				sprintf_s(line, FORMATTED_POSITION, x01, y01, z01);
 				std::string v4pos = std::string(line);
 
-				unsigned int tex = texture_data[DATA_INDEX(x + 0, y + 0, h)];
-
-				texcoord.x = (tex & 0xff) / 256.0f;
-				texcoord.y = ((tex >> 8) & 0xff) / 256.0f;
-				if (swap_uv)
-					texcoord.y = 1.0 - texcoord.y;
+				get_texcoord(texture_data, &texcoord, x, y, h, swap_uv);
 
 				// tex00
 				memset(line, 0, sizeof(line));
@@ -947,5 +923,14 @@ namespace terrainops {
 
 		CROSS(*results, e1, e2);
 		NORMALIZE(*results);
+	}
+
+	inline void get_texcoord(unsigned int* texture_data, Vector2* results, int x, int y, int h, bool swap_uvs) {
+		unsigned int tex = texture_data[DATA_INDEX(x + 0, y + 0, h)];
+
+		results->x = (tex & 0xff) / 256.0f;
+		results->y = ((tex >> 8) & 0xff) / 256.0f;
+		if (swap_uvs)
+			results->y = 1.0 - results->y;
 	}
 }

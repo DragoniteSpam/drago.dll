@@ -89,6 +89,7 @@ namespace terrainops {
 	inline void set_z(float*, float*, int, int, int, int, float);
 	void invoke_deformation(bool, void(float*, float*, int, int, int, int, float, float, float));
 	void get_normal(float* data, Vector3* results, int, int, int, int, int, int, int);
+	inline void get_texcoord(unsigned int*, Vector2*, int, int, int, bool);
 }
 
 #endif
