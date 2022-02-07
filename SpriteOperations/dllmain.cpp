@@ -16,7 +16,7 @@ ex double spriteops_get_cropped_dimensions(int* data, double w, double h, double
 }
 
 ex double spriteops_remove_transparent_colour(int* data, double length, double colour) {
-	spriteops::spriteops_remove_transparent_colour(data, BYTES2FLOATS(length), (int)colour);
+	spriteops::remove_transparent_colour(data, BYTES2FLOATS(length), (int)colour);
 	return 1.0;
 }
 
