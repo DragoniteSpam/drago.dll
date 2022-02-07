@@ -18,6 +18,7 @@ namespace terrainops {
 	extern int save_density;
 	extern float save_scale;
 	extern float save_tex_size;
+	extern float save_color_scale;
 	extern Vector2 save_start;
 	extern Vector2 save_end;
 	extern unsigned int save_format;
@@ -90,6 +91,7 @@ namespace terrainops {
 	void invoke_deformation(bool, void(float*, float*, int, int, int, int, float, float, float));
 	void get_normal(float* data, Vector3* results, int, int, int, int, int, int, int);
 	inline void get_texcoord(unsigned int*, Vector2*, int, int, int, bool);
+	inline unsigned int get_colour(unsigned int*, int, int, int, int);
 }
 
 #endif

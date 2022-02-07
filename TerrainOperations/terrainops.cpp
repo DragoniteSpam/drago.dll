@@ -12,6 +12,7 @@ namespace terrainops {
 	int save_density = 1;
 	float save_scale = 1;
 	float save_tex_size = 0.0625;
+	float save_color_scale = 8.0;
 	Vector2 save_start;
 	Vector2 save_end;
 	unsigned int save_format = VFX_POSITION_3D | VFX_NORMAL | VFX_TEXCOORD | VFX_COLOUR;
@@ -189,7 +190,7 @@ namespace terrainops {
 	}
 
 	// build vertex data
-	void build_settings(bool save_all, bool swap_zup, bool swap_uv, bool centered, int density, float scale, float tex_size, unsigned int format) {
+	void build_settings(bool save_all, bool swap_zup, bool swap_uv, bool centered, int density, float scale, float tex_size, float color_scale, unsigned int format) {
 		terrainops::save_all = save_all;
 		terrainops::save_swap_zup = swap_zup;
 		terrainops::save_swap_uv = swap_uv;
@@ -197,6 +198,7 @@ namespace terrainops {
 		terrainops::save_density = density;
 		terrainops::save_scale = scale;
 		terrainops::save_tex_size = tex_size;
+		terrainops::save_color_scale = color_scale;
 		terrainops::save_format = format;
 	}
 
@@ -230,6 +232,7 @@ namespace terrainops {
 		float scale = terrainops::save_scale;
 		unsigned int format = terrainops::save_format;
 		unsigned int* texture_data = terrainops::save_texture_map;
+		unsigned int* colour_data = terrainops::save_colour_map;
 		float tex_size = terrainops::save_tex_size;
 
 		int x1 = terrainops::save_start.a;
