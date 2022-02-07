@@ -66,7 +66,7 @@ namespace terrainops {
 	void mutate();
 
 	// build vertex data
-	void build_settings(bool, bool, bool, bool, int, float, float, unsigned int);
+	void build_settings(bool, bool, bool, bool, int, float, float, float, unsigned int);
 	void build_texture(unsigned int*);
 	void build_vertex_colour(unsigned int*);
 	void build_bounds(int, int, int, int);
@@ -91,7 +91,7 @@ namespace terrainops {
 	void invoke_deformation(bool, void(float*, float*, int, int, int, int, float, float, float));
 	void get_normal(float* data, Vector3* results, int, int, int, int, int, int, int);
 	inline void get_texcoord(unsigned int*, Vector2*, int, int, int, bool);
-	inline unsigned int get_colour(unsigned int*, int, int, int, int);
+	inline unsigned int get_colour(unsigned int*, int, int, int, int, float);
 }
 
 #endif

@@ -230,6 +230,7 @@ namespace terrainops {
 		float xoff = terrainops::save_centered ? (-(float)w / 2) : 0;
 		float yoff = terrainops::save_centered ? (-(float)h / 2) : 0;
 		float scale = terrainops::save_scale;
+		float color_scale = terrainops::save_color_scale;
 		unsigned int format = terrainops::save_format;
 		unsigned int* texture_data = terrainops::save_texture_map;
 		unsigned int* colour_data = terrainops::save_colour_map;
@@ -302,10 +303,10 @@ namespace terrainops {
 
 				get_texcoord(texture_data, &texcoord, x, y, h, swap_uv);
 
-				c00 = 0xffffffff;
-				c01 = 0xffffffff;
-				c10 = 0xffffffff;
-				c11 = 0xffffffff;
+				c00 = get_colour(colour_data, x, y, w, h, color_scale);
+				c01 = get_colour(colour_data, x, y + density, w, h, color_scale);
+				c10 = get_colour(colour_data, x + density, y, w, h, color_scale);
+				c11 = get_colour(colour_data, x + density, y + density, w, h, color_scale);
 
 				if (all || z00 >= 0 || z10 >= 0 || z11 >= 0) {
 					e1.x = x10 - x00;
@@ -934,6 +935,10 @@ namespace terrainops {
 		results->x = (tex & 0xff) / 256.0f;
 		results->y = ((tex >> 8) & 0xff) / 256.0f;
 		if (swap_uvs)
-			results->y = 1.0 - results->y;
+			results->y = 1.0f - results->y;
+	}
+
+	inline unsigned int get_colour(unsigned int* colour_data, int x, int y, int w, int h, float scale) {
+		return spriteops::sample_unfiltered(colour_data, w * scale, h * scale, ((float)x) / w, ((float)y) / h) | 0xff000000;
 	}
 }
