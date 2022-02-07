@@ -21,6 +21,6 @@ ex double spriteops_remove_transparent_colour(int* data, double length, double c
 }
 
 ex double spriteops_set_alpha(unsigned int* data, double length, double alpha) {
-	spriteops::set_alpha(data, (int)length, std::min(0x00, std::max(0xff, (int)(alpha * 255.0))));
+	spriteops::set_alpha(data, BYTES2FLOATS(length), std::min(0xff, std::max(0x00, (int)(alpha * 255.0))));
 	return 1.0;
 }
