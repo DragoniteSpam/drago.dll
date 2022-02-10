@@ -1,5 +1,7 @@
 #include "spriteops.h"
 
+#include <iostream>
+
 namespace spriteops {
 	int* cropped_dimensions_output = nullptr;
 
@@ -96,19 +98,27 @@ namespace spriteops {
 		// might implement texture wrapping some other day but right now i dont feel like it
 		x = std::clamp(x, 0.0f, w - 1.0f);
 		y = std::clamp(y, 0.0f, h - 1.0f);
-		float horizontal_lerp = (float)fmod(x, 1.0f);
-		float vertical_lerp = (float)fmod(y, 1.0f);
-		unsigned int colour_ul = data[(int)GET_INDEX(floor(x), floor(y), w)];
-		unsigned int colour_ur = data[(int)GET_INDEX(ceil(x), floor(y), w)];
-		unsigned int colour_ll = data[(int)GET_INDEX(floor(x), ceil(y), w)];
-		unsigned int colour_lr = data[(int)GET_INDEX(ceil(x), ceil(y), w)];
-		unsigned int colour_l = merge(colour_ul, colour_ll, vertical_lerp);
-		unsigned int colour_r = merge(colour_ur, colour_lr, vertical_lerp);
-		return merge(colour_l, colour_r, horizontal_lerp);
+
+		int xi = (int)x;
+		int yi = (int)y;
+		int xj = std::min(w - 1, xi + 1);
+		int yj = std::min(h - 1, yi + 1);
+		float xf = x - xi;
+		float yf = y - yi;
+
+		unsigned int a = data[(int)GET_INDEX(xi, yi, w)];
+		unsigned int b = data[(int)GET_INDEX(xj, yi, w)];
+		unsigned int c = data[(int)GET_INDEX(xi, yj, w)];
+		unsigned int d = data[(int)GET_INDEX(xj, yj, w)];
+		
+		unsigned int la = merge(a, b, xf);
+		unsigned int lb = merge(c, d, xf);
+		
+		return merge(la, lb, yf);
 	}
 
 	unsigned int sample_unfiltered(unsigned int* data, int w, int h, float u, float v) {
-		return sample_pixel_unfiltered(data, w, h, u * w, v * h);
+		return sample_pixel_unfiltered(data, w, h, u * (w + 0), v * (h + 0));
 	}
 
 	unsigned int sample_pixel_unfiltered(unsigned int* data, int w, int h, float x, float y) {
@@ -129,17 +139,22 @@ namespace spriteops {
 		x = std::clamp(x, 0.0f, w - 1.0f);
 		y = std::clamp(y, 0.0f, h - 1.0f);
 
-#define LERP(a, b, f) ((a) + (f) * ((b) - (a)))
-		float horizontal_lerp = (float)fmod(x, 1);
-		float vertical_lerp = (float)fmod(y, 1);
-		float value_ul = data[(int)GET_INDEX(floor(x), floor(y), w)];
-		float value_ur = data[(int)GET_INDEX(ceil(x), floor(y), w)];
-		float value_ll = data[(int)GET_INDEX(floor(x), ceil(y), w)];
-		float value_lr = data[(int)GET_INDEX(ceil(x), ceil(y), w)];
-		float value_l = LERP(value_ul, value_ll, vertical_lerp);
-		float value_r = LERP(value_ur, value_lr, vertical_lerp);
-		return LERP(value_l, value_r, horizontal_lerp);
-#undef LERP
+		int xi = (int)x;
+		int yi = (int)y;
+		int xj = std::min(w - 1, xi + 1);
+		int yj = std::min(h - 1, yi + 1);
+		float xf = x - xi;
+		float yf = y - yi;
+
+		float a = data[(int)GET_INDEX(xi, yi, w)];
+		float b = data[(int)GET_INDEX(xj, yi, w)];
+		float c = data[(int)GET_INDEX(xi, yj, w)];
+		float d = data[(int)GET_INDEX(xj, yj, w)];
+
+		float la = LERP(a, b, xf);
+		float lb = LERP(c, d, xf);
+
+		return LERP(la, lb, yf);
 	}
 
 	float sample_float_unfiltered(float* data, int w, int h, float u, float v) {
@@ -164,5 +179,6 @@ namespace spriteops {
 		unsigned int bb2 = (b & 0x00ff0000) >> 16;
 		unsigned int aa2 = (b & 0xff000000) >> 24;
 
+		return (unsigned int)(LERP(rr1, rr2, f)) | ((unsigned int)(LERP(gg1, gg2, f)) << 8) | ((unsigned int)(LERP(bb1, bb2, f)) << 16) | ((unsigned int)(LERP(aa1, aa2, f)) << 24);
 	}
 }
