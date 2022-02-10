@@ -5,6 +5,7 @@
 #include "main/dragomath.h"
 #include <math.h>
 #include <algorithm>
+#include "main/dragomath.h"
 
 #define GET_INDEX(x, y, w) ((y) * (w) + (x))
 

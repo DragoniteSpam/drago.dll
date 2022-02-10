@@ -178,10 +178,10 @@ namespace terrainops {
 				
 				if (texture != NULL) {
 					samp_texture = spriteops::sample(texture, texture_w, texture_h, i / (float)w, j / (float)h);
-					samp_texture_r = ((((samp_texture >> 0x00) & 0xff) / 127.0f) - 1) * texture_strength;
-					samp_texture_g = ((((samp_texture >> 0x08) & 0xff) / 127.0f) - 1) * texture_strength;
-					samp_texture_b = ((((samp_texture >> 0x10) & 0xff) / 127.0f) - 1) * texture_strength;
-					samp_texture_a = ((((samp_texture >> 0x18) & 0xff) / 127.0f) - 1) * texture_strength;
+					samp_texture_r = ((((samp_texture >> 0x00) & 0xff) / 127.0f) - 1.0f) * texture_strength;
+					samp_texture_g = ((((samp_texture >> 0x08) & 0xff) / 127.0f) - 1.0f) * texture_strength;
+					samp_texture_b = ((((samp_texture >> 0x10) & 0xff) / 127.0f) - 1.0f) * texture_strength;
+					samp_texture_a = ((((samp_texture >> 0x18) & 0xff) / 127.0f) - 1.0f) * texture_strength;
 				}
 				
 				add_z(data, vertex, i, j, w, h, samp_noise + samp_texture_r);
@@ -939,6 +939,6 @@ namespace terrainops {
 	}
 
 	inline unsigned int get_colour(unsigned int* colour_data, int x, int y, int w, int h, float scale) {
-		return spriteops::sample_unfiltered(colour_data, w * scale, h * scale, ((float)x) / w, ((float)y) / h) | 0xff000000;
+		return spriteops::sample_unfiltered(colour_data, (int)(w * scale), (int)(h * scale), ((float)x) / w, ((float)y) / h) | 0xff000000;
 	}
 }

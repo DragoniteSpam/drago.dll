@@ -164,10 +164,5 @@ namespace spriteops {
 		unsigned int bb2 = (b & 0x00ff0000) >> 16;
 		unsigned int aa2 = (b & 0xff000000) >> 24;
 
-#define LERP(a, b, f) ((unsigned int)((a) + (unsigned int)((f) * ((b) - (a)))))
-
-		return LERP(rr1, rr2, f) | (LERP(gg1, gg2, f) << 8) | (LERP(bb1, bb2, f) << 16) | (LERP(aa1, aa2, f) << 24);
-
-#undef LERP
 	}
 }
