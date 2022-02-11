@@ -1,5 +1,5 @@
 #ifndef __DRAGO_MACAW
-#define __DRAGO_MACAW "1.0.3"
+#define __DRAGO_MACAW "1.0.4"
 
 #include "main/core.h"
 #include "main/dragomath.h"
