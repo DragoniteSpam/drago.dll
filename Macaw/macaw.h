@@ -2,6 +2,7 @@
 #define __DRAGO_MACAW "1.0.3"
 
 #include "main/core.h"
+#include "main/dragomath.h"
 
 namespace macaw {
 	extern float setting_height;
@@ -15,7 +16,6 @@ namespace macaw {
 	void set_octaves(int);
 	float* _gen_white_noise(int, int);
 	float* _gen_smooth_noise(float*, int, int, int);
-	float interpolate(float, float, float);
 
 	void to_sprite(float*, int*, int);
 	void to_vbuff(float*, float*, int, int);

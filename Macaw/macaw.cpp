@@ -7,6 +7,9 @@
 #define GET_3D_INDEX(i, j, k, w, h) (((w) * (h)) * (k) + (i) * (h) + (j))
 #define GET_2D_INDEX(i, j, h) ((i) * (h) + (j))
 
+#define LERP_CUBIC(a, b, f) (((float)(b) - (float)(a)) * (3.0 - (float)(f) * 2.0) * (float)(f) * (float)(f) + (float)(a))
+#define LERP_WHATEVERS_SMOOTHER_THAN_CUBIC(a, b, f) ((float)(b) - (float)(a)) * (((float)(f) * ((float)(f) * 6.0 - 15.0) + 10.0) * (float)(f) * (float)(f) * (float)(f)) + (float)(a);
+
 namespace macaw {
 	extern float setting_height = 1.0;
 	extern int setting_octaves = 6;
@@ -74,23 +77,23 @@ namespace macaw {
 			for (int i = 0; i < w; i++) {
 				int i0 = (i / period) * period;
 				int i1 = (i0 + period) % w;
-				float hblend = (i - i0) * frequency;
+				float hblend = (i * 1.0 - i0 * 1.0) / period;
 
 				for (int j = 0; j < h; j++) {
 					int j0 = (j / period) * period;
 					int j1 = (j0 + period) % h;
-					float vblend = (j - j0) * frequency;
+					float vblend = (j * 1.0 - j0 * 1.0) / period;
 
-					float b00 = base_noise[i0 * h + j0];
-					float b01 = base_noise[i0 * h + j1];
-					float b10 = base_noise[i1 * h + j0];
-					float b11 = base_noise[i1 * h + j1];
+					float a = base_noise[GET_2D_INDEX(i0, j0, h)];
+					float b = base_noise[GET_2D_INDEX(i1, j0, h)];
+					float c = base_noise[GET_2D_INDEX(i0, j1, h)];
+					float d = base_noise[GET_2D_INDEX(i1, j1, h)];
 
-					float top = interpolate(b00, b10, hblend);
-					float bottom = interpolate(b01, b11, hblend);
+					float e = LERP_WHATEVERS_SMOOTHER_THAN_CUBIC(a, b, hblend);
+					float f = LERP_WHATEVERS_SMOOTHER_THAN_CUBIC(c, d, hblend);
 
 #pragma warning(disable:6386)
-					smooth[GET_3D_INDEX(i, j, octave, w, h)] = interpolate(top, bottom, vblend);
+					smooth[GET_3D_INDEX(i, j, octave, w, h)] = LERP_WHATEVERS_SMOOTHER_THAN_CUBIC(e, f, vblend);
 #pragma warning(default:6386)
 				}
 			}
@@ -101,10 +104,6 @@ namespace macaw {
 
 	void seed_set(unsigned int seed) {
 		srand(seed);
-	}
-
-	float interpolate(float a, float b, float f) {
-		return a * (1 - f) + f * b;
 	}
 
 	// these arent really needed but they may be occasionally helpful
