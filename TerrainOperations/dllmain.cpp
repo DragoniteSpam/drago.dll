@@ -140,3 +140,15 @@ ex double terrainops_build_vbuff(float* out) {
 	terrainops::build_cleanup_vbuff(out, &length, vertices);
 	return (double)length;
 }
+
+// other stuff
+
+ex double terrainops_set_cursor_location_output(float* out) {
+	terrainops::set_cursor_location_output(out);
+	return 1.0;
+}
+
+ex double terrainops_get_cursor_location(double ox, double oy, double oz, double dx, double dy, double dz) {
+	terrainops::get_intersecting_triangle((float)ox, (float)oy, (float)oz, (float)dx, (float)dy, (float)dz);
+	return 1.0;
+}

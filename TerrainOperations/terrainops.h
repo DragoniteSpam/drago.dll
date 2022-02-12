@@ -25,6 +25,8 @@ namespace terrainops {
 	extern unsigned int* save_texture_map;
 	extern unsigned int* save_colour_map;
 
+	extern float* cursor_output;
+
 	extern unsigned int* deform_brush_texture;
 	extern Vector3 deform_brush_size;
 	extern Vector3 deform_brush_position;
@@ -47,6 +49,9 @@ namespace terrainops {
 	void set_active_vertex_data(float*);
 	void to_heightmap(unsigned int*, float);
 	void from_heightmap(unsigned int*, float);
+
+	void set_cursor_location_output(float*);
+	void get_intersecting_triangle(float, float, float, float, float, float);
 
 	// deformation
 	void flatten(float);
@@ -92,6 +97,8 @@ namespace terrainops {
 	void get_normal(float* data, Vector3* results, int, int, int, int, int, int, int);
 	inline void get_texcoord(unsigned int*, Vector2*, int, int, int, bool);
 	inline unsigned int get_colour(unsigned int*, int, int, int, int, float);
+
+	inline bool ray_tri(Vector3*, Vector3*, Vector3*, Vector3*, Vector3*);
 }
 
 #endif

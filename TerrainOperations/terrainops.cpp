@@ -16,8 +16,10 @@ namespace terrainops {
 	Vector2 save_start;
 	Vector2 save_end;
 	unsigned int save_format = VFX_POSITION_3D | VFX_NORMAL | VFX_TEXCOORD | VFX_COLOUR;
-	extern unsigned int* save_texture_map = 0;
-	extern unsigned int* save_colour_map = 0;
+	unsigned int* save_texture_map = 0;
+	unsigned int* save_colour_map = 0;
+
+	float* cursor_output = NULL;
 
 	unsigned int* deform_brush_texture = NULL;
 	Vector3 deform_brush_size;
@@ -69,6 +71,14 @@ namespace terrainops {
 			z = in[i] & 0x000000ff;
 			data[i] = z / scale;
 		}
+	}
+
+	void set_cursor_location_output(float* out) {
+		terrainops::cursor_output = out;
+	}
+
+	void get_intersecting_triangle(float ox, float oy, float oz, float dx, float dy, float dz) {
+
 	}
 
 	// deformation
@@ -810,5 +820,9 @@ namespace terrainops {
 
 	inline unsigned int get_colour(unsigned int* colour_data, int x, int y, int w, int h, float scale) {
 		return spriteops::sample_unfiltered(colour_data, (int)(w * scale), (int)(h * scale), ((float)x) / w, ((float)y) / h) | 0xff000000;
+	}
+
+	inline bool ray_tri(Vector3* start, Vector3* direction, Vector3* a, Vector3* b, Vector3* c) {
+
 	}
 }
