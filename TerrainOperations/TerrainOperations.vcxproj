@@ -162,6 +162,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\SpriteOperations\spriteops.cpp" />
+    <ClCompile Include="building.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="terrainops.cpp" />
   </ItemGroup>

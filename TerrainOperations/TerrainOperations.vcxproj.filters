@@ -24,6 +24,9 @@
     <ClCompile Include="..\SpriteOperations\spriteops.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="building.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="terrainops.h">
