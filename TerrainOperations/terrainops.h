@@ -41,7 +41,7 @@ namespace terrainops {
 	extern Vector3 data_size;
 	extern float* vertex;
 
-	extern const int cell_size = 256;
+	extern const int cell_size;
 
 	const char* version();
 
@@ -98,6 +98,7 @@ namespace terrainops {
 	void get_normal(float*, Vector3*, int, int, int, int, int, int, int);
 	inline void get_texcoord(unsigned int*, Vector2*, int, int, int, bool);
 	inline unsigned int get_colour(unsigned int*, int, int, int, int, float);
+	inline unsigned int get_vertex_index(int, int, int, int, int, int);
 
 	inline bool ray_tri(Vector3*, Vector3*, Vector3*, Vector3*, Vector3*);
 }

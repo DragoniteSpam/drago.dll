@@ -36,6 +36,8 @@ namespace terrainops {
 	Vector3 data_size;
 	float* vertex = NULL;
 
+	const int cell_size = 256;
+
 	const char* version() {
 		return __DRAGO_TERRAIN_OP;
 	}
@@ -649,7 +651,6 @@ namespace terrainops {
 		int h = terrainops::data_size.b;
 		float* vertex = terrainops::vertex;
 
-		int index = 0;
 		// the barycentric coordinate gets squeezed into the fractional part of the X coordinate:
 		//  - BC0: 0.5
 		//  - BC1: 0.25
@@ -669,31 +670,34 @@ namespace terrainops {
 #define U 0.25f
 #define V 0.125f
 
+		int cs = terrainops::cell_size;
+
 		for (int i = 0; i < w - 1; i++) {
 			for (int j = 0; j < h - 1; j++) {
-				out[index++] = i + 0 + BC0;
-				out[index++] = j + 0 + T0;
-				out[index++] = get_z(data, i + 0, j + 0, h);
+				unsigned int base_index = get_vertex_index(cs, i, j, w, h, 0);
+				out[base_index + 0] = i + 0 + BC0;
+				out[base_index + 1] = j + 0 + T0;
+				out[base_index + 2] = get_z(data, i + 0, j + 0, h);
 
-				out[index++] = i + 1 + BC1;
-				out[index++] = j + 0 + T0 + U;
-				out[index++] = get_z(data, i + 1, j + 0, h);
+				out[base_index + 3] = i + 1 + BC1;
+				out[base_index + 4] = j + 0 + T0 + U;
+				out[base_index + 5] = get_z(data, i + 1, j + 0, h);
 
-				out[index++] = i + 1 + BC2;
-				out[index++] = j + 1 + T0 + U + V;
-				out[index++] = get_z(data, i + 1, j + 1, h);
+				out[base_index + 6] = i + 1 + BC2;
+				out[base_index + 7] = j + 1 + T0 + U + V;
+				out[base_index + 8] = get_z(data, i + 1, j + 1, h);
 
-				out[index++] = i + 1 + BC0;
-				out[index++] = j + 1 + T1 + U + V;
-				out[index++] = get_z(data, i + 1, j + 1, h);
+				out[base_index + 9] = i + 1 + BC0;
+				out[base_index + 10] = j + 1 + T1 + U + V;
+				out[base_index + 11] = get_z(data, i + 1, j + 1, h);
 
-				out[index++] = i + 0 + BC1;
-				out[index++] = j + 1 + T1 + V;
-				out[index++] = get_z(data, i + 0, j + 1, h);
+				out[base_index + 12] = i + 0 + BC1;
+				out[base_index + 13] = j + 1 + T1 + V;
+				out[base_index + 14] = get_z(data, i + 0, j + 1, h);
 
-				out[index++] = i + 0 + BC2;
-				out[index++] = j + 0 + T1;
-				out[index++] = get_z(data, i + 0, j + 0, h);
+				out[base_index + 15] = i + 0 + BC2;
+				out[base_index + 16] = j + 0 + T1;
+				out[base_index + 17] = get_z(data, i + 0, j + 0, h);
 			}
 		}
 
@@ -718,21 +722,6 @@ namespace terrainops {
 	inline void set_z(float* data, float* vertex, int x, int y, int w, int h, float value) {
 		data[DATA_INDEX(x, y, h)] = value;
 		
-		auto get_vertex_index = [](int cell_size, int x, int y, int w, int h, int vertex) {
-			int column_size = cell_size * h;
-			Vector2 base_chunk{}, local_coordinates{};
-			base_chunk.a = x / cell_size;
-			base_chunk.b = y / cell_size;
-			local_coordinates.a = x % cell_size;
-			local_coordinates.b = y % cell_size;
-			int local_chunk_width = std::min(cell_size, w - base_chunk.a * cell_size);
-			int local_chunk_height = std::min(cell_size, h - base_chunk.b * cell_size);
-			int column_address = base_chunk.a * column_size;
-			int chunk_address = column_address + base_chunk.b * cell_size /* dont use the local chunk height here */ * local_chunk_width;
-			int base_address = chunk_address + local_coordinates.a * local_chunk_height + local_coordinates.b;
-			return (base_address * 6 + vertex) * 3;
-		};
-
 		if (x > 0 && y > 0) {
 			vertex[get_vertex_index(terrainops::cell_size, x - 1, y - 1, w, h, 2) + 2] = value;
 			vertex[get_vertex_index(terrainops::cell_size, x - 1, y - 1, w, h, 3) + 2] = value;
@@ -835,6 +824,21 @@ namespace terrainops {
 
 	inline unsigned int get_colour(unsigned int* colour_data, int x, int y, int w, int h, float scale) {
 		return spriteops::sample_unfiltered(colour_data, (int)(w * scale), (int)(h * scale), ((float)x) / w, ((float)y) / h) | 0xff000000;
+	}
+
+	inline unsigned int get_vertex_index(int cell_size, int x, int y, int w, int h, int vertex) {
+		int column_size = cell_size * h;
+		Vector2 base_chunk{}, local_coordinates{};
+		base_chunk.a = x / cell_size;
+		base_chunk.b = y / cell_size;
+		local_coordinates.a = x % cell_size;
+		local_coordinates.b = y % cell_size;
+		int local_chunk_width = std::min(cell_size, w - base_chunk.a * cell_size);
+		int local_chunk_height = std::min(cell_size, h - base_chunk.b * cell_size);
+		int column_address = base_chunk.a * column_size;
+		int chunk_address = column_address + base_chunk.b * cell_size /* dont use the local chunk height here */ * local_chunk_width;
+		int base_address = chunk_address + local_coordinates.a * local_chunk_height + local_coordinates.b;
+		return (base_address * 6 + vertex) * 3;
 	}
 
 	inline bool ray_tri(Vector3* start, Vector3* direction, Vector3* a, Vector3* b, Vector3* c) {
