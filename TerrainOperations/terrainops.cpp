@@ -674,36 +674,35 @@ namespace terrainops {
 		int w = terrainops::data_size.a;
 		int h = terrainops::data_size.b;
 		float* data = terrainops::data;
-		float* vertex = terrainops::vertex;
 
 		int cs = terrainops::cell_size;
 
 		for (int i = 0; i < w - 1; i++) {
 			for (int j = 0; j < h - 1; j++) {
 				unsigned int base_index = get_vertex_index(cs, i, j, w, h, 0);
-				vertex[base_index + 0] = i + 0 + BC0;
-				vertex[base_index + 1] = j + 0 + T0;
-				vertex[base_index + 2] = get_z(data, i + 0, j + 0, h);
+				out[base_index + 0] = i + 0 + BC0;
+				out[base_index + 1] = j + 0 + T0;
+				out[base_index + 2] = get_z(data, i + 0, j + 0, h);
 				
-				vertex[base_index + 3] = i + 1 + BC1;
-				vertex[base_index + 4] = j + 0 + T0 + U;
-				vertex[base_index + 5] = get_z(data, i + 1, j + 0, h);
+				out[base_index + 3] = i + 1 + BC1;
+				out[base_index + 4] = j + 0 + T0 + U;
+				out[base_index + 5] = get_z(data, i + 1, j + 0, h);
 				
-				vertex[base_index + 6] = i + 1 + BC2;
-				vertex[base_index + 7] = j + 1 + T0 + U + V;
-				vertex[base_index + 8] = get_z(data, i + 1, j + 1, h);
+				out[base_index + 6] = i + 1 + BC2;
+				out[base_index + 7] = j + 1 + T0 + U + V;
+				out[base_index + 8] = get_z(data, i + 1, j + 1, h);
 				
-				vertex[base_index + 9] = i + 1 + BC0;
-				vertex[base_index + 10] = j + 1 + T1 + U + V;
-				vertex[base_index + 11] = get_z(data, i + 1, j + 1, h);
+				out[base_index + 9] = i + 1 + BC0;
+				out[base_index + 10] = j + 1 + T1 + U + V;
+				out[base_index + 11] = get_z(data, i + 1, j + 1, h);
 				
-				vertex[base_index + 12] = i + 0 + BC1;
-				vertex[base_index + 13] = j + 1 + T1 + V;
-				vertex[base_index + 14] = get_z(data, i + 0, j + 1, h);
+				out[base_index + 12] = i + 0 + BC1;
+				out[base_index + 13] = j + 1 + T1 + V;
+				out[base_index + 14] = get_z(data, i + 0, j + 1, h);
 				
-				vertex[base_index + 15] = i + 0 + BC2;
-				vertex[base_index + 16] = j + 0 + T1;
-				vertex[base_index + 17] = get_z(data, i + 0, j + 0, h);
+				out[base_index + 15] = i + 0 + BC2;
+				out[base_index + 16] = j + 0 + T1;
+				out[base_index + 17] = get_z(data, i + 0, j + 0, h);
 			}
 		}
 	}
@@ -713,36 +712,35 @@ namespace terrainops {
 		int w = terrainops::data_size.a / reduction;
 		int h = terrainops::data_size.b / reduction;
 		float* data = terrainops::data;
-		float* lod = terrainops::vertex_lod;
 
 		int cs = terrainops::cell_size;
 
 		for (int i = 0; i < w - 1; i++) {
 			for (int j = 0; j < h - 1; j++) {
 				unsigned int base_index = get_vertex_index(cs, i, j, w, h, 0);
-				vertex[base_index + 0] = i * reduction + 0 + BC0;
-				vertex[base_index + 1] = j * reduction + 0 + T0;
-				vertex[base_index + 2] = get_z(data, (i * reduction) + 0, (j * reduction) + 0, h);
+				out[base_index + 0] = i * reduction + 0 + BC0;
+				out[base_index + 1] = j * reduction + 0 + T0;
+				out[base_index + 2] = get_z(data, (i * reduction) + 0, (j * reduction) + 0, h);
 
-				vertex[base_index + 3] = i * reduction + 1 + BC1;
-				vertex[base_index + 4] = j * reduction + 0 + T0 + U;
-				vertex[base_index + 5] = get_z(data, (i + 1) * reduction, (j * reduction) + 0, h);
+				out[base_index + 3] = i * reduction + 1 + BC1;
+				out[base_index + 4] = j * reduction + 0 + T0 + U;
+				out[base_index + 5] = get_z(data, (i + 1) * reduction, (j * reduction) + 0, h);
 
-				vertex[base_index + 6] = i * reduction + 1 + BC2;
-				vertex[base_index + 7] = j * reduction + 1 + T0 + U + V;
-				vertex[base_index + 8] = get_z(data, (i + 1) * reduction, (j + 1) * reduction, h);
+				out[base_index + 6] = i * reduction + 1 + BC2;
+				out[base_index + 7] = j * reduction + 1 + T0 + U + V;
+				out[base_index + 8] = get_z(data, (i + 1) * reduction, (j + 1) * reduction, h);
 
-				vertex[base_index + 9] = i * reduction + 1 + BC0;
-				vertex[base_index + 10] = j * reduction + 1 + T1 + U + V;
-				vertex[base_index + 11] = get_z(data, (i + 1) * reduction, (j + 1) * reduction, h);
+				out[base_index + 9] = i * reduction + 1 + BC0;
+				out[base_index + 10] = j * reduction + 1 + T1 + U + V;
+				out[base_index + 11] = get_z(data, (i + 1) * reduction, (j + 1) * reduction, h);
 
-				vertex[base_index + 12] = i * reduction + 0 + BC1;
-				vertex[base_index + 13] = j * reduction + 1 + T1 + V;
-				vertex[base_index + 14] = get_z(data, (i * reduction) + 0, (j + 1) * reduction, h);
+				out[base_index + 12] = i * reduction + 0 + BC1;
+				out[base_index + 13] = j * reduction + 1 + T1 + V;
+				out[base_index + 14] = get_z(data, (i * reduction) + 0, (j + 1) * reduction, h);
 
-				vertex[base_index + 15] = i * reduction + 0 + BC2;
-				vertex[base_index + 16] = j * reduction + 0 + T1;
-				vertex[base_index + 17] = get_z(data, (i * reduction) + 0, (j * reduction) + 0, h);
+				out[base_index + 15] = i * reduction + 0 + BC2;
+				out[base_index + 16] = j * reduction + 0 + T1;
+				out[base_index + 17] = get_z(data, (i * reduction) + 0, (j * reduction) + 0, h);
 			}
 		}
 	}
