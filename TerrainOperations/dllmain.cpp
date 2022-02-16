@@ -91,8 +91,8 @@ ex double terrainops_mutate() {
 }
 
 // vertex buffer generation
-ex double terrainops_generate_internal(float* out) {
-	terrainops::generate_internal(out);
+ex double terrainops_generate_internal() {
+	terrainops::generate_internal();
 	return 1.0;
 }
 
