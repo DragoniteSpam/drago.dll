@@ -651,24 +651,16 @@ namespace terrainops {
 #undef FORMATTED_NORMAL
 	}
 
-	void generate_internal() {
-		float* data = terrainops::data;
-		int w = terrainops::data_size.a;
-		int h = terrainops::data_size.b;
-		float* vertex = terrainops::vertex;
-		float* lod = terrainops::vertex_lod;
-		int reduction = terrainops::lod_reduction;
-
-		// the barycentric coordinate gets squeezed into the fractional part of the X coordinate:
-		//  - BC0: 0.5
-		//  - BC1: 0.25
-		//  - BC2: 0.125
-		// the texture offset gets squeezed into the fractional part of the Y coordinate
-		//  - First triangle (coordinates stored in the RG channels): 0.0
-		//  - Second triangle (coordinates stored in the BA channels): 0.5
-		// the triangle internal texture offset gets squeezed into the fractional part of the Y coordinate, also
-		//  - (U + tile size) coordinate: 0.25
-		//  - (V + tile size) coordinate: 0.125
+	// the barycentric coordinate gets squeezed into the fractional part of the X coordinate:
+	//  - BC0: 0.5
+	//  - BC1: 0.25
+	//  - BC2: 0.125
+	// the texture offset gets squeezed into the fractional part of the Y coordinate
+	//  - First triangle (coordinates stored in the RG channels): 0.0
+	//  - Second triangle (coordinates stored in the BA channels): 0.5
+	// the triangle internal texture offset gets squeezed into the fractional part of the Y coordinate, also
+	//  - (U + tile size) coordinate: 0.25
+	//  - (V + tile size) coordinate: 0.125
 
 #define BC0 0.5f
 #define BC1 0.25f
@@ -677,6 +669,12 @@ namespace terrainops {
 #define T1 0.5f
 #define U 0.25f
 #define V 0.125f
+
+	void generate_internal(float* out) {
+		int w = terrainops::data_size.a;
+		int h = terrainops::data_size.b;
+		float* data = terrainops::data;
+		float* vertex = terrainops::vertex;
 
 		int cs = terrainops::cell_size;
 
@@ -708,9 +706,19 @@ namespace terrainops {
 				vertex[base_index + 17] = get_z(data, i + 0, j + 0, h);
 			}
 		}
+	}
 
-		for (int i = 0; i < (w / reduction) - 1; i++) {
-			for (int j = 0; j < (h / reduction) - 1; j++) {
+	void generate_lod_internal(float* out) {
+		int reduction = terrainops::lod_reduction;
+		int w = terrainops::data_size.a / reduction;
+		int h = terrainops::data_size.b / reduction;
+		float* data = terrainops::data;
+		float* lod = terrainops::vertex_lod;
+
+		int cs = terrainops::cell_size;
+
+		for (int i = 0; i < w - 1; i++) {
+			for (int j = 0; j < h - 1; j++) {
 				unsigned int base_index = get_vertex_index(cs, i, j, w, h, 0);
 				vertex[base_index + 0] = i * reduction + 0 + BC0;
 				vertex[base_index + 1] = j * reduction + 0 + T0;
@@ -737,6 +745,7 @@ namespace terrainops {
 				vertex[base_index + 17] = get_z(data, (i * reduction) + 0, (j * reduction) + 0, h);
 			}
 		}
+	}
 
 #undef BC0
 #undef BC1
@@ -745,7 +754,6 @@ namespace terrainops {
 #undef T1
 #undef U
 #undef V
-	}
 
 	// helper functions
 	inline float get_z(float* data, int x, int y, int h) {
