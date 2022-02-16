@@ -718,6 +718,43 @@ namespace terrainops {
 	inline void set_z(float* data, float* vertex, int x, int y, int w, int h, float value) {
 		data[DATA_INDEX(x, y, h)] = value;
 		
+//#define VERTEX_INDEX(x, y, h, vertex) (3 * ((((x) * ((h) - 1) + (y)) * 6) + (vertex)))
+
+		auto get_vertex_index = [](int cell_size, int x, int y, int w, int h, int vertex) {
+			int column_size = cell_size * h;
+			Vector2 base_chunk{}, local_coordinates{};
+			base_chunk.a = x / cell_size;
+			base_chunk.b = y / cell_size;
+			local_coordinates.a = x % cell_size;
+			local_coordinates.b = y % cell_size;
+			int local_chunk_width = std::min(cell_size, w - base_chunk.a * cell_size);
+			int local_chunk_height = std::min(cell_size, h - base_chunk.b * cell_size);
+			int column_address = base_chunk.a * column_size;
+			int chunk_address = column_address + base_chunk.b * cell_size /* dont use the local chunk height here */ * local_chunk_width;
+			int base_address = chunk_address + local_coordinates.a * local_chunk_height + local_coordinates.b;
+			return base_address * 6 + vertex;
+		};
+
+		int cell_size = 256;
+
+		if (x > 0 && y > 0) {
+			vertex[get_vertex_index(cell_size, x - 1, y - 1, w, h, 2) + 2] = value;
+			vertex[get_vertex_index(cell_size, x - 1, y - 1, w, h, 3) + 2] = value;
+		}
+
+		if (x < w && y > 0) {
+			vertex[get_vertex_index(cell_size, x, y - 1, w, h, 4) + 2] = value;
+		}
+
+		if (x > 0 && y < h - 1) {
+			vertex[get_vertex_index(cell_size, x - 1, y, w, h, 1) + 2] = value;
+		}
+
+		if (x < w && y < h - 1) {
+			vertex[get_vertex_index(cell_size, x, y, w, h, 0) + 2] = value;
+			vertex[get_vertex_index(cell_size, x, y, w, h, 5) + 2] = value;
+		}
+		/*
 		if (x > 0 && y > 0) {
 			vertex[VERTEX_INDEX(x - 1, y - 1, h, 2) + 2] = value;
 			vertex[VERTEX_INDEX(x - 1, y - 1, h, 3) + 2] = value;
@@ -735,6 +772,7 @@ namespace terrainops {
 			vertex[VERTEX_INDEX(x, y, h, 0) + 2] = value;
 			vertex[VERTEX_INDEX(x, y, h, 5) + 2] = value;
 		}
+		*/
 	}
 
 	void invoke_deformation(bool calculate_average, void(*callback)(float*, float*, int, int, int, int, float, float, float)) {
