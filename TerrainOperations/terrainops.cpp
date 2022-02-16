@@ -823,6 +823,59 @@ namespace terrainops {
 	}
 
 	inline bool ray_tri(Vector3* start, Vector3* direction, Vector3* a, Vector3* b, Vector3* c) {
+		Vector3 edge1{}, edge2{}, tvec{}, pvec{}, qvec{};
+		float det, inv_det;
 
+		/* find vectors for two edges sharing vert0 */
+		SUB(edge1, (*b), (*a));
+		SUB(edge2, (*c), (*a));
+
+		/* begin calculating determinant - also used to calculate U parameter */
+		CROSS(pvec, (*direction), edge2);
+
+		/* if determinant is near zero, ray lies in plane of triangle */
+		det = DOT(edge1, pvec);
+
+		/* calculate distance from vert0 to ray origin */
+		SUB(tvec, (*start), (*a));
+		inv_det = 1.0f / det;
+
+		Vector3 out{};
+
+		if (det > 0) {
+			/* calculate U parameter and test bounds */
+			out.y = DOT(tvec, pvec);
+			if (out.y < 0.0 || out.y > det)
+				return 0;
+
+			/* prepare to test V parameter */
+			CROSS(qvec, tvec, edge1);
+
+			/* calculate V parameter and test bounds */
+			out.z = DOT((*direction), qvec);
+			if (out.z < 0.0 || out.y + out.z > det)
+				return 0;
+
+		} else if (det < 0) {
+			/* calculate U parameter and test bounds */
+			out.y = DOT(tvec, pvec);
+			if (out.y > 0.0 || out.y < det)
+				return 0;
+
+			/* prepare to test V parameter */
+			CROSS(qvec, tvec, edge1);
+
+			/* calculate V parameter and test bounds */
+			out.z = DOT((*direction), qvec);
+			if (out.z > 0.0 || out.y + out.z < det)
+				return 0;
+		} else return 0;  /* ray is parallell to the plane of the triangle */
+
+		/* calculate t, ray intersects triangle */
+		cursor_output[0] = DOT(edge2, qvec) * inv_det;
+		cursor_output[1] = out.y * inv_det;
+		cursor_output[2] = out.z * inv_det;
+
+		return 1;
 	}
 }
