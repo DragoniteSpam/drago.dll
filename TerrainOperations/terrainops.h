@@ -40,14 +40,17 @@ namespace terrainops {
 	extern float* data;
 	extern Vector3 data_size;
 	extern float* vertex;
+	extern float* vertex_lod;
 
 	extern const int cell_size;
+	extern const int lod_reduction;
 
 	const char* version();
 
 	// general
 	void set_active_data(float*, int, int);
 	void set_active_vertex_data(float*);
+	void set_lod_vertex_data(float*);
 	void to_heightmap(unsigned int*, float);
 	void from_heightmap(unsigned int*, float);
 

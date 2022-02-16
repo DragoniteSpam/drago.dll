@@ -17,6 +17,11 @@ ex double terrainops_set_active_vertex_data(float* vertex) {
 	return 1.0;
 }
 
+ex double terrainops_set_lod_vertex_data(float* lod) {
+	terrainops::set_lod_vertex_data(lod);
+	return 1.0;
+}
+
 // heightmap
 ex double terrainops_to_heightmap(unsigned int* out, double scale) {
 	terrainops::to_heightmap(out, (float)scale);

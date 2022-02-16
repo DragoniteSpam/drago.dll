@@ -35,8 +35,10 @@ namespace terrainops {
 	float* data = NULL;
 	Vector3 data_size;
 	float* vertex = NULL;
+	float* vertex_lod = NULL;
 
 	const int cell_size = 256;
+	const int lod_reduction = 4;
 
 	const char* version() {
 		return __DRAGO_TERRAIN_OP;
@@ -52,6 +54,10 @@ namespace terrainops {
 
 	void set_active_vertex_data(float* vertex) {
 		terrainops::vertex = vertex;
+	}
+
+	void set_lod_vertex_data(float* lod) {
+		terrainops::vertex_lod = lod;
 	}
 
 	void to_heightmap(unsigned int* out, float scale) {
