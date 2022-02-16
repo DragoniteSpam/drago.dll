@@ -41,6 +41,8 @@ namespace terrainops {
 	extern Vector3 data_size;
 	extern float* vertex;
 
+	extern const int cell_size = 256;
+
 	const char* version();
 
 	// general
