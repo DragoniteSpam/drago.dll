@@ -90,11 +90,11 @@ namespace spriteops {
 	}
 
 	// sprite sampling
-	inline unsigned int sample(unsigned int* data, int w, int h, float u, float v) {
+	unsigned int sample(unsigned int* data, int w, int h, float u, float v) {
 		return sample_pixel(data, w, h, u * w, v * h);
 	}
 
-	inline unsigned int sample_pixel(unsigned int* data, int w, int h, float x, float y) {
+	unsigned int sample_pixel(unsigned int* data, int w, int h, float x, float y) {
 		// might implement texture wrapping some other day but right now i dont feel like it
 		x = std::clamp(x, 0.0f, w - 1.0f);
 		y = std::clamp(y, 0.0f, h - 1.0f);
@@ -117,22 +117,22 @@ namespace spriteops {
 		return merge(la, lb, yf);
 	}
 
-	inline unsigned int sample_unfiltered(unsigned int* data, int w, int h, float u, float v) {
+	unsigned int sample_unfiltered(unsigned int* data, int w, int h, float u, float v) {
 		return sample_pixel_unfiltered(data, w, h, u * (w + 0), v * (h + 0));
 	}
 
-	inline unsigned int sample_pixel_unfiltered(unsigned int* data, int w, int h, float x, float y) {
+	unsigned int sample_pixel_unfiltered(unsigned int* data, int w, int h, float x, float y) {
 		// might implement texture wrapping some other day but right now i dont feel like it
 		x = std::clamp(x, 0.0f, w - 1.0f);
 		y = std::clamp(y, 0.0f, h - 1.0f);
 		return data[(int)GET_INDEX(floor(x), floor(y), w)];
 	}
 
-	inline Vector4 sample_vec4(unsigned int* data, int w, int h, float u, float v) {
+	Vector4 sample_vec4(unsigned int* data, int w, int h, float u, float v) {
 		return sample_vec4_pixel(data, w, h, u * w, v * h);
 	}
 
-	inline Vector4 sample_vec4_pixel(unsigned int* data, int w, int h, float x, float y) {
+	Vector4 sample_vec4_pixel(unsigned int* data, int w, int h, float x, float y) {
 		// might implement texture wrapping some other day but right now i dont feel like it
 		x = std::clamp(x, 0.0f, w - 1.0f);
 		y = std::clamp(y, 0.0f, h - 1.0f);
@@ -183,11 +183,11 @@ namespace spriteops {
 		return merge(vla, vlb, yf);
 	}
 
-	inline Vector4 sample_vec4_unfiltered(unsigned int* data, int w, int h, float u, float v) {
+	Vector4 sample_vec4_unfiltered(unsigned int* data, int w, int h, float u, float v) {
 		return sample_vec4_pixel_unfiltered(data, w, h, u * (w + 0), v * (h + 0));
 	}
 
-	inline Vector4 sample_vec4_pixel_unfiltered(unsigned int* data, int w, int h, float x, float y) {
+	Vector4 sample_vec4_pixel_unfiltered(unsigned int* data, int w, int h, float x, float y) {
 		// might implement texture wrapping some other day but right now i dont feel like it
 		x = std::clamp(x, 0.0f, w - 1.0f);
 		y = std::clamp(y, 0.0f, h - 1.0f);
@@ -202,11 +202,11 @@ namespace spriteops {
 
 	// not really sampling from a sprite anymore but the math for doing it with
 	// regular floats is very similar
-	inline float sample_float(float* data, int w, int h, float u, float v) {
+	float sample_float(float* data, int w, int h, float u, float v) {
 		return sample_float_pixel(data, w, h, u * w, v * h);
 	}
 
-	inline float sample_float_pixel(float* data, int w, int h, float x, float y) {
+	float sample_float_pixel(float* data, int w, int h, float x, float y) {
 		// might implement texture wrapping some other day but right now i dont feel like it
 		x = std::clamp(x, 0.0f, w - 1.0f);
 		y = std::clamp(y, 0.0f, h - 1.0f);
@@ -229,11 +229,11 @@ namespace spriteops {
 		return LERP(la, lb, yf);
 	}
 
-	inline float sample_float_unfiltered(float* data, int w, int h, float u, float v) {
+	float sample_float_unfiltered(float* data, int w, int h, float u, float v) {
 		return sample_float_pixel_unfiltered(data, w, h, u * w, v * h);
 	}
 
-	inline float sample_float_pixel_unfiltered(float* data, int w, int h, float x, float y) {
+	float sample_float_pixel_unfiltered(float* data, int w, int h, float x, float y) {
 		// might implement texture wrapping some other day but right now i dont feel like it
 		x = std::clamp(x, 0.0f, w - 1.0f);
 		y = std::clamp(y, 0.0f, h - 1.0f);
@@ -241,7 +241,7 @@ namespace spriteops {
 	}
 
 	// help
-	inline unsigned int merge(unsigned int a, unsigned int b, float f) {
+	unsigned int merge(unsigned int a, unsigned int b, float f) {
 		unsigned int rr1 = (a & 0x000000ff);
 		unsigned int gg1 = (a & 0x0000ff00) >> 8;
 		unsigned int bb1 = (a & 0x00ff0000) >> 16;
@@ -254,7 +254,7 @@ namespace spriteops {
 		return (unsigned int)(LERP(rr1, rr2, f)) | ((unsigned int)(LERP(gg1, gg2, f)) << 8) | ((unsigned int)(LERP(bb1, bb2, f)) << 16) | ((unsigned int)(LERP(aa1, aa2, f)) << 24);
 	}
 
-	inline Vector4 merge(Vector4 a, Vector4 b, float f) {
+	Vector4 merge(Vector4 a, Vector4 b, float f) {
 		return Vector4{
 			LERP_WHATEVERS_SMOOTHER_THAN_CUBIC(a.r, b.r, f),
 			LERP_WHATEVERS_SMOOTHER_THAN_CUBIC(a.g, b.g, f),
