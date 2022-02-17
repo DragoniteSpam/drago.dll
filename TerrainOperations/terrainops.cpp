@@ -207,11 +207,7 @@ namespace terrainops {
 		float noise_strength = terrainops::mutate_noise_data.z;
 
 		float samp_noise = 0;
-		unsigned int samp_texture = 0;
-		float samp_texture_r = 0;
-		float samp_texture_g = 0;
-		float samp_texture_b = 0;
-		float samp_texture_a = 0;
+		Vector4 samp_texture{};
 
 		for (int i = 0; i < w; i++) {
 			for (int j = 0; j < h; j++) {
@@ -220,14 +216,10 @@ namespace terrainops {
 				}
 				
 				if (texture != NULL) {
-					samp_texture = spriteops::sample(texture, texture_w, texture_h, i / (float)w, j / (float)h);
-					samp_texture_r = ((((samp_texture >> 0x00) & 0xff) / 127.0f) - 1.0f) * texture_strength;
-					samp_texture_g = ((((samp_texture >> 0x08) & 0xff) / 127.0f) - 1.0f) * texture_strength;
-					samp_texture_b = ((((samp_texture >> 0x10) & 0xff) / 127.0f) - 1.0f) * texture_strength;
-					samp_texture_a = ((((samp_texture >> 0x18) & 0xff) / 127.0f) - 1.0f) * texture_strength;
+					samp_texture = spriteops::sample_vec4(texture, texture_w, texture_h, i / (float)w, j / (float)h);
 				}
 				
-				add_z(data, vertex, lod, i, j, w, h, samp_noise + samp_texture_r, reduction, cell_size);
+				add_z(data, vertex, lod, i, j, w, h, samp_noise + (samp_texture.r - 0.5f) * 2 * texture_strength, reduction, cell_size);
 			}
 		}
 	}
