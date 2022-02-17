@@ -65,9 +65,9 @@ namespace terrainops {
 	void deform_brush_set_position(float, float);
 	// the deformation functions still use the data pointers, because theyre
 	// called many times
-	void deform_mold(float*, float*, float*, int, int, int, int, float, float, float);
-	void deform_average(float*, float*, float*, int, int, int, int, float, float, float);
-	void deform_zero(float*, float*, float*, int, int, int, int, float, float, float);
+	void deform_mold(float*, float*, float*, int, int, int, int, float, float, float, int, int);
+	void deform_average(float*, float*, float*, int, int, int, int, float, float, float, int, int);
+	void deform_zero(float*, float*, float*, int, int, int, int, float, float, float, int, int);
 
 	// mutation
 	void mutate_set_noise(float*, int, int, float);
@@ -96,9 +96,9 @@ namespace terrainops {
 
 	// helper functions
 	inline float get_z(float*, int, int, int);
-	inline void add_z(float*, float*, float*, int, int, int, int, float);
-	inline void set_z(float*, float*, float*, int, int, int, int, float);
-	void invoke_deformation(bool, void(float*, float*, float*, int, int, int, int, float, float, float));
+	inline void add_z(float*, float*, float*, int, int, int, int, float, int, int);
+	inline void set_z(float*, float*, float*, int, int, int, int, float, int, int);
+	void invoke_deformation(bool, void(float*, float*, float*, int, int, int, int, float, float, float, int, int));
 	inline void get_normal(float*, Vector3*, int, int, int, int, int, int, int);
 	inline void get_normal_smooth(float*, Vector3*, int, int, int, int, int, int, int);
 	inline void get_texcoord(unsigned int*, Vector2*, int, int, int, bool);

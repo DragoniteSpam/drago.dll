@@ -139,16 +139,16 @@ namespace terrainops {
 	// these are a little different, in that they aren't called directly from the
 	// dll entrypoint, but rather are passed as a callback to the
 	// invoke_deformation function
-	void deform_mold(float* data, float* vertex, float* lod, int w, int h, int x, int y, float sampled, float velocity, float average) {
-		add_z(data, vertex, lod, x, y, w, h, sampled * velocity);
+	void deform_mold(float* data, float* vertex, float* lod, int w, int h, int x, int y, float sampled, float velocity, float average, int reduction, int cell_size) {
+		add_z(data, vertex, lod, x, y, w, h, sampled * velocity, reduction, cell_size);
 	}
 
-	void deform_average(float* data, float* vertex, float* lod, int w, int h, int x, int y, float sampled, float velocity, float average) {
-		set_z(data, vertex, lod, x, y, w, h, std::lerp(get_z(data, x, y, h), average, (float)(std::fmax(-0.5, sampled * velocity) / 8.0)));
+	void deform_average(float* data, float* vertex, float* lod, int w, int h, int x, int y, float sampled, float velocity, float average, int reduction, int cell_size) {
+		set_z(data, vertex, lod, x, y, w, h, std::lerp(get_z(data, x, y, h), average, (float)(std::fmax(-0.5, sampled * velocity) / 8.0)), reduction, cell_size);
 	}
 
-	void deform_zero(float* data, float* vertex, float* lod, int w, int h, int x, int y, float sampled, float velocity, float average) {
-		set_z(data, vertex, lod, x, y, w, h, std::lerp(get_z(data, x, y, h), 0, (float)(std::fmax(-0.5, sampled * velocity) / 8.0)));
+	void deform_zero(float* data, float* vertex, float* lod, int w, int h, int x, int y, float sampled, float velocity, float average, int reduction, int cell_size) {
+		set_z(data, vertex, lod, x, y, w, h, std::lerp(get_z(data, x, y, h), 0, (float)(std::fmax(-0.5, sampled * velocity) / 8.0)), reduction, cell_size);
 	}
 
 	// mutation
@@ -172,6 +172,8 @@ namespace terrainops {
 		int h = terrainops::data_size.b;
 		float* vertex = terrainops::vertex;
 		float* lod = terrainops::vertex_lod;
+		int reduction = terrainops::lod_reduction;
+		int cell_size = terrainops::cell_size;
 
 		unsigned int* texture = terrainops::mutate_texture;
 		int texture_w = terrainops::mutate_texture_data.a;
@@ -203,7 +205,7 @@ namespace terrainops {
 					samp_texture_a = ((((samp_texture >> 0x18) & 0xff) / 127.0f) - 1.0f) * texture_strength;
 				}
 				
-				add_z(data, vertex, lod, i, j, w, h, samp_noise + samp_texture_r);
+				add_z(data, vertex, lod, i, j, w, h, samp_noise + samp_texture_r, reduction, cell_size);
 			}
 		}
 	}
@@ -761,38 +763,56 @@ namespace terrainops {
 		return data[DATA_INDEX(x, y, h)];
 	}
 
-	inline void add_z(float* data, float* vertex, float* lod, int x, int y, int w, int h, float value) {
-		set_z(data, vertex, lod, x, y, w, h, value + get_z(data, x, y, h));
+	inline void add_z(float* data, float* vertex, float* lod, int x, int y, int w, int h, float value, int reduction, int cell_size) {
+		set_z(data, vertex, lod, x, y, w, h, value + get_z(data, x, y, h), reduction, cell_size);
 	}
 
-	inline void set_z(float* data, float* vertex, float* lod, int x, int y, int w, int h, float value) {
+	inline void set_z(float* data, float* vertex, float* lod, int x, int y, int w, int h, float value, int reduction, int cell_size) {
 		data[DATA_INDEX(x, y, h)] = value;
+
+		bool is_corner_vertex = (x % reduction == 0) && (y % reduction == 0);
 		
 		if (x > 0 && y > 0) {
-			vertex[get_vertex_index(terrainops::cell_size, x - 1, y - 1, w, h, 2) + 2] = value;
-			vertex[get_vertex_index(terrainops::cell_size, x - 1, y - 1, w, h, 3) + 2] = value;
+			vertex[get_vertex_index(cell_size, x - 1, y - 1, w, h, 2) + 2] = value;
+			vertex[get_vertex_index(cell_size, x - 1, y - 1, w, h, 3) + 2] = value;
+			if (is_corner_vertex) {
+				lod[get_vertex_index(cell_size / reduction, x / reduction - 1, y / reduction - 1, w / reduction, h / reduction, 2) + 2] = value;
+				lod[get_vertex_index(cell_size / reduction, x / reduction - 1, y / reduction - 1, w / reduction, h / reduction, 3) + 2] = value;
+			}
 		}
 
 		if (x < w && y > 0) {
-			vertex[get_vertex_index(terrainops::cell_size, x, y - 1, w, h, 4) + 2] = value;
+			vertex[get_vertex_index(cell_size, x, y - 1, w, h, 4) + 2] = value;
+			if (is_corner_vertex) {
+				lod[get_vertex_index(cell_size / reduction, x / reduction, y / reduction - 1, w / reduction, h / reduction, 4) + 2] = value;
+			}
 		}
 
 		if (x > 0 && y < h - 1) {
-			vertex[get_vertex_index(terrainops::cell_size, x - 1, y, w, h, 1) + 2] = value;
+			vertex[get_vertex_index(cell_size, x - 1, y, w, h, 1) + 2] = value;
+			if (is_corner_vertex) {
+				lod[get_vertex_index(cell_size / reduction, x / reduction - 1, y / reduction, w / reduction, h / reduction, 1) + 2] = value;
+			}
 		}
 
 		if (x < w && y < h - 1) {
-			vertex[get_vertex_index(terrainops::cell_size, x, y, w, h, 0) + 2] = value;
-			vertex[get_vertex_index(terrainops::cell_size, x, y, w, h, 5) + 2] = value;
+			vertex[get_vertex_index(cell_size, x, y, w, h, 0) + 2] = value;
+			vertex[get_vertex_index(cell_size, x, y, w, h, 5) + 2] = value;
+			if (is_corner_vertex) {
+				lod[get_vertex_index(cell_size / reduction, x / reduction, y / reduction, w / reduction, h / reduction, 0) + 2] = value;
+				lod[get_vertex_index(cell_size / reduction, x / reduction, y / reduction, w / reduction, h / reduction, 5) + 2] = value;
+			}
 		}
 	}
 
-	void invoke_deformation(bool calculate_average, void(*callback)(float*, float*, float*, int, int, int, int, float, float, float)) {
+	void invoke_deformation(bool calculate_average, void(*callback)(float*, float*, float*, int, int, int, int, float, float, float, int, int)) {
 		float* data = terrainops::data;
 		int w = terrainops::data_size.a;
 		int h = terrainops::data_size.b;
 		float* vertex = terrainops::vertex;
 		float* lod = terrainops::vertex_lod;
+		int reduction = terrainops::lod_reduction;
+		int cell_size = terrainops::cell_size;
 
 		unsigned int* brush = terrainops::deform_brush_texture;
 		int bw = (int)terrainops::deform_brush_size.x;
@@ -818,8 +838,8 @@ namespace terrainops {
 		unsigned int pixel;
 		float average = 0;
 
-		// if the entire region is out of bounds, dont bother
-		if (x1 >= w - 1 || x2 <= 0 || y1 >= h - 1 || y2 <= 0) return;
+		// if the entire region is zero area, dont bother
+		if (x1 == x2 || y1 == y2) return;
 
 		if (calculate_average) {
 			for (int i = x1; i <= x2; i++) {
@@ -836,7 +856,7 @@ namespace terrainops {
 				// downsampling a filtered image seems to behave strangely but the brush
 				// won't likely ever be smaller than the cursor anyway
 				pixel = spriteops::sample_unfiltered(brush, bw, bh, ((float)(i - bx1a)) / (bx2a - bx1a), ((float)(j - by1a)) / (by2a - by1a));
-				callback(data, vertex, lod, w, h, i, j, (pixel & 0x000000ff) / 255.0f, velocity, average);
+				callback(data, vertex, lod, w, h, i, j, (pixel & 0x000000ff) / 255.0f, velocity, average, reduction, cell_size);
 			}
 		}
 	}
