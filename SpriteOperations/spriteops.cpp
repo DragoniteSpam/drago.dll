@@ -187,7 +187,7 @@ namespace spriteops {
 		return sample_vec4_pixel_unfiltered(data, w, h, u * (w + 0), v * (h + 0));
 	}
 
-	inline Vector4 samplevec4__pixel_unfiltered(unsigned int* data, int w, int h, float x, float y) {
+	inline Vector4 sample_vec4_pixel_unfiltered(unsigned int* data, int w, int h, float x, float y) {
 		// might implement texture wrapping some other day but right now i dont feel like it
 		x = std::clamp(x, 0.0f, w - 1.0f);
 		y = std::clamp(y, 0.0f, h - 1.0f);
@@ -256,10 +256,10 @@ namespace spriteops {
 
 	inline Vector4 merge(Vector4 a, Vector4 b, float f) {
 		return Vector4{
-			LERP(a.r, b.r, f),
-			LERP(a.g, b.g, f),
-			LERP(a.b, b.b, f),
-			LERP(a.a, b.a, f),
+			LERP_WHATEVERS_SMOOTHER_THAN_CUBIC(a.r, b.r, f),
+			LERP_WHATEVERS_SMOOTHER_THAN_CUBIC(a.g, b.g, f),
+			LERP_WHATEVERS_SMOOTHER_THAN_CUBIC(a.b, b.b, f),
+			LERP_WHATEVERS_SMOOTHER_THAN_CUBIC(a.a, b.a, f),
 		};
 	}
 }
