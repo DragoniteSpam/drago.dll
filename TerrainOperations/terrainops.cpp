@@ -38,7 +38,7 @@ namespace terrainops {
 	float* vertex_lod = NULL;
 
 	const int cell_size = 256;
-	const int lod_reduction = 4;
+	const int lod_reduction = 8;
 
 	const char* version() {
 		return __DRAGO_TERRAIN_OP;
