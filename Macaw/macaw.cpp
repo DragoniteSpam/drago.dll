@@ -7,9 +7,6 @@
 #define GET_3D_INDEX(i, j, k, w, h) (((w) * (h)) * (k) + (i) * (h) + (j))
 #define GET_2D_INDEX(i, j, h) ((i) * (h) + (j))
 
-#define LERP_CUBIC(a, b, f) (((float)(b) - (float)(a)) * (3.0 - (float)(f) * 2.0) * (float)(f) * (float)(f) + (float)(a))
-#define LERP_WHATEVERS_SMOOTHER_THAN_CUBIC(a, b, f) ((float)(b) - (float)(a)) * (((float)(f) * ((float)(f) * 6.0 - 15.0) + 10.0) * (float)(f) * (float)(f) * (float)(f)) + (float)(a);
-
 namespace macaw {
 	extern float setting_height = 1.0;
 	extern int setting_octaves = 6;
