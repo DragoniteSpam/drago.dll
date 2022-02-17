@@ -24,22 +24,18 @@ struct Vector4 {
 	union {
 		float x;
 		float r;
-		int a;
 	};
 	union {
 		float y;
 		float g;
-		int b;
 	};
 	union {
 		float z;
 		float b;
-		int c;
 	};
 	union {
 		float w;
 		float a;
-		int d;
 	};
 };
 
