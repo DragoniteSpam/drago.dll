@@ -849,7 +849,7 @@ namespace terrainops {
 		int x2 = std::min(w - 1, bx2a);
 		int y2 = std::min(h - 1, by2a);
 
-		unsigned int pixel;
+		Vector4 pixel;
 		float average = 0;
 
 		// if the entire region is zero area, dont bother
@@ -869,8 +869,8 @@ namespace terrainops {
 			for (int j = y1; j <= y2; j++) {
 				// downsampling a filtered image seems to behave strangely but the brush
 				// won't likely ever be smaller than the cursor anyway
-				pixel = spriteops::sample_unfiltered(brush, bw, bh, ((float)(i - bx1a)) / (bx2a - bx1a), ((float)(j - by1a)) / (by2a - by1a));
-				callback(data, vertex, lod, w, h, i, j, (pixel & 0x000000ff) / 255.0f, velocity, average, reduction, cell_size);
+				pixel = spriteops::sample_vec4(brush, bw, bh, ((float)(i - bx1a)) / (bx2a - bx1a), ((float)(j - by1a)) / (by2a - by1a));
+				callback(data, vertex, lod, w, h, i, j, pixel.r, velocity, average, reduction, cell_size);
 			}
 		}
 	}
