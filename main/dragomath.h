@@ -8,8 +8,8 @@
 #define DOUBLES2BYTES(floats) (((int)(floats)) * 8)
 
 #define LERP(a, b, f) ((a) * 1.0f + (f) * ((b) * 1.0f - (a) * 1.0f))
-#define LERP_CUBIC(a, b, f) (((float)(b) - (float)(a)) * (3.0 - (float)(f) * 2.0) * (float)(f) * (float)(f) + (float)(a))
-#define LERP_WHATEVERS_SMOOTHER_THAN_CUBIC(a, b, f) ((float)(b) - (float)(a)) * (((float)(f) * ((float)(f) * 6.0 - 15.0) + 10.0) * (float)(f) * (float)(f) * (float)(f)) + (float)(a);
+#define LERP_CUBIC(a, b, f) (((float)(b) - (float)(a)) * (3.0f - (float)(f) * 2.0f) * (float)(f) * (float)(f) + (float)(a))
+#define LERP_WHATEVERS_SMOOTHER_THAN_CUBIC(a, b, f) ((float)(b) - (float)(a)) * (((float)(f) * ((float)(f) * 6.0f - 15.0f) + 10.0f) * (float)(f) * (float)(f) * (float)(f)) + (float)(a)
 
 #define ADD(result, a, b) { (result).x = a.x + b.x; (result).y = a.y + b.y; (result).z = a.z + b.z; }
 #define SUB(result, a, b) { (result).x = a.x - b.x; (result).y = a.y - b.y; (result).z = a.z - b.z; }
