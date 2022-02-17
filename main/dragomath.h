@@ -20,6 +20,29 @@
 #define NORMALIZE(vec3) { float mag = MAGNITUDE((vec3)); (vec3).x /= mag; (vec3).y /= mag; (vec3).z /= mag; }
 
 // data structures
+struct Vector4 {
+	union {
+		float x;
+		float r;
+		int a;
+	};
+	union {
+		float y;
+		float g;
+		int b;
+	};
+	union {
+		float z;
+		float b;
+		int c;
+	};
+	union {
+		float w;
+		float a;
+		int d;
+	};
+};
+
 struct Vector3 {
 	union {
 		float x;
