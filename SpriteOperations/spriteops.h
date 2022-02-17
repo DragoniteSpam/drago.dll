@@ -20,23 +20,24 @@ namespace spriteops {
 	void set_alpha(unsigned int*, int, int);
 
 	// sprite sampling
-	unsigned int sample(unsigned int*, int, int, float, float);
-	unsigned int sample_pixel(unsigned int*, int, int, float, float);
-	unsigned int sample_unfiltered(unsigned int*, int, int, float, float);
-	unsigned int sample_pixel_unfiltered(unsigned int*, int, int, float, float);
-	Vector4 sample_vec4(unsigned int*, int, int, float, float);
-	Vector4 sample_pixel_vec4(unsigned int*, int, int, float, float);
-	Vector4 sample_unfiltered_vec4(unsigned int*, int, int, float, float);
-	Vector4 sample_pixel_unfiltered_vec4(unsigned int*, int, int, float, float);
+	inline unsigned int sample(unsigned int*, int, int, float, float);
+	inline unsigned int sample_pixel(unsigned int*, int, int, float, float);
+	inline unsigned int sample_unfiltered(unsigned int*, int, int, float, float);
+	inline unsigned int sample_pixel_unfiltered(unsigned int*, int, int, float, float);
 
-	float sample_float(float*, int, int, float, float);
-	float sample_float_pixel(float*, int, int, float, float);
-	float sample_float_unfiltered(float*, int, int, float, float);
-	float sample_float_pixel_unfiltered(float*, int, int, float, float);
+	inline Vector4 sample_vec4(unsigned int*, int, int, float, float);
+	inline Vector4 sample_vec4_pixel(unsigned int*, int, int, float, float);
+	inline Vector4 sample_vec4_unfiltered(unsigned int*, int, int, float, float);
+	inline Vector4 sample_vec4_pixel_unfiltered(unsigned int*, int, int, float, float);
+
+	inline float sample_float(float*, int, int, float, float);
+	inline float sample_float_pixel(float*, int, int, float, float);
+	inline float sample_float_unfiltered(float*, int, int, float, float);
+	inline float sample_float_pixel_unfiltered(float*, int, int, float, float);
 	
 	// help
-	unsigned int merge(unsigned int, unsigned int, float);
-	Vector4 merge(Vector4, Vector4, float);
+	inline unsigned int merge(unsigned int, unsigned int, float);
+	inline Vector4 merge(Vector4, Vector4, float);
 }
 
 #endif
