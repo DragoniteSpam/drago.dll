@@ -841,7 +841,7 @@ namespace terrainops {
 		}
 	}
 
-	void get_normal(float* data, Vector3* results, int x1, int y1, int x2, int y2, int x3, int y3, int h) {
+	inline void get_normal(float* data, Vector3* results, int x1, int y1, int x2, int y2, int x3, int y3, int h) {
 		float z1 = get_z(data, x1, y1, h);
 		float z2 = get_z(data, x2, y2, h);
 		float z3 = get_z(data, x3, y3, h);
@@ -856,6 +856,10 @@ namespace terrainops {
 
 		CROSS(*results, e1, e2);
 		NORMALIZE(*results);
+	}
+
+	inline void get_normal_smooth(float* data, Vector3* results, int x1, int y1, int x2, int y2, int x3, int y3, int h) {
+		get_normal(data, results, x1, y1, x2, y2, x3, y3, h);
 	}
 
 	inline void get_texcoord(unsigned int* texture_data, Vector2* results, int x, int y, int h, bool swap_uvs) {

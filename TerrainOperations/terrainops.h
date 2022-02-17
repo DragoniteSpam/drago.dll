@@ -99,7 +99,8 @@ namespace terrainops {
 	inline void add_z(float*, float*, int, int, int, int, float);
 	inline void set_z(float*, float*, int, int, int, int, float);
 	void invoke_deformation(bool, void(float*, float*, int, int, int, int, float, float, float));
-	void get_normal(float*, Vector3*, int, int, int, int, int, int, int);
+	inline void get_normal(float*, Vector3*, int, int, int, int, int, int, int);
+	inline void get_normal_smooth(float*, Vector3*, int, int, int, int, int, int, int);
 	inline void get_texcoord(unsigned int*, Vector2*, int, int, int, bool);
 	inline unsigned int get_colour(unsigned int*, int, int, int, int, float);
 	inline unsigned int get_vertex_index(int, int, int, int, int, int);
