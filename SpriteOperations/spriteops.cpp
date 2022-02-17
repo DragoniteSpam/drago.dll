@@ -110,10 +110,10 @@ namespace spriteops {
 		unsigned int b = data[(int)GET_INDEX(xj, yi, w)];
 		unsigned int c = data[(int)GET_INDEX(xi, yj, w)];
 		unsigned int d = data[(int)GET_INDEX(xj, yj, w)];
-		
+
 		unsigned int la = merge(a, b, xf);
 		unsigned int lb = merge(c, d, xf);
-		
+
 		return merge(la, lb, yf);
 	}
 
@@ -126,6 +126,78 @@ namespace spriteops {
 		x = std::clamp(x, 0.0f, w - 1.0f);
 		y = std::clamp(y, 0.0f, h - 1.0f);
 		return data[(int)GET_INDEX(floor(x), floor(y), w)];
+	}
+
+	Vector4 sample_vec4(unsigned int* data, int w, int h, float u, float v) {
+		return sample_pixel_vec4(data, w, h, u * w, v * h);
+	}
+
+	Vector4 sample_pixel_vec4(unsigned int* data, int w, int h, float x, float y) {
+		// might implement texture wrapping some other day but right now i dont feel like it
+		x = std::clamp(x, 0.0f, w - 1.0f);
+		y = std::clamp(y, 0.0f, h - 1.0f);
+
+		int xi = (int)x;
+		int yi = (int)y;
+		int xj = std::min(w - 1, xi + 1);
+		int yj = std::min(h - 1, yi + 1);
+		float xf = x - xi;
+		float yf = y - yi;
+
+		unsigned int a = data[(int)GET_INDEX(xi, yi, w)];
+		unsigned int b = data[(int)GET_INDEX(xj, yi, w)];
+		unsigned int c = data[(int)GET_INDEX(xi, yj, w)];
+		unsigned int d = data[(int)GET_INDEX(xj, yj, w)];
+
+		Vector4 va{
+			((a & 0xff) >> 0x00) / 255.0f,
+			((a & 0xff) >> 0x08) / 255.0f,
+			((a & 0xff) >> 0x10) / 255.0f,
+			((a & 0xff) >> 0x18) / 255.0f,
+		};
+
+		Vector4 vb{
+			((b & 0xff) >> 0x00) / 255.0f,
+			((b & 0xff) >> 0x08) / 255.0f,
+			((b & 0xff) >> 0x10) / 255.0f,
+			((b & 0xff) >> 0x18) / 255.0f,
+		};
+
+		Vector4 vc{
+			((c & 0xff) >> 0x00) / 255.0f,
+			((c & 0xff) >> 0x08) / 255.0f,
+			((c & 0xff) >> 0x10) / 255.0f,
+			((c & 0xff) >> 0x18) / 255.0f,
+		};
+
+		Vector4 vd{
+			((d & 0xff) >> 0x00) / 255.0f,
+			((d & 0xff) >> 0x08) / 255.0f,
+			((d & 0xff) >> 0x10) / 255.0f,
+			((d & 0xff) >> 0x18) / 255.0f,
+		};
+
+		Vector4 vla = merge(va, vb, xf);
+		Vector4 vlb = merge(vc, vd, xf);
+
+		return merge(vla, vlb, yf);
+	}
+
+	Vector4 sample_unfiltered_vec4(unsigned int* data, int w, int h, float u, float v) {
+		return sample_pixel_unfiltered_vec4(data, w, h, u * (w + 0), v * (h + 0));
+	}
+
+	Vector4 sample_pixel_unfiltered_vec4(unsigned int* data, int w, int h, float x, float y) {
+		// might implement texture wrapping some other day but right now i dont feel like it
+		x = std::clamp(x, 0.0f, w - 1.0f);
+		y = std::clamp(y, 0.0f, h - 1.0f);
+		unsigned int value = data[(int)GET_INDEX(floor(x), floor(y), w)];
+		return Vector4{
+			((value >> 0x00) & 0xff) / 255.0f,
+			((value >> 0x08) & 0xff) / 255.0f,
+			((value >> 0x10) & 0xff) / 255.0f,
+			((value >> 0x18) & 0xff) / 255.0f,
+		};
 	}
 
 	// not really sampling from a sprite anymore but the math for doing it with
@@ -180,5 +252,14 @@ namespace spriteops {
 		unsigned int aa2 = (b & 0xff000000) >> 24;
 
 		return (unsigned int)(LERP(rr1, rr2, f)) | ((unsigned int)(LERP(gg1, gg2, f)) << 8) | ((unsigned int)(LERP(bb1, bb2, f)) << 16) | ((unsigned int)(LERP(aa1, aa2, f)) << 24);
+	}
+
+	Vector4 merge(Vector4 a, Vector4 b, float f) {
+		return Vector4{
+			LERP(a.r, b.r, f),
+			LERP(a.g, b.g, f),
+			LERP(a.b, b.b, f),
+			LERP(a.a, b.a, f),
+		};
 	}
 }

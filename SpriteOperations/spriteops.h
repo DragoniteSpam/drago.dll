@@ -24,6 +24,10 @@ namespace spriteops {
 	unsigned int sample_pixel(unsigned int*, int, int, float, float);
 	unsigned int sample_unfiltered(unsigned int*, int, int, float, float);
 	unsigned int sample_pixel_unfiltered(unsigned int*, int, int, float, float);
+	Vector4 sample_vec4(unsigned int*, int, int, float, float);
+	Vector4 sample_pixel_vec4(unsigned int*, int, int, float, float);
+	Vector4 sample_unfiltered_vec4(unsigned int*, int, int, float, float);
+	Vector4 sample_pixel_unfiltered_vec4(unsigned int*, int, int, float, float);
 
 	float sample_float(float*, int, int, float, float);
 	float sample_float_pixel(float*, int, int, float, float);
@@ -32,6 +36,7 @@ namespace spriteops {
 	
 	// help
 	unsigned int merge(unsigned int, unsigned int, float);
+	Vector4 merge(Vector4, Vector4, float);
 }
 
 #endif
