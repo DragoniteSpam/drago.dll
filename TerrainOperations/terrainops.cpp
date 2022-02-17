@@ -103,6 +103,17 @@ namespace terrainops {
 			vertex[i * 18 + 14] = height;
 			vertex[i * 18 + 17] = height;
 		}
+
+		int len_lod = len / (terrainops::lod_reduction * terrainops::lod_reduction);
+		float* lod = terrainops::vertex_lod;
+		for (int i = 0; i < len_lod; i++) {
+			lod[i * 18 + 2] = height;
+			lod[i * 18 + 5] = height;
+			lod[i * 18 + 8] = height;
+			lod[i * 18 + 11] = height;
+			lod[i * 18 + 14] = height;
+			lod[i * 18 + 17] = height;
+		}
 	}
 
 	void apply_scale(float scale) {
@@ -117,6 +128,17 @@ namespace terrainops {
 			vertex[i * 18 + 11] *= scale;
 			vertex[i * 18 + 14] *= scale;
 			vertex[i * 18 + 17] *= scale;
+		}
+
+		int len_lod = len / (terrainops::lod_reduction * terrainops::lod_reduction);
+		float* lod = terrainops::vertex_lod;
+		for (int i = 0; i < len_lod; i++) {
+			lod[i * 18 + 2] *= scale;
+			lod[i * 18 + 5] *= scale;
+			lod[i * 18 + 8] *= scale;
+			lod[i * 18 + 11] *= scale;
+			lod[i * 18 + 14] *= scale;
+			lod[i * 18 + 17] *= scale;
 		}
 	}
 
