@@ -37,7 +37,7 @@ namespace terrainops {
 	float* vertex = NULL;
 	float* vertex_lod = NULL;
 
-	const int cell_size = 256;
+	const int cell_size = 200;
 	const int lod_reduction = 8;
 
 	const char* version() {
