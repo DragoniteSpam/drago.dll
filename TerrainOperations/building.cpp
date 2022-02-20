@@ -115,7 +115,7 @@ namespace terrainops {
 					z10 = t;
 				}
 
-				terrainops::get_texcoord(texture_data, &texcoord, x, y, h, swap_uv);
+				terrainops::get_texcoord(texture_data, &texcoord, x, y, w, h, swap_uv);
 
 				c00 = terrainops::get_colour(colour_data, x, y, w, h, color_scale);
 				c01 = terrainops::get_colour(colour_data, x, y + density, w, h, color_scale);
@@ -207,20 +207,24 @@ namespace terrainops {
 #define FORMATTED_TEXCOORD "%.8f %.8f"
 #define FORMATTED_NORMAL "%.4f %.4f %.4f"
 
-		for (int x = x1; x <= x2; x += density) {
-			for (int y = y1; y <= y2; y += density) {
+		for (int x = x1; x < x2 + density; x += density) {
+			for (int y = y1; y < y2 + density; y += density) {
 				char line[100]{ };
 
 				if (swap_zup) {
 					sprintf_s(line, FORMATTED_POSITION,
-						std::min((float)(w - 1), x + xoff) * scale,
+						//std::min((float)x2, x + xoff) * scale,
+						(std::min(x2, x) + xoff) * scale,
 						get_z(data, std::min(w - 1, x), std::min(h - 1, y), h) * scale,
-						std::min((float)h, y + yoff) * scale
+						//std::min((float)y2, y + yoff) * scale
+						(std::min(y2, y) + yoff) * scale
 					);
 				} else {
 					sprintf_s(line, FORMATTED_POSITION,
-						std::min((float)w, x + xoff) * scale,
-						std::min((float)h, y + yoff) * scale,
+						//std::min((float)x2, x + xoff) * scale,
+						(std::min(x2, x) + xoff) * scale,
+						//std::min((float)y2, y + yoff) * scale,
+						(std::min(y2, y) + yoff) * scale,
 						get_z(data, std::min(w - 1, x), std::min(h - 1, y), h) * scale
 					);
 				}
@@ -231,7 +235,7 @@ namespace terrainops {
 				// the final column/row of positions in a chunk are only needed to write out the positions
 				if (x >= x2 - density || y >= y2 - density) continue;
 
-				terrainops::get_texcoord(texture_data, &texcoord, x, y, h, swap_uv);
+				terrainops::get_texcoord(texture_data, &texcoord, x, y, w, h, swap_uv);
 
 				// tex00
 				memset(line, 0, sizeof(line));
@@ -254,8 +258,8 @@ namespace terrainops {
 				texture_hash = std::string(line);
 				texture_map.insert(std::pair(texture_hash, (int)texture_map.size()));
 
-				terrainops::get_normal(data, &t1norm, x, y, x + density, y, x + density, y + density, h);
-				terrainops::get_normal(data, &t2norm, x + density, y + density, x, y + density, x, y, h);
+				terrainops::get_normal(data, &t1norm, x, y, x + density, y, x + density, y + density, w, h);
+				terrainops::get_normal(data, &t2norm, x + density, y + density, x, y + density, x, y, w, h);
 
 				// getting smooth normals in here is going to be a bit more work but hopefully not too much
 				memset(line, 0, sizeof(line));
@@ -320,17 +324,17 @@ namespace terrainops {
 				float z00 = get_z(data, x, y, h);
 
 				float x01 = (float)x;
-				float y01 = (float)std::min(y + density, h);
+				float y01 = (float)std::min(y + density, y2);
 				float z01 = get_z(data, x, std::min(y + density, h - 1), h);
 
-				float x10 = (float)std::min(x + density, w);
+				float x10 = (float)std::min(x + density, x2);
 				float y10 = (float)y;
 				float z10 = get_z(data, std::min(x + density, w - 1), y, h);
 
-				float x11 = (float)std::min(x + density, w);
-				float y11 = (float)std::min(y + density, h);
+				float x11 = (float)std::min(x + density, x2);
+				float y11 = (float)std::min(y + density, y2);
 				float z11 = get_z(data, std::min(x + density, w - 1), std::min(y + density, h - 1), h);
-
+				
 				x00 = (x00 + xoff) * scale;
 				x01 = (x01 + xoff) * scale;
 				x10 = (x10 + xoff) * scale;
@@ -403,7 +407,7 @@ namespace terrainops {
 				sprintf_s(line, FORMATTED_POSITION, x01, y01, z01);
 				std::string v4pos = std::string(line);
 
-				terrainops::get_texcoord(texture_data, &texcoord, x, y, h, swap_uv);
+				terrainops::get_texcoord(texture_data, &texcoord, x, y, w, h, swap_uv);
 
 				// tex00
 				memset(line, 0, sizeof(line));
@@ -422,8 +426,8 @@ namespace terrainops {
 				sprintf_s(line, FORMATTED_TEXCOORD, texcoord.x, texcoord.y + tex_size);
 				std::string v4tex = std::string(line);
 
-				get_normal(data, &t1norm, x, y, x + density, y, x + density, y + density, h);
-				get_normal(data, &t2norm, x + density, y + density, x, y + density, x, y, h);
+				get_normal(data, &t1norm, x, y, x + density, y, x + density, y + density, w, h);
+				get_normal(data, &t2norm, x + density, y + density, x, y + density, x, y, w, h);
 
 				// getting smooth normals in here is going to be a bit more work but hopefully not too much
 				memset(line, 0, sizeof(line));

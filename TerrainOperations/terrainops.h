@@ -7,6 +7,8 @@
 #include <sstream>
 #include <format>
 
+#include <iostream>
+
 #define DATA_INDEX(x, y, h) ((x) * (h) + (y))
 
 namespace terrainops {
@@ -100,9 +102,9 @@ namespace terrainops {
 	inline float get_z(float*, int, int, int);
 	inline void add_z(float*, float*, float*, int, int, int, int, float, int, int);
 	inline void set_z(float*, float*, float*, int, int, int, int, float, int, int);
-	inline void get_normal(float*, Vector3*, int, int, int, int, int, int, int);
-	inline void get_normal_smooth(float*, Vector3*, int, int, int, int, int, int, int);
-	inline void get_texcoord(unsigned int*, Vector2*, int, int, int, bool);
+	inline void get_normal(float*, Vector3*, int, int, int, int, int, int, int, int);
+	inline void get_normal_smooth(float*, Vector3*, int, int, int, int, int, int, int, int);
+	inline void get_texcoord(unsigned int*, Vector2*, int, int, int, int, bool);
 	inline unsigned int get_colour(unsigned int*, int, int, int, int, float);
 	inline unsigned int get_vertex_index(int, int, int, int, int, int);
 	inline bool ray_tri(Vector3*, Vector3*, Vector3*, Vector3*, Vector3*);
@@ -153,10 +155,10 @@ namespace terrainops {
 		}
 	}
 
-	inline void get_normal(float* data, Vector3* results, int x1, int y1, int x2, int y2, int x3, int y3, int h) {
-		float z1 = get_z(data, x1, y1, h);
-		float z2 = get_z(data, x2, y2, h);
-		float z3 = get_z(data, x3, y3, h);
+	inline void get_normal(float* data, Vector3* results, int x1, int y1, int x2, int y2, int x3, int y3, int w, int h) {
+		float z1 = get_z(data, std::min(x1, w - 1), std::min(y1, h - 1), h);
+		float z2 = get_z(data, std::min(x2, w - 1), std::min(y2, h - 1), h);
+		float z3 = get_z(data, std::min(x3, w - 1), std::min(y3, h - 1), h);
 
 		Vector3 e1{ }, e2{ };
 		e1.x = (float)(x2 - x1);
@@ -170,11 +172,14 @@ namespace terrainops {
 		NORMALIZE(*results);
 	}
 
-	inline void get_normal_smooth(float* data, Vector3* results, int x1, int y1, int x2, int y2, int x3, int y3, int h) {
-		get_normal(data, results, x1, y1, x2, y2, x3, y3, h);
+	inline void get_normal_smooth(float* data, Vector3* results, int x1, int y1, int x2, int y2, int x3, int y3, int w, int h) {
+		get_normal(data, results, x1, y1, x2, y2, x3, y3, w, h);
 	}
 
-	inline void get_texcoord(unsigned int* texture_data, Vector2* results, int x, int y, int h, bool swap_uvs) {
+	inline void get_texcoord(unsigned int* texture_data, Vector2* results, int x, int y, int w, int h, bool swap_uvs) {
+		x = std::min(x, w - 1);
+		y = std::min(y, h - 1);
+
 		unsigned int tex = texture_data[DATA_INDEX(x + 0, y + 0, h)];
 
 		results->x = (tex & 0xff) / 256.0f;
