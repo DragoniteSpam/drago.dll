@@ -69,22 +69,22 @@ namespace terrainops {
 		bitangent.y = 0;
 		bitangent.z = 0;
 
-		for (int x = x1; x <= x2 - density; x += density) {
-			for (int y = y1; y <= y2 - density; y += density) {
+		for (int x = x1; x < x2; x += density) {
+			for (int y = y1; y < y2; y += density) {
 				x00 = (float)x;
 				y00 = (float)y;
 				z00 = get_z(data, x, y, h);
 
 				x01 = (float)x;
-				y01 = (float)std::min(y + density, h - 1);
+				y01 = (float)std::min(y + density, h);
 				z01 = get_z(data, x, std::min(y + density, h - 1), h);
 
-				x10 = (float)std::min(x + density, w - 1);
+				x10 = (float)std::min(x + density, w);
 				y10 = (float)y;
 				z10 = get_z(data, std::min(x + density, w - 1), y, h);
 
-				x11 = (float)std::min(x + density, w - 1);
-				y11 = (float)std::min(y + density, h - 1);
+				x11 = (float)std::min(x + density, w);
+				y11 = (float)std::min(y + density, h);
 				z11 = get_z(data, std::min(x + density, w - 1), std::min(y + density, h - 1), h);
 
 				x00 = (x00 + xoff) * scale;
