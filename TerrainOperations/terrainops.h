@@ -95,17 +95,169 @@ namespace terrainops {
 	void build_cleanup_obj(float*, std::stringstream*, long long*, int);
 
 	// helper functions
+	void invoke_deformation(bool, void(float*, float*, float*, int, int, int, int, float, float, float, int, int));
+
 	inline float get_z(float*, int, int, int);
 	inline void add_z(float*, float*, float*, int, int, int, int, float, int, int);
 	inline void set_z(float*, float*, float*, int, int, int, int, float, int, int);
-	void invoke_deformation(bool, void(float*, float*, float*, int, int, int, int, float, float, float, int, int));
 	inline void get_normal(float*, Vector3*, int, int, int, int, int, int, int);
 	inline void get_normal_smooth(float*, Vector3*, int, int, int, int, int, int, int);
 	inline void get_texcoord(unsigned int*, Vector2*, int, int, int, bool);
 	inline unsigned int get_colour(unsigned int*, int, int, int, int, float);
 	inline unsigned int get_vertex_index(int, int, int, int, int, int);
-
 	inline bool ray_tri(Vector3*, Vector3*, Vector3*, Vector3*, Vector3*);
+
+	inline float get_z(float* data, int x, int y, int h) {
+		return data[DATA_INDEX(x, y, h)];
+	}
+
+	inline void add_z(float* data, float* vertex, float* lod, int x, int y, int w, int h, float value, int reduction, int cell_size) {
+		set_z(data, vertex, lod, x, y, w, h, value + get_z(data, x, y, h), reduction, cell_size);
+	}
+
+	inline void set_z(float* data, float* vertex, float* lod, int x, int y, int w, int h, float value, int reduction, int cell_size) {
+		data[DATA_INDEX(x, y, h)] = value;
+
+		bool is_corner_vertex = (x % reduction == 0) && (y % reduction == 0);
+
+		if (x > 0 && y > 0) {
+			vertex[get_vertex_index(cell_size, x - 1, y - 1, w, h, 2) + 2] = value;
+			vertex[get_vertex_index(cell_size, x - 1, y - 1, w, h, 3) + 2] = value;
+			if (is_corner_vertex) {
+				lod[get_vertex_index(cell_size / reduction, x / reduction - 1, y / reduction - 1, w / reduction, h / reduction, 2) + 2] = value;
+				lod[get_vertex_index(cell_size / reduction, x / reduction - 1, y / reduction - 1, w / reduction, h / reduction, 3) + 2] = value;
+			}
+		}
+
+		if (x < w && y > 0) {
+			vertex[get_vertex_index(cell_size, x, y - 1, w, h, 4) + 2] = value;
+			if (is_corner_vertex) {
+				lod[get_vertex_index(cell_size / reduction, x / reduction, y / reduction - 1, w / reduction, h / reduction, 4) + 2] = value;
+			}
+		}
+
+		if (x > 0 && y < h - 1) {
+			vertex[get_vertex_index(cell_size, x - 1, y, w, h, 1) + 2] = value;
+			if (is_corner_vertex) {
+				lod[get_vertex_index(cell_size / reduction, x / reduction - 1, y / reduction, w / reduction, h / reduction, 1) + 2] = value;
+			}
+		}
+
+		if (x < w && y < h - 1) {
+			vertex[get_vertex_index(cell_size, x, y, w, h, 0) + 2] = value;
+			vertex[get_vertex_index(cell_size, x, y, w, h, 5) + 2] = value;
+			if (is_corner_vertex) {
+				lod[get_vertex_index(cell_size / reduction, x / reduction, y / reduction, w / reduction, h / reduction, 0) + 2] = value;
+				lod[get_vertex_index(cell_size / reduction, x / reduction, y / reduction, w / reduction, h / reduction, 5) + 2] = value;
+			}
+		}
+	}
+
+	inline void get_normal(float* data, Vector3* results, int x1, int y1, int x2, int y2, int x3, int y3, int h) {
+		float z1 = get_z(data, x1, y1, h);
+		float z2 = get_z(data, x2, y2, h);
+		float z3 = get_z(data, x3, y3, h);
+
+		Vector3 e1{ }, e2{ };
+		e1.x = (float)(x2 - x1);
+		e1.y = (float)(y2 - y1);
+		e1.z = (float)(z2 - z1);
+		e2.x = (float)(x3 - x1);
+		e2.y = (float)(y3 - y1);
+		e2.z = (float)(z3 - z1);
+
+		CROSS(*results, e1, e2);
+		NORMALIZE(*results);
+	}
+
+	inline void get_normal_smooth(float* data, Vector3* results, int x1, int y1, int x2, int y2, int x3, int y3, int h) {
+		get_normal(data, results, x1, y1, x2, y2, x3, y3, h);
+	}
+
+	inline void get_texcoord(unsigned int* texture_data, Vector2* results, int x, int y, int h, bool swap_uvs) {
+		unsigned int tex = texture_data[DATA_INDEX(x + 0, y + 0, h)];
+
+		results->x = (tex & 0xff) / 256.0f;
+		results->y = ((tex >> 8) & 0xff) / 256.0f;
+		if (swap_uvs)
+			results->y = 1.0f - results->y;
+	}
+
+	inline unsigned int get_colour(unsigned int* colour_data, int x, int y, int w, int h, float scale) {
+		return spriteops::sample_unfiltered(colour_data, (int)(w * scale), (int)(h * scale), ((float)x) / w, ((float)y) / h) | 0xff000000;
+	}
+
+	inline unsigned int get_vertex_index(int cell_size, int x, int y, int w, int h, int vertex) {
+		int column_size = cell_size * h;
+		Vector2 base_chunk{}, local_coordinates{};
+		base_chunk.a = x / cell_size;
+		base_chunk.b = y / cell_size;
+		local_coordinates.a = x % cell_size;
+		local_coordinates.b = y % cell_size;
+		int local_chunk_width = std::min(cell_size, w - base_chunk.a * cell_size);
+		int local_chunk_height = std::min(cell_size, h - base_chunk.b * cell_size);
+		int column_address = base_chunk.a * column_size;
+		int chunk_address = column_address + base_chunk.b * cell_size /* dont use the local chunk height here */ * local_chunk_width;
+		int base_address = chunk_address + local_coordinates.a * local_chunk_height + local_coordinates.b;
+		return (base_address * 6 + vertex) * 3;
+	}
+
+	inline bool ray_tri(Vector3* start, Vector3* direction, Vector3* a, Vector3* b, Vector3* c) {
+		Vector3 edge1{}, edge2{}, tvec{}, pvec{}, qvec{};
+		float det, inv_det;
+
+		/* find vectors for two edges sharing vert0 */
+		SUB(edge1, (*b), (*a));
+		SUB(edge2, (*c), (*a));
+
+		/* begin calculating determinant - also used to calculate U parameter */
+		CROSS(pvec, (*direction), edge2);
+
+		/* if determinant is near zero, ray lies in plane of triangle */
+		det = DOT(edge1, pvec);
+
+		/* calculate distance from vert0 to ray origin */
+		SUB(tvec, (*start), (*a));
+		inv_det = 1.0f / det;
+
+		Vector3 out{};
+
+		if (det > 0) {
+			/* calculate U parameter and test bounds */
+			out.y = DOT(tvec, pvec);
+			if (out.y < 0.0 || out.y > det)
+				return 0;
+
+			/* prepare to test V parameter */
+			CROSS(qvec, tvec, edge1);
+
+			/* calculate V parameter and test bounds */
+			out.z = DOT((*direction), qvec);
+			if (out.z < 0.0 || out.y + out.z > det)
+				return 0;
+
+		} else if (det < 0) {
+			/* calculate U parameter and test bounds */
+			out.y = DOT(tvec, pvec);
+			if (out.y > 0.0 || out.y < det)
+				return 0;
+
+			/* prepare to test V parameter */
+			CROSS(qvec, tvec, edge1);
+
+			/* calculate V parameter and test bounds */
+			out.z = DOT((*direction), qvec);
+			if (out.z > 0.0 || out.y + out.z < det)
+				return 0;
+		} else return 0;  /* ray is parallell to the plane of the triangle */
+
+		/* calculate t, ray intersects triangle */
+		terrainops::cursor_output[0] = DOT(edge2, qvec) * inv_det;
+		terrainops::cursor_output[1] = out.y * inv_det;
+		terrainops::cursor_output[2] = out.z * inv_det;
+
+		return 1;
+	}
 }
 
 #endif
