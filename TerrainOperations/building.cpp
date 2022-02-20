@@ -207,19 +207,28 @@ namespace terrainops {
 #define FORMATTED_TEXCOORD "%.8f %.8f"
 #define FORMATTED_NORMAL "%.4f %.4f %.4f"
 
-		for (int x = x1; x <= x2 - density; x += density) {
-			for (int y = y1; y <= y2 - density; y += density) {
+		for (int x = x1; x <= x2; x += density) {
+			for (int y = y1; y <= y2; y += density) {
 				char line[100]{ };
 
 				if (swap_zup) {
-					sprintf_s(line, FORMATTED_POSITION, (x + xoff) * scale, get_z(data, x, y, h) * scale, (y + yoff) * scale);
+					sprintf_s(line, FORMATTED_POSITION,
+						std::min((float)(w - 1), x + xoff) * scale,
+						get_z(data, std::min(w - 1, x), std::min(h - 1, y), h) * scale,
+						std::min((float)h, y + yoff) * scale
+					);
 				} else {
-					sprintf_s(line, FORMATTED_POSITION, (x + xoff) * scale, (y + yoff) * scale, get_z(data, x, y, h) * scale);
+					sprintf_s(line, FORMATTED_POSITION,
+						std::min((float)w, x + xoff) * scale,
+						std::min((float)h, y + yoff) * scale,
+						get_z(data, std::min(w - 1, x), std::min(h - 1, y), h) * scale
+					);
 				}
 
 				position_hash = std::string(line);
 				position_map.insert(std::pair(position_hash, (int)position_map.size()));
 
+				// the final column/row of positions in a chunk are only needed to write out the positions
 				if (x >= x2 - density || y >= y2 - density) continue;
 
 				terrainops::get_texcoord(texture_data, &texcoord, x, y, h, swap_uv);
@@ -304,22 +313,22 @@ namespace terrainops {
 
 		delete[] normal_hashes;
 
-		for (int x = x1; x < std::min(x2 - density, w - 1); x += density) {
-			for (int y = y1; y < std::max(y2 - density, h - 1); y += density) {
+		for (int x = x1; x < x2; x += density) {
+			for (int y = y1; y < y2; y += density) {
 				float x00 = (float)x;
 				float y00 = (float)y;
 				float z00 = get_z(data, x, y, h);
 
 				float x01 = (float)x;
-				float y01 = (float)std::min(y + density, h - 1);
+				float y01 = (float)std::min(y + density, h);
 				float z01 = get_z(data, x, std::min(y + density, h - 1), h);
 
-				float x10 = (float)std::min(x + density, w - 1);
+				float x10 = (float)std::min(x + density, w);
 				float y10 = (float)y;
 				float z10 = get_z(data, std::min(x + density, w - 1), y, h);
 
-				float x11 = (float)std::min(x + density, w - 1);
-				float y11 = (float)std::min(y + density, h - 1);
+				float x11 = (float)std::min(x + density, w);
+				float y11 = (float)std::min(y + density, h);
 				float z11 = get_z(data, std::min(x + density, w - 1), std::min(y + density, h - 1), h);
 
 				x00 = (x00 + xoff) * scale;

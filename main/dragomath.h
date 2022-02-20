@@ -11,6 +11,7 @@
 #define LERP_CUBIC(a, b, f) (((float)(b) - (float)(a)) * (3.0f - (float)(f) * 2.0f) * (float)(f) * (float)(f) + (float)(a))
 #define LERP_WHATEVERS_SMOOTHER_THAN_CUBIC(a, b, f) ((float)(b) - (float)(a)) * (((float)(f) * ((float)(f) * 6.0f - 15.0f) + 10.0f) * (float)(f) * (float)(f) * (float)(f)) + (float)(a)
 
+// all of the vector macros assume that you're using a vector3
 #define ADD(result, a, b) { (result).x = a.x + b.x; (result).y = a.y + b.y; (result).z = a.z + b.z; }
 #define SUB(result, a, b) { (result).x = a.x - b.x; (result).y = a.y - b.y; (result).z = a.z - b.z; }
 #define MUL(result, a, b) { (result).x = a.x * b.x; (result).y = a.y * b.y; (result).z = a.z * b.z; }
