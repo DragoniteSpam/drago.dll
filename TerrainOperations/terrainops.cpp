@@ -62,9 +62,10 @@ namespace terrainops {
 
 	void to_heightmap(unsigned int* out, float scale) {
 		float* data = terrainops::data;
-		int len = terrainops::data_size.c;
-		for (int i = 0; i < len; i++) {
-			int z = std::clamp((int)(data[i] / scale), 0, 255);
+		unsigned int len = terrainops::data_size.c;
+		float max = terrainops::max_height(data, len);
+		for (unsigned int i = 0; i < len; i++) {
+			int z = std::clamp((int)(255.0f * data[i] / max), 0, 255);
 			out[i] = 0xff000000 | (z | (z << 8) | (z << 16));
 		}
 	}
