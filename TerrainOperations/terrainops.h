@@ -55,6 +55,7 @@ namespace terrainops {
 	void set_lod_vertex_data(float*);
 	void to_heightmap(unsigned int*, float);
 	void from_heightmap(unsigned int*, float);
+	float max_height(float*, unsigned int);
 
 	void set_cursor_location_output(float*);
 	void get_intersecting_triangle(float, float, float, float, float, float);

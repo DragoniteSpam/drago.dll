@@ -63,9 +63,8 @@ namespace terrainops {
 	void to_heightmap(unsigned int* out, float scale) {
 		float* data = terrainops::data;
 		int len = terrainops::data_size.c;
-		int z;
 		for (int i = 0; i < len; i++) {
-			z = std::clamp((int)(data[i] * scale), 0, 255);
+			int z = std::clamp((int)(data[i] / scale), 0, 255);
 			out[i] = 0xff000000 | (z | (z << 8) | (z << 16));
 		}
 	}
@@ -73,12 +72,18 @@ namespace terrainops {
 	void from_heightmap(unsigned int* in, float scale) {
 		float* data = terrainops::data;
 		int len = terrainops::data_size.c;
-		int z;
 		for (int i = 0; i < len; i++) {
 			// maybe you want to use the other channels to store some other information idk
-			z = in[i] & 0x000000ff;
-			data[i] = z / scale;
+			data[i] = (in[i] & 0x000000ff) / 255.0f * scale;
 		}
+	}
+
+	float max_height(float* data, unsigned int len) {
+		float max = -1e10f;
+		for (unsigned int i = 0; i < len; i++) {
+			max = std::max(max, data[i]);
+		}
+		return max;
 	}
 
 	void set_cursor_location_output(float* out) {
