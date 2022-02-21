@@ -1,5 +1,5 @@
 #ifndef __DRAGO_SPRITE_OP
-#define __DRAGO_SPRITE_OP "0.0.1"
+#define __DRAGO_SPRITE_OP "1.0.0"
 
 #include "main/core.h"
 #include "main/dragomath.h"
