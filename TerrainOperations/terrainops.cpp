@@ -86,6 +86,14 @@ namespace terrainops {
 		return max;
 	}
 
+	float min_height(float* data, unsigned int len) {
+		float min = 1e10f;
+		for (unsigned int i = 0; i < len; i++) {
+			min = std::min(min, data[i]);
+		}
+		return min;
+	}
+
 	void set_cursor_location_output(float* out) {
 		terrainops::cursor_output = out;
 	}

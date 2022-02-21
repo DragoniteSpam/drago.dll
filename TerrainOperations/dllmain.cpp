@@ -37,6 +37,10 @@ ex double terrainops_max_height(float* data, double len) {
 	return (double)terrainops::max_height(data, (unsigned int)len);
 }
 
+ex double terrainops_min_height(float* data, double len) {
+	return (double)terrainops::min_height(data, (unsigned int)len);
+}
+
 // deformation
 ex double terrainops_flatten(double height) {
 	terrainops::flatten((float)height);
