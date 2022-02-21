@@ -23,8 +23,8 @@ ex double terrainops_set_lod_vertex_data(float* lod) {
 }
 
 // heightmap
-ex double terrainops_to_heightmap(unsigned int* out, double scale) {
-	terrainops::to_heightmap(out, (float)scale);
+ex double terrainops_to_heightmap(unsigned int* out) {
+	terrainops::to_heightmap(out);
 	return 1.0;
 }
 

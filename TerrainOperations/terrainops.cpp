@@ -60,7 +60,7 @@ namespace terrainops {
 		terrainops::vertex_lod = lod;
 	}
 
-	void to_heightmap(unsigned int* out, float scale) {
+	void to_heightmap(unsigned int* out) {
 		float* data = terrainops::data;
 		unsigned int len = terrainops::data_size.c;
 		float max = terrainops::max_height(data, len);
