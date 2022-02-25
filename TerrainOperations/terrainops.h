@@ -182,7 +182,7 @@ namespace terrainops {
 		x = std::min(x, w - 1);
 		y = std::min(y, h - 1);
 
-		unsigned int tex = texture_data[DATA_INDEX(x + 0, y + 0, h)];
+		unsigned int tex = texture_data[GET_INDEX(x + 0, y + 0, h)];
 
 		results->x = (tex & 0xff) / 256.0f;
 		results->y = ((tex >> 8) & 0xff) / 256.0f;
