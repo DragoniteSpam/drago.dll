@@ -4,7 +4,7 @@
 
 namespace terrainops {
 	// build vertex data
-	void build_settings(bool save_all, bool swap_zup, bool swap_uv, bool centered, int density, float scale, float tex_size, float color_scale, unsigned int format) {
+	void build_settings(bool save_all, bool swap_zup, bool swap_uv, bool centered, int density, float scale, float tex_size, float color_scale, unsigned int format, float water_level) {
 		terrainops::save_all = save_all;
 		terrainops::save_swap_zup = swap_zup;
 		terrainops::save_swap_uv = swap_uv;
@@ -14,6 +14,7 @@ namespace terrainops {
 		terrainops::save_tex_size = tex_size;
 		terrainops::save_color_scale = color_scale;
 		terrainops::save_format = format;
+		terrainops::save_water_level = water_level;
 	}
 
 	void build_bounds(int x1, int y1, int x2, int y2) {
@@ -36,6 +37,7 @@ namespace terrainops {
 		int len = terrainops::data_size.c;
 
 		bool all = terrainops::save_all;
+		float water_level = terrainops::save_water_level;
 		bool swap_uv = terrainops::save_swap_uv;
 		bool swap_zup = terrainops::save_swap_zup;
 		int density = terrainops::save_density;
@@ -122,7 +124,7 @@ namespace terrainops {
 				c10 = terrainops::get_colour(colour_data, x + density, y, w, h, color_scale);
 				c11 = terrainops::get_colour(colour_data, x + density, y + density, w, h, color_scale);
 
-				if (all || z00 >= 0 || z10 >= 0 || z11 >= 0) {
+				if (all || z00 >= water_level || z10 >= water_level || z11 >= water_level) {
 					e1.x = x10 - x00;
 					e1.y = y10 - y00;
 					e1.z = z10 - z00;
@@ -147,7 +149,7 @@ namespace terrainops {
 					(*vertices) += 3;
 				}
 
-				if (all || z11 >= 0 || z01 >= 0 || z00 >= 0) {
+				if (all || z11 >= water_level || z01 >= water_level || z00 >= water_level) {
 					e1.x = x01 - x11;
 					e1.y = y01 - y11;
 					e1.z = z01 - z11;
@@ -178,6 +180,7 @@ namespace terrainops {
 		int len = terrainops::data_size.c;
 
 		bool all = terrainops::save_all;
+		float water_level = terrainops::save_water_level;
 		bool swap_uv = terrainops::save_swap_uv;
 		bool swap_zup = terrainops::save_swap_zup;
 		int density = terrainops::save_density;
@@ -440,13 +443,13 @@ namespace terrainops {
 
 				// would use a four-vertex face for these but trying to do flat normals with that doesnt
 				// seem to work very well
-				if (all || (z00 >= 0 || z10 >= 0 || z11 >= 0)) {
+				if (all || (z00 >= water_level || z10 >= water_level || z11 >= water_level)) {
 					*content << "f " <<
 						position_map[v1pos] + 1 << "/" << texture_map[v1tex] + 1 << "/" << normal_map[normt1] + 1 << " " <<
 						position_map[v2pos] + 1 << "/" << texture_map[v2tex] + 1 << "/" << normal_map[normt1] + 1 << " " <<
 						position_map[v3pos] + 1 << "/" << texture_map[v3tex] + 1 << "/" << normal_map[normt1] + 1 << " \r\n";
 				}
-				if (all || (z11 >= 0 || z01 >= 0 || z00 >= 0)) {
+				if (all || (z11 >= water_level || z01 >= water_level || z00 >= water_level)) {
 					*content << "f " <<
 						position_map[v3pos] + 1 << "/" << texture_map[v3tex] + 1 << "/" << normal_map[normt2] + 1 << " " <<
 						position_map[v4pos] + 1 << "/" << texture_map[v4tex] + 1 << "/" << normal_map[normt2] + 1 << " " <<

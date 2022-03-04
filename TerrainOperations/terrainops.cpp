@@ -6,6 +6,7 @@
 
 namespace terrainops {
 	bool save_all = true;
+	float save_water_level = 0;
 	bool save_swap_zup = false;
 	bool save_swap_uv = false;
 	bool save_centered = false;
