@@ -72,4 +72,42 @@ struct Triangle {
 	Vector3 a, b, c;
 };
 
+// See here: https://github.com/gszauer/GamePhysicsCookbook/blob/master/Code/matrices.h
+struct Matrix4x4 {
+	union {
+		struct {
+			float v11, v12, v13, v14,
+				v21, v22, v23, v24,
+				v31, v32, v33, v34,
+				v41, v42, v43, v44;
+		};
+		float asArray[16];
+	};
+
+	inline Matrix4x4() {
+		v11 = v22 = v33 = v44 = 1.0f;
+		v12 = v13 = v14 = v21 = 0.0f;
+		v23 = v24 = v31 = v32 = 0.0f;
+		v34 = v41 = v42 = v43 = 0.0f;
+	};
+
+	inline Matrix4x4(float f11, float f12, float f13, float f14,
+		float f21, float f22, float f23, float f24,
+		float f31, float f32, float f33, float f34,
+		float f41, float f42, float f43, float f44) {
+		v11 = f11; v12 = f12; v13 = f13; v14 = f14;
+		v21 = f21; v22 = f22; v23 = f23; v24 = f24;
+		v31 = f31; v32 = f32; v33 = f33; v34 = f34;
+		v41 = f41; v42 = f42; v43 = f43; v44 = f44;
+	}
+
+	inline float* operator[](int i) {
+		return &(asArray[i * 4]);
+	}
+};
+
+Matrix4x4 operator*(const Matrix4x4&, const Matrix4x4&);
+Vector4 operator*(const Matrix4x4&, const Vector4&);
+Vector4 operator*(const Vector4&, const Matrix4x4&);
+
 #endif
