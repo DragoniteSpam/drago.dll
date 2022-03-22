@@ -4,7 +4,25 @@
 
 using namespace std;
 
-int main() {
+void bullet_tests() {
+	///collision configuration contains default setup for memory, collision setup. Advanced users can create their own configuration.
+	//btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
+
+	///use the default collision dispatcher. For parallel processing you can use a diffent dispatcher (see Extras/BulletMultiThreaded)
+	//btCollisionDispatcher* dispatcher = new btCollisionDispatcher(collisionConfiguration);
+
+	///btDbvtBroadphase is a good general purpose broadphase. You can also try out btAxis3Sweep.
+	//btBroadphaseInterface* overlappingPairCache = new btDbvtBroadphase();
+
+	///the default constraint solver. For parallel processing you can use a different solver (see Extras/BulletMultiThreaded)
+	//btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
+
+	//btDiscreteDynamicsWorld* dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
+
+	//dynamicsWorld->setGravity(btVector3(0, -10, 0));
+}
+
+void sprite_tests() {
 	unsigned int data[25] = {
 		0, 10, 20, 50, 100,
 		0, 100, 200, 255, 255,
@@ -33,7 +51,7 @@ int main() {
 	unsigned int f1 = spriteops::merge(a, b, f);
 	unsigned int f2 = spriteops::merge(c, d, f);
 	cout << f1 << ", " << f2 << ": " << spriteops::merge(f1, f2, f) << endl;
-	
+
 	a = 61;
 	b = 61;
 	c = 59;
@@ -48,22 +66,9 @@ int main() {
 	f1 = spriteops::merge(a, b, f);
 	f2 = spriteops::merge(c, d, f);
 	cout << f1 << ", " << f2 << ": " << spriteops::merge(f1, f2, f) << endl;
+}
 
-	///collision configuration contains default setup for memory, collision setup. Advanced users can create their own configuration.
-	//btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
-
-	///use the default collision dispatcher. For parallel processing you can use a diffent dispatcher (see Extras/BulletMultiThreaded)
-	//btCollisionDispatcher* dispatcher = new btCollisionDispatcher(collisionConfiguration);
-
-	///btDbvtBroadphase is a good general purpose broadphase. You can also try out btAxis3Sweep.
-	//btBroadphaseInterface* overlappingPairCache = new btDbvtBroadphase();
-
-	///the default constraint solver. For parallel processing you can use a different solver (see Extras/BulletMultiThreaded)
-	//btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
-
-	//btDiscreteDynamicsWorld* dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
-
-	//dynamicsWorld->setGravity(btVector3(0, -10, 0));
+int main() {
 
 	return 0;
 }
