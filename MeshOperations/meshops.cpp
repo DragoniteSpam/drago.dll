@@ -113,6 +113,14 @@ namespace meshops {
 		}
 	}
 
+	void transform_set_matrices(float x, float y, float z, float xrot, float yrot, float zrot, float xscale, float yscale, float zscale) {
+
+	}
+
+	void transform(float* data, int len) {
+
+	}
+
 	// axes
 	void rotate_up(float* data, int len) {
 		float x, y, z, nx, ny, nz;

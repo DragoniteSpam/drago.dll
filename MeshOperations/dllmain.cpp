@@ -55,6 +55,16 @@ ex double meshops_transform_scale(float* data, double len, double scale) {
 	return 1.0;
 }
 
+ex double meshops_transform_set_matrices(double x, double y, double z, double xrot, double yrot, double zrot, double xscale, double yscale, double zscale) {
+	meshops::transform_set_matrices((float)x, (float)y, (float)z, (float)xrot, (float)yrot, (float)zrot, (float)xscale, (float)yscale, (float)zscale);
+	return 1.0;
+}
+
+ex double meshops_transform(float* data, double len) {
+	meshops::transform(data, BYTES2FLOATS(len));
+	return 1.0;
+}
+
 // axes
 ex double meshops_rotate_up(float* data, double len) {
 	meshops::rotate_up(data, BYTES2FLOATS(len));
