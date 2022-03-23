@@ -2,7 +2,6 @@
 
 // See here: https://github.com/gszauer/GamePhysicsCookbook/blob/master/Code/matrices.cpp
 
-
 Matrix4x4 Matrix4x4::Transform(float x, float y, float z, float xrot, float yrot, float zrot, float xscale, float yscale, float zscale) {
 	return (Matrix4x4::Scale(xscale, yscale, zscale) * Matrix4x4::Rotation(xrot, yrot, zrot)) * Matrix4x4::Translation(x, y, z);
 }
