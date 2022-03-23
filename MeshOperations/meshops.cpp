@@ -122,7 +122,49 @@ namespace meshops {
 	}
 
 	void transform(float* data, int len) {
+		int vsize = meshops::vertex_size;
+		Vector4 position{}, normal{}, tangent{}, bitangent{};
 		Matrix4x4 mat = *meshops::transform_data;
+		position.w = 1;
+		normal.w = 0;
+		tangent.w = 0;
+		bitangent.w = 0;
+
+		for (int i = 0; i < len; i += vsize) {
+			position.x = data[i + 0];
+			position.y = data[i + 1];
+			position.z = data[i + 2];
+			normal.x = data[i + 3];
+			normal.y = data[i + 4];
+			normal.z = data[i + 5];
+			tangent.x = data[i + 9];
+			tangent.y = data[i + 10];
+			tangent.z = data[i + 11];
+			bitangent.x = data[i + 12];
+			bitangent.y = data[i + 13];
+			bitangent.z = data[i + 14];
+
+			position.Transform(&mat);
+			normal.Transform(&mat);
+			tangent.Transform(&mat);
+			bitangent.Transform(&mat);
+			normal.Normalize();
+			tangent.Normalize();
+			bitangent.Normalize();
+
+			data[i + 0] = position.x;
+			data[i + 1] = position.y;
+			data[i + 2] = position.z;
+			data[i + 3] = normal.x;
+			data[i + 4] = normal.y;
+			data[i + 5] = normal.z;
+			data[i + 9] = tangent.x;
+			data[i + 10] = tangent.y;
+			data[i + 11] = tangent.z;
+			data[i + 12] = bitangent.x;
+			data[i + 13] = bitangent.y;
+			data[i + 14] = bitangent.z;
+		}
 	}
 
 	// axes
