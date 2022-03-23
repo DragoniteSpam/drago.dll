@@ -2,6 +2,13 @@
 
 // See here: https://github.com/gszauer/GamePhysicsCookbook/blob/master/Code/matrices.cpp
 
+void Vector4::Transform(Matrix4x4* transform) {
+	this->x = this->x * transform->v11 + this->y * transform->v21 + this->z * transform->v31 + this->w * transform->v41;
+	this->y = this->x * transform->v12 + this->y * transform->v22 + this->z * transform->v32 + this->w * transform->v42;
+	this->z = this->x * transform->v13 + this->y * transform->v23 + this->z * transform->v33 + this->w * transform->v43;
+	this->w = this->x * transform->v14 + this->y * transform->v24 + this->z * transform->v34 + this->w * transform->v44;
+}
+
 Matrix4x4 Matrix4x4::Transform(float x, float y, float z, float xrot, float yrot, float zrot, float xscale, float yscale, float zscale) {
 	return (Matrix4x4::Scale(xscale, yscale, zscale) * Matrix4x4::Rotation(xrot, yrot, zrot)) * Matrix4x4::Translation(x, y, z);
 }

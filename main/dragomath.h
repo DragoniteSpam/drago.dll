@@ -11,6 +11,7 @@ constexpr float PI = 3.14159265358f;
 #define FLOATS2BYTES(floats) (((int)(floats)) * 4)
 #define BYTES2DOUBLES(bytes) (((int)(bytes)) / 8)
 #define DOUBLES2BYTES(floats) (((int)(floats)) * 8)
+#define CMP(a, b) (fabsf(a - b) <= 0.000000001 * fmaxf(1.0f, fmaxf(fabsf(a), fabsf(b))))
 
 #define LERP(a, b, f) ((a) * 1.0f + (f) * ((b) * 1.0f - (a) * 1.0f))
 #define LERP_CUBIC(a, b, f) (((float)(b) - (float)(a)) * (3.0f - (float)(f) * 2.0f) * (float)(f) * (float)(f) + (float)(a))
@@ -28,6 +29,11 @@ constexpr float PI = 3.14159265358f;
 #define NORMALIZE(vec3) { float mag = MAGNITUDE((vec3)); (vec3).x /= mag; (vec3).y /= mag; (vec3).z /= mag; }
 
 // data structures
+struct Vector4;
+struct Vector3;
+struct Vector2;
+struct Matrix4x4;
+
 struct Vector4 {
 	union {
 		float x;
@@ -45,6 +51,21 @@ struct Vector4 {
 		float w;
 		float a;
 	};
+
+	// some methods that act on the struct itself
+	void Transform(Matrix4x4*);
+
+	inline float Dot(Vector4* other) {
+		return this->x * other->x * this->y + other->y + this->z * other->z;
+	}
+
+	inline void Normalize() {
+		float mag = sqrtf(this->Dot(this));
+		if (CMP(mag, 0)) return;
+		this->x /= mag;
+		this->y /= mag;
+		this->z /= mag;
+	}
 };
 
 struct Vector3 {
