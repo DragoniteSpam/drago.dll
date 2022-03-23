@@ -1,6 +1,7 @@
 #include <iostream>
 //#include "Bullet/bulletgml.h"
 #include "SpriteOperations/spriteops.h"
+#include "main/dragomath.h"
 
 using namespace std;
 
@@ -68,7 +69,28 @@ void sprite_tests() {
 	cout << f1 << ", " << f2 << ": " << spriteops::merge(f1, f2, f) << endl;
 }
 
-int main() {
+void matrix_tests() {
+	Matrix4x4 transform = Matrix4x4::Transform(10, 10, 10, 0, 0, 0, 1, 2, 1);
+	Vector4 point = Vector4(5, 5, 0, 1);
 
+	point = transform * point;
+
+	cout << "Transform matrix:\n";
+
+	for (int i = 0; i < 16; i++) {
+		cout << transform.asArray[i] << " ";
+	}
+
+	cout << "\nFinal position:\n";
+
+	cout << point.x << ", " << point.y << ", " << point.z;
+
+	cout << endl;
+
+	
+}
+
+int main() {
+	matrix_tests();
 	return 0;
 }
