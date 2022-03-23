@@ -1,7 +1,12 @@
 #ifndef __DRAGO_CORE_MATH
 #define __DRAGO_CORE_MATH
 
+#include <math.h>
+
 // helpers
+constexpr float PI = 3.14159265358f;
+#define DEG2RAD(angle) (angle * PI / 180.0f)
+#define RAD2DEG(angle) (angle * 180.0f / PI)
 #define BYTES2FLOATS(bytes) (((int)(bytes)) / 4)
 #define FLOATS2BYTES(floats) (((int)(floats)) * 4)
 #define BYTES2DOUBLES(bytes) (((int)(bytes)) / 8)
@@ -11,7 +16,7 @@
 #define LERP_CUBIC(a, b, f) (((float)(b) - (float)(a)) * (3.0f - (float)(f) * 2.0f) * (float)(f) * (float)(f) + (float)(a))
 #define LERP_WHATEVERS_SMOOTHER_THAN_CUBIC(a, b, f) ((float)(b) - (float)(a)) * (((float)(f) * ((float)(f) * 6.0f - 15.0f) + 10.0f) * (float)(f) * (float)(f) * (float)(f)) + (float)(a)
 
-// all of the vector macros assume that you're using a vector3
+// all of the vector macros assume that you're using at least a vector3
 #define ADD(result, a, b) { (result).x = a.x + b.x; (result).y = a.y + b.y; (result).z = a.z + b.z; }
 #define SUB(result, a, b) { (result).x = a.x - b.x; (result).y = a.y - b.y; (result).z = a.z - b.z; }
 #define MUL(result, a, b) { (result).x = a.x * b.x; (result).y = a.y * b.y; (result).z = a.z * b.z; }
@@ -104,6 +109,98 @@ struct Matrix4x4 {
 	inline float* operator[](int i) {
 		return &(asArray[i * 4]);
 	}
+
+	static inline Matrix4x4 Translation(float x, float y, float z) {
+		return Matrix4x4(
+			1, 0, 0, 0,
+			0, 1, 0, 0,
+			0, 0, 1, 0,
+			x, y, z, 1
+		);
+	}
+
+	static inline Matrix4x4 Translation(Vector3 position) {
+		return Matrix4x4(
+			1, 0, 0, 0,
+			0, 1, 0, 0,
+			0, 0, 1, 0,
+			position.x, position.y, position.z, 1
+		);
+	}
+
+	static inline Matrix4x4 RotationX(float angle) {
+		angle = DEG2RAD(angle);
+		return Matrix4x4(
+			1, 0, 0, 0,
+			0, cosf(angle), sinf(angle), 0,
+			0, -sinf(angle), cosf(angle), 0,
+			0, 0, 0, 1
+		);
+	}
+
+	static inline Matrix4x4 RotationY(float angle) {
+		angle = DEG2RAD(angle);
+		return Matrix4x4(
+			cosf(angle), 0, -sinf(angle), 0,
+			0, 1, 0, 0,
+			sinf(angle), 0, cosf(angle), 0,
+			0, 0, 0, 1
+		);
+	}
+
+	static inline Matrix4x4 RotationZ(float angle) {
+		angle = DEG2RAD(angle);
+		return Matrix4x4(
+			cosf(angle), sinf(angle), 0, 0,
+			-sinf(angle), cosf(angle), 0, 0,
+			0, 0, 1, 0,
+			0, 0, 0, 1
+		);
+	}
+
+	static inline Matrix4x4 Rotation(float x, float y, float z) {
+		float yaw = DEG2RAD(z);
+		float pitch = DEG2RAD(y);
+		float roll = DEG2RAD(x);
+
+		Matrix4x4 result; // z * x * y
+		result.v11 = (cosf(roll) * cosf(yaw)) + (sinf(roll) * sinf(pitch) * sinf(yaw));
+		result.v12 = (sinf(roll) * cosf(pitch));
+		result.v13 = (cosf(roll) * -sinf(yaw)) + (sinf(roll) * sinf(pitch) * cosf(yaw));
+		result.v21 = (-sinf(roll) * cosf(yaw)) + (cosf(roll) * sinf(pitch) * sinf(yaw));
+		result.v22 = (cosf(roll) * cosf(pitch));
+		result.v23 = (sinf(roll) * sinf(yaw)) + (cosf(roll) * sinf(pitch) * cosf(yaw));
+		result.v31 = (cosf(pitch) * sinf(yaw));
+		result.v32 = -sinf(pitch);
+		result.v33 = (cosf(pitch) * cosf(yaw));
+		result.v44 = 1;
+		return result;
+	}
+
+	static inline Matrix4x4 Rotation(Vector3 eulerAngles) {
+		return Rotation(eulerAngles.x, eulerAngles.y, eulerAngles.z);
+	}
+
+	static inline Matrix4x4 Scale(float x, float y, float z) {
+		return Matrix4x4(
+			x, 0, 0, 0,
+			0, y, 0, 0,
+			0, 0, z, 0,
+			0, 0, 0, 1
+		);
+	}
+
+	static inline Matrix4x4 Scale(Vector3 scale) {
+		return Matrix4x4(
+			scale.x, 0, 0, 0,
+			0, scale.y, 0, 0,
+			0, 0, scale.z, 0,
+			0, 0, 0, 1
+		);
+	}
+
+	static Matrix4x4 Transform(float, float, float, float, float, float, float, float, float);
+	static Matrix4x4 Transform(Vector3, Vector3, Vector3);
 };
 
 Matrix4x4 operator*(const Matrix4x4&, const Matrix4x4&);
