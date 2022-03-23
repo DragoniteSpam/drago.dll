@@ -13,6 +13,7 @@ namespace meshops {
 	extern float trans_x;
 	extern float trans_y;
 	extern float trans_z;
+	extern Matrix4x4* transform_data;
 	extern int vertex_size;
 	
 	const char* version();
@@ -30,7 +31,7 @@ namespace meshops {
 	void transform_rotate_z(float*, int, float);
 	void transform_scale(float*, int, float);
 
-	void transform_set_matrices(float, float, float, float, float, float, float, float, float);
+	void transform_set_matrix(float, float, float, float, float, float, float, float, float);
 	void transform(float*, int);
 	// axes
 	void rotate_up(float*, int);

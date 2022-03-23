@@ -4,6 +4,7 @@ namespace meshops {
 	float trans_x = 0;
 	float trans_y = 0;
 	float trans_z = 0;
+	Matrix4x4* transform_data = new Matrix4x4();
 	int vertex_size = 9;
 
 	const char* version() {
@@ -113,12 +114,13 @@ namespace meshops {
 		}
 	}
 
-	void transform_set_matrices(float x, float y, float z, float xrot, float yrot, float zrot, float xscale, float yscale, float zscale) {
-
+	void transform_set_matrix(float x, float y, float z, float xrot, float yrot, float zrot, float xscale, float yscale, float zscale) {
+		delete transform_data;
+		transform_data = &Matrix4x4::Transform(x, y, z, xrot, yrot, zrot, xscale, yscale, zscale);
 	}
 
 	void transform(float* data, int len) {
-
+		Matrix4x4 mat = *meshops::transform_data;
 	}
 
 	// axes
