@@ -36,17 +36,17 @@ ex double meshops_transform_center(float* data, double len) {
 }
 
 ex double meshops_transform_rotate_x(float* data, double len, double angle) {
-	meshops::transform_rotate_x(data, BYTES2FLOATS(len), DEG2RAD(((double)angle)));
+	meshops::transform_rotate_x(data, BYTES2FLOATS(len), DEG2RAD(((float)angle)));
 	return 1.0;
 }
 
 ex double meshops_transform_rotate_y(float* data, double len, double angle) {
-	meshops::transform_rotate_y(data, BYTES2FLOATS(len), DEG2RAD(((double)angle)));
+	meshops::transform_rotate_y(data, BYTES2FLOATS(len), DEG2RAD(((float)angle)));
 	return 1.0;
 }
 
 ex double meshops_transform_rotate_z(float* data, double len, double angle) {
-	meshops::transform_rotate_z(data, BYTES2FLOATS(len), DEG2RAD(((double)angle)));
+	meshops::transform_rotate_z(data, BYTES2FLOATS(len), DEG2RAD(((float)angle)));
 	return 1.0;
 }
 
