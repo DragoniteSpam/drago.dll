@@ -115,8 +115,10 @@ namespace meshops {
 	}
 
 	void transform_set_matrix(float x, float y, float z, float xrot, float yrot, float zrot, float xscale, float yscale, float zscale) {
-		delete transform_data;
-		transform_data = &Matrix4x4::Transform(x, y, z, xrot, yrot, zrot, xscale, yscale, zscale);
+		Matrix4x4 let_me_use_pointers_dammit = Matrix4x4::Transform(x, y, z, xrot, yrot, zrot, xscale, yscale, zscale);
+		for (int i = 0; i < 16; i++) {
+			meshops::transform_data->asArray[i] = let_me_use_pointers_dammit.asArray[i];
+		}
 	}
 
 	void transform(float* data, int len) {
