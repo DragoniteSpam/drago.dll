@@ -10,9 +10,6 @@
 #include <sstream>
 
 namespace meshops {
-	extern float trans_x;
-	extern float trans_y;
-	extern float trans_z;
 	extern Matrix4x4* transform_data;
 	extern int vertex_size;
 	
@@ -23,14 +20,7 @@ namespace meshops {
 	void get_bounds(float*, float*, int);
 
 	// transform
-	void transform_position_set(float, float, float);
-	void transform_position(float*, int);
 	void transform_center(float*, int);
-	void transform_rotate_x(float*, int, float);
-	void transform_rotate_y(float*, int, float);
-	void transform_rotate_z(float*, int, float);
-	void transform_scale(float*, int, float);
-
 	void transform_set_matrix(float, float, float, float, float, float, float, float, float);
 	void transform(float*, int);
 	// axes

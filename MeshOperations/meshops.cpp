@@ -1,9 +1,6 @@
 #include "meshops.h"
 
 namespace meshops {
-	float trans_x = 0;
-	float trans_y = 0;
-	float trans_z = 0;
 	Matrix4x4* transform_data = new Matrix4x4();
 	int vertex_size = 9;
 
@@ -37,24 +34,6 @@ namespace meshops {
 	}
 	
 	// transform
-	void transform_position_set(float x, float y, float z) {
-		meshops::trans_x = x;
-		meshops::trans_y = y;
-		meshops::trans_z = z;
-	}
-
-	void transform_position(float* data, int len) {
-		int vsize = meshops::vertex_size;
-		float tx = meshops::trans_x;
-		float ty = meshops::trans_y;
-		float tz = meshops::trans_z;
-		for (int i = 0; i < len; i += vsize) {
-			data[i + 0] += tx;
-			data[i + 1] += ty;
-			data[i + 2] += tz;
-		}
-	}
-
 	void transform_center(float* data, int len) {
 		int vsize = meshops::vertex_size;
 		float total_x = 0;
@@ -71,46 +50,6 @@ namespace meshops {
 		for (int i = 0; i < len; i += vsize) {
 			data[i + 0] -= total_x;
 			data[i + 1] -= total_y;
-		}
-	}
-
-	// could do these with matrices but for set axes i'm pretty sure this is faster
-	void transform_rotate_x(float* data, int len, float angle) {
-		int vsize = meshops::vertex_size;
-		for (int i = 0; i < len; i += vsize) {
-			data[i + 1] = data[i + 1] * cosf(angle) - data[i + 2] * sinf(angle);
-			data[i + 2] = data[i + 1] * sinf(angle) - data[i + 2] * cosf(angle);
-			data[i + 4] = data[i + 4] * cosf(angle) - data[i + 5] * sinf(angle);
-			data[i + 5] = data[i + 4] * sinf(angle) - data[i + 5] * cosf(angle);
-		}
-	}
-
-	void transform_rotate_y(float* data, int len, float angle) {
-		int vsize = meshops::vertex_size;
-		for (int i = 0; i < len; i += vsize) {
-			data[i + 0] = data[i + 2] * sinf(angle) - data[i + 0] * cosf(angle);
-			data[i + 2] = data[i + 2] * cosf(angle) - data[i + 0] * sinf(angle);
-			data[i + 3] = data[i + 5] * sinf(angle) - data[i + 3] * cosf(angle);
-			data[i + 5] = data[i + 5] * cosf(angle) - data[i + 3] * sinf(angle);
-		}
-	}
-
-	void transform_rotate_z(float* data, int len, float angle) {
-		int vsize = meshops::vertex_size;
-		for (int i = 0; i < len; i += vsize) {
-			data[i + 0] = data[i + 0] * cosf(angle) - data[i + 1] * sinf(angle);
-			data[i + 1] = data[i + 0] * sinf(angle) - data[i + 1] * cosf(angle);
-			data[i + 3] = data[i + 3] * cosf(angle) - data[i + 4] * sinf(angle);
-			data[i + 4] = data[i + 3] * sinf(angle) - data[i + 4] * cosf(angle);
-		}
-	}
-
-	void transform_scale(float* data, int len, float scale) {
-		int vsize = meshops::vertex_size;
-		for (int i = 0; i < len; i += vsize) {
-			data[i + 0] *= scale;
-			data[i + 1] *= scale;
-			data[i + 2] *= scale;
 		}
 	}
 

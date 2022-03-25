@@ -20,38 +20,8 @@ ex double meshops_get_bounds(float* data, float* out, double len) {
 }
 
 // basic transforms
-ex double meshops_transform_position_set(double x, double y, double z) {
-	meshops::transform_position_set((float)x, (float)y, (float)z);
-	return 1.0;
-}
-
-ex double meshops_transform_position(float* data, double len) {
-	meshops::transform_position(data, BYTES2FLOATS(len));
-	return 1.0;
-}
-
 ex double meshops_transform_center(float* data, double len) {
 	meshops::transform_center(data, BYTES2FLOATS(len));
-	return 1.0;
-}
-
-ex double meshops_transform_rotate_x(float* data, double len, double angle) {
-	meshops::transform_rotate_x(data, BYTES2FLOATS(len), DEG2RAD(((float)-angle)));
-	return 1.0;
-}
-
-ex double meshops_transform_rotate_y(float* data, double len, double angle) {
-	meshops::transform_rotate_y(data, BYTES2FLOATS(len), DEG2RAD(((float)-angle)));
-	return 1.0;
-}
-
-ex double meshops_transform_rotate_z(float* data, double len, double angle) {
-	meshops::transform_rotate_z(data, BYTES2FLOATS(len), DEG2RAD(((float)-angle)));
-	return 1.0;
-}
-
-ex double meshops_transform_scale(float* data, double len, double scale) {
-	meshops::transform_scale(data, BYTES2FLOATS(len), (float)scale);
 	return 1.0;
 }
 
