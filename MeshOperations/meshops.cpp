@@ -94,15 +94,17 @@ namespace meshops {
 			data[i + 0] = position.x;
 			data[i + 1] = position.y;
 			data[i + 2] = position.z;
-			data[i + 3] = normal.x;
-			data[i + 4] = normal.y;
-			data[i + 5] = normal.z;
-			data[i + 9] = tangent.x;
-			data[i + 10] = tangent.y;
-			data[i + 11] = tangent.z;
-			data[i + 12] = bitangent.x;
-			data[i + 13] = bitangent.y;
-			data[i + 14] = bitangent.z;
+			if (!CMP(normal.Dot(&normal), 0.0f)) {
+				data[i + 3] = normal.x;
+				data[i + 4] = normal.y;
+				data[i + 5] = normal.z;
+				data[i + 9] = tangent.x;
+				data[i + 10] = tangent.y;
+				data[i + 11] = tangent.z;
+				data[i + 12] = bitangent.x;
+				data[i + 13] = bitangent.y;
+				data[i + 14] = bitangent.z;
+			}
 		}
 	}
 
