@@ -74,12 +74,12 @@ namespace macaw {
 			for (int i = 0; i < w; i++) {
 				int i0 = (i / period) * period;
 				int i1 = (i0 + period) % w;
-				float hblend = (i * 1.0 - i0 * 1.0) / period;
+				float hblend = (i * 1.0f - i0 * 1.0f) / period;
 
 				for (int j = 0; j < h; j++) {
 					int j0 = (j / period) * period;
 					int j1 = (j0 + period) % h;
-					float vblend = (j * 1.0 - j0 * 1.0) / period;
+					float vblend = (j * 1.0f - j0 * 1.0f) / period;
 
 					float a = base_noise[GET_2D_INDEX(i0, j0, h)];
 					float b = base_noise[GET_2D_INDEX(i1, j0, h)];
