@@ -178,11 +178,11 @@ struct Matrix4x4 {
 			0, 0, 0, 1
 		);
 	}
-
-	static inline Matrix4x4 Rotation(float x, float y, float z) {
-		float yaw = DEG2RAD(z);
-		float pitch = DEG2RAD(y);
-		float roll = DEG2RAD(x);
+	
+	static inline Matrix4x4 YawPitchRoll(float yaw, float pitch, float roll) {
+		yaw = DEG2RAD(yaw);
+		pitch = DEG2RAD(pitch);
+		roll = DEG2RAD(roll);
 
 		Matrix4x4 result; // z * x * y
 		result.v11 = (cosf(roll) * cosf(yaw)) + (sinf(roll) * sinf(pitch) * sinf(yaw));
