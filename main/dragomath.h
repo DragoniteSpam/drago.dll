@@ -197,11 +197,7 @@ struct Matrix4x4 {
 		result.v44 = 1;
 		return result;
 	}
-
-	static inline Matrix4x4 Rotation(Vector3 eulerAngles) {
-		return Rotation(eulerAngles.x, eulerAngles.y, eulerAngles.z);
-	}
-
+	
 	static inline Matrix4x4 Scale(float x, float y, float z) {
 		return Matrix4x4(
 			x, 0, 0, 0,
@@ -220,6 +216,8 @@ struct Matrix4x4 {
 		);
 	}
 
+	static Matrix4x4 Rotation(float, float, float);
+	static Matrix4x4 Rotation(Vector3);
 	static Matrix4x4 Transform(float, float, float, float, float, float, float, float, float);
 	static Matrix4x4 Transform(Vector3, Vector3, Vector3);
 };
