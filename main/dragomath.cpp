@@ -14,7 +14,7 @@ void Vector4::Transform(Matrix4x4* transform) {
 }
 
 Matrix4x4 Matrix4x4::Rotation(float x, float y, float z) {
-	return (Matrix4x4::RotationZ(z) * Matrix4x4::RotationX(x)) * Matrix4x4::RotationY(y);
+	return (Matrix4x4::RotationY(y) * Matrix4x4::RotationX(x)) * Matrix4x4::RotationZ(z);
 }
 
 Matrix4x4 Matrix4x4::Rotation(Vector3 rotation) {
@@ -26,7 +26,7 @@ Matrix4x4 Matrix4x4::Transform(float x, float y, float z, float xrot, float yrot
 }
 
 Matrix4x4 Matrix4x4::Transform(Vector3 position, Vector3 rotation, Vector3 scale) {
-	return (Matrix4x4::Scale(position) * Matrix4x4::Rotation(rotation)) * Matrix4x4::Translation(scale);
+	return (Matrix4x4::Scale(scale) * Matrix4x4::Rotation(rotation)) * Matrix4x4::Translation(position);
 }
 
 Vector4 operator*(const Matrix4x4& a, const Vector4& b) {
