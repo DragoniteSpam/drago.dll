@@ -106,7 +106,7 @@ ex double meshops_export_d3d(float* data, double len, char* out) {
 
 // vertex building
 ex double meshops_vertex_formatted(float* data, float* out, double len, double format) {
-	return (double)(meshops::vertex_formatted(data, out, BYTES2FLOATS(len), (int)format));
+	return (double)FLOATS2BYTES((meshops::vertex_formatted(data, out, BYTES2FLOATS(len), (int)format)));
 }
 
 ex double meshops_chunk_settings(double chunk_size, double startx, double starty, double endx, double endy) {
