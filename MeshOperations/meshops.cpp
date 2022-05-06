@@ -377,7 +377,7 @@ namespace meshops {
 	int export_d3d(float* data, int len, char* out) {
 		std::stringstream s;
 		int vertices = len / meshops::vertex_size;
-		s << "100\r\n" << (vertices + 2) << "\r\n0 4\r\n";
+		s << "100\r\n" << (vertices + 2) << "\r\n0 4 0 0 0 0 0 0 0 0 0\r\n";
 
 		for (int i = 0; i < len; i += vertex_size) {
 			unsigned int c = ((unsigned int*)data)[i + 8];
@@ -390,7 +390,7 @@ namespace meshops {
 			);
 		}
 
-		s << "1\r\n";
+		s << "1 0 0 0 0 0 0 0 0 0 0\r\n";
 		std::string result = s.str();
 		int bytes = (int)result.length();
 		result.copy(out, bytes);
