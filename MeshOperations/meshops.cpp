@@ -127,6 +127,11 @@ namespace meshops {
 		}
 	}
 
+	void reverse(float* data, int len) {
+		// this is by far the least troublesome way to reverse faces
+		mirror_axis_generic(data, len, 1.0, 1.0, 1.0);
+	}
+
 	// axes
 	void rotate_up(float* data, int len) {
 		float x, y, z, nx, ny, nz;

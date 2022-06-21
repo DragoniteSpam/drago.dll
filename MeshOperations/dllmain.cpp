@@ -40,6 +40,11 @@ ex double meshops_transform(float* data, double len) {
 	return 1.0;
 }
 
+ex double meshops_reverse(float* data, double len) {
+	meshops::reverse(data, BYTES2FLOATS(len));
+	return 1.0;
+}
+
 // axes
 ex double meshops_rotate_up(float* data, double len) {
 	meshops::rotate_up(data, BYTES2FLOATS(len));

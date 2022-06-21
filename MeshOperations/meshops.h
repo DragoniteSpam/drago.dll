@@ -25,6 +25,7 @@ namespace meshops {
 	void transform_set_matrix(float, float, float, float, float, float, float, float, float);
 	void transform_set_matrix_raw(float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float);
 	void transform(float*, int);
+	void reverse(float*, int);
 	// axes
 	void rotate_up(float*, int);
 	void mirror_axis_generic(float*, int, float, float, float);
