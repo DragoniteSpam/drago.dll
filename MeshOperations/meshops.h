@@ -3,6 +3,7 @@
 
 #include "main/core.h"
 #include "main/dragomath.h"
+#include <SpriteOperations/spriteops.h>
 #include <math.h>
 #include <map>
 #include <string>
@@ -40,6 +41,7 @@ namespace meshops {
 	void set_alpha(float*, int, int);
 	void set_colour_and_alpha(float*, int, int, int);
 	void invert_alpha(float*, int);
+	void blend_colour(float*, int, unsigned int, float);
 
 	// normals
 	void set_normals_flat(float*, int);

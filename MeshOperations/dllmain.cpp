@@ -93,6 +93,11 @@ ex double meshops_invert_alpha(float* data, double len) {
 	return 1.0;
 }
 
+ex double meshops_blend_colour(float* data, double len, double target, double amount) {
+	meshops::blend_colour(data, BYTES2FLOATS(len), (unsigned int)target, (float)amount);
+	return 1.0;
+}
+
 // normals
 ex double meshops_set_normals_flat(float* data, double len) {
 	meshops::set_normals_flat(data, BYTES2FLOATS(len));

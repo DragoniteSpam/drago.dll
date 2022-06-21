@@ -158,11 +158,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\main\dragomath.cpp" />
+    <ClCompile Include="..\SpriteOperations\spriteops.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="meshops.cpp" />
     <ClCompile Include="building.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\SpriteOperations\spriteops.h" />
     <ClInclude Include="building.h" />
     <ClInclude Include="meshops.h" />
   </ItemGroup>

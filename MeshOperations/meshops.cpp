@@ -330,6 +330,16 @@ namespace meshops {
 		}
 	}
 
+	void blend_colour(float* data, int len, unsigned int target, float amount) {
+		int vsize = meshops::vertex_size;
+		for (int i = 0; i < len; i += vsize) {
+			unsigned int color = ((unsigned int*)data)[i + 8];
+			unsigned int alpha = color & 0xff000000;
+			color &= 0x00ffffff;
+			((unsigned int*)data)[i + 8] = alpha | spriteops::merge(color, target, amount);
+		}
+	}
+
 	// normals
 	void set_normals_flat(float* data, int len) {
 		Triangle triangle{ };
