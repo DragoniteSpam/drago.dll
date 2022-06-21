@@ -53,6 +53,25 @@ namespace meshops {
 		}
 	}
 
+	void transform_set_matrix_raw(float i11, float i12, float i13, float i14, float i21, float i22, float i23, float i24, float i31, float i32, float i33, float i34, float i41, float i42, float i43, float i44) {
+		transform_data->asArray[0] = i11;
+		transform_data->asArray[1] = i12;
+		transform_data->asArray[2] = i13;
+		transform_data->asArray[3] = i14;
+		transform_data->asArray[4] = i21;
+		transform_data->asArray[5] = i22;
+		transform_data->asArray[6] = i23;
+		transform_data->asArray[7] = i24;
+		transform_data->asArray[8] = i31;
+		transform_data->asArray[9] = i32;
+		transform_data->asArray[10] = i33;
+		transform_data->asArray[11] = i34;
+		transform_data->asArray[12] = i41;
+		transform_data->asArray[13] = i42;
+		transform_data->asArray[14] = i43;
+		transform_data->asArray[15] = i44;
+	}
+
 	void transform_set_matrix(float x, float y, float z, float xrot, float yrot, float zrot, float xscale, float yscale, float zscale) {
 		Matrix4x4 let_me_use_pointers_dammit = Matrix4x4::Transform(x, y, z, xrot, yrot, zrot, xscale, yscale, zscale);
 		for (int i = 0; i < 16; i++) {

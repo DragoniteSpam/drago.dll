@@ -30,6 +30,11 @@ ex double meshops_transform_set_matrix(double x, double y, double z, double xrot
 	return 1.0;
 }
 
+ex double meshops_transform_set_matrix_raw(double i11, double i12, double i13, double i14, double i21, double i22, double i23, double i24, double i31, double i32, double i33, double i34, double i41, double i42, double i43, double i44) {
+	meshops::transform_set_matrix_raw((float)i11, (float)i12, (float)i13, (float)i14, (float)i21, (float)i22, (float)i23, (float)i24, (float)i31, (float)i32, (float)i33, (float)i34, (float)i41, (float)i42, (float)i43, (float)i44);
+	return 1.0;
+}
+
 ex double meshops_transform(float* data, double len) {
 	meshops::transform(data, BYTES2FLOATS(len));
 	return 1.0;

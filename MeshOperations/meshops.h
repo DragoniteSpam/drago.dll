@@ -22,9 +22,11 @@ namespace meshops {
 	// transform
 	void transform_center(float*, int);
 	void transform_set_matrix(float, float, float, float, float, float, float, float, float);
+	void transform_set_matrix_raw(float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float);
 	void transform(float*, int);
 	// axes
 	void rotate_up(float*, int);
+	void mirror_axis_generic(float*, int, float, float, float);
 	void mirror_axis_x(float*, int);
 	void mirror_axis_y(float*, int);
 	void mirror_axis_z(float*, int);
