@@ -129,85 +129,138 @@ namespace meshops {
 		}
 	}
 
-	void mirror_axis_x(float* data, int len) {
-		float x1, x2, x3, y1, y2, y3, z1, z2, z3;
-		int vsize = meshops::vertex_size;
-		int iteration = vsize * 3;
+	void mirror_axis_generic(float* data, int len, float xs, float ys, float zs) {
+		Vector3 position1{}, normal1{}, texcoord1{}, tangent1{}, bitangent1{}, barycentric1{};
+		Vector3 position2{}, normal2{}, texcoord2{}, tangent2{}, bitangent2{}, barycentric2{};
+		Vector3 position3{}, normal3{}, texcoord3{}, tangent3{}, bitangent3{}, barycentric3{};
+		unsigned int color1, color2, color3;
 
-		for (int i = 0; i < len; i += iteration) {
-			x1 = data[i + 0];
-			y1 = data[i + 1];
-			z1 = data[i + 2];
-			x2 = data[i + 0 + vsize];
-			y2 = data[i + 1 + vsize];
-			z2 = data[i + 2 + vsize];
-			x3 = data[i + 0 + vsize * 2];
-			y3 = data[i + 1 + vsize * 2];
-			z3 = data[i + 2 + vsize * 2];
-			data[i + 0] = -x1;
-			data[i + 1] = -y1;
-			data[i + 2] = -z1;
-			data[i + 0 + vsize] = -x3;
-			data[i + 1 + vsize] = -y3;
-			data[i + 2 + vsize] = -z3;
-			data[i + 0 + vsize * 2] = -x2;
-			data[i + 1 + vsize * 2] = -y2;
-			data[i + 2 + vsize * 2] = -z2;
+		int vsize = meshops::vertex_size;
+
+		// you would hope that this would be simpler, but you have to reverse the
+		// triangle direction, so you have to mess with every attribute like this
+		for (int i = 0; i < len; i += vsize * 3) {
+			position1.x = data[i + 0];
+			position1.y = data[i + 1];
+			position1.z = data[i + 2];
+			normal1.x = data[i + 3];
+			normal1.y = data[i + 4];
+			normal1.z = data[i + 5];
+			texcoord1.x = data[i + 6];
+			texcoord1.y = data[i + 7];
+			color1 = ((unsigned int*)data)[i + 8];
+			tangent1.x = data[i + 9];
+			tangent1.y = data[i + 10];
+			tangent1.z = data[i + 11];
+			bitangent1.x = data[i + 12];
+			bitangent1.y = data[i + 13];
+			bitangent1.z = data[i + 14];
+			barycentric1.x = data[i + 15];
+			barycentric1.y = data[i + 16];
+			barycentric1.z = data[i + 17];
+			position2.x = data[i + 0 + vsize];
+			position2.y = data[i + 1 + vsize];
+			position2.z = data[i + 2 + vsize];
+			normal2.x = data[i + 3 + vsize];
+			normal2.y = data[i + 4 + vsize];
+			normal2.z = data[i + 5 + vsize];
+			texcoord2.x = data[i + 6 + vsize];
+			texcoord2.y = data[i + 7 + vsize];
+			color2 = ((unsigned int*)data)[i + 8 + vsize];
+			tangent2.x = data[i + 9 + vsize];
+			tangent2.y = data[i + 10 + vsize];
+			tangent2.z = data[i + 11 + vsize];
+			bitangent2.x = data[i + 12 + vsize];
+			bitangent2.y = data[i + 13 + vsize];
+			bitangent2.z = data[i + 14 + vsize];
+			barycentric2.x = data[i + 15 + vsize];
+			barycentric2.y = data[i + 16 + vsize];
+			barycentric2.z = data[i + 17 + vsize];
+			position3.x = data[i + 0 + vsize * 2];
+			position3.y = data[i + 1 + vsize * 2];
+			position3.z = data[i + 2 + vsize * 2];
+			normal3.x = data[i + 3 + vsize * 2];
+			normal3.y = data[i + 4 + vsize * 2];
+			normal3.z = data[i + 5 + vsize * 2];
+			texcoord3.x = data[i + 6 + vsize * 2];
+			texcoord3.y = data[i + 7 + vsize * 2];
+			color3 = ((unsigned int*)data)[i + 8 + vsize * 2];
+			tangent3.x = data[i + 9 + vsize * 2];
+			tangent3.y = data[i + 10 + vsize * 2];
+			tangent3.z = data[i + 11 + vsize * 2];
+			bitangent3.x = data[i + 12 + vsize * 2];
+			bitangent3.y = data[i + 13 + vsize * 2];
+			bitangent3.z = data[i + 14 + vsize * 2];
+			barycentric3.x = data[i + 15 + vsize * 2];
+			barycentric3.y = data[i + 16 + vsize * 2];
+			barycentric3.z = data[i + 17 + vsize * 2];
+			data[i + 0] = xs * position1.x;
+			data[i + 1] = ys * position1.y;
+			data[i + 2] = zs * position1.z;
+			data[i + 3] = xs * normal1.x;
+			data[i + 4] = ys * normal1.y;
+			data[i + 5] = zs * normal1.z;
+			data[i + 6] = texcoord1.x;
+			data[i + 7] = texcoord1.y;
+			((unsigned int*)data)[i + 8] = color1;
+			data[i + 9] = xs *  tangent1.x;
+			data[i + 10] = ys * tangent1.y;
+			data[i + 11] = zs * tangent1.z;
+			data[i + 12] = xs * bitangent1.x;
+			data[i + 13] = ys * bitangent1.y;
+			data[i + 14] = zs * bitangent1.z;
+			data[i + 15] = barycentric1.x;
+			data[i + 16] = barycentric1.y;
+			data[i + 17] = barycentric1.z;
+			data[i + 0 + vsize] = xs * position3.x;
+			data[i + 1 + vsize] = ys * position3.y;
+			data[i + 2 + vsize] = zs * position3.z;
+			data[i + 3 + vsize] = xs * normal3.x;
+			data[i + 4 + vsize] = ys * normal3.y;
+			data[i + 5 + vsize] = zs * normal3.z;
+			data[i + 6 + vsize] = texcoord3.x;
+			data[i + 7 + vsize] = texcoord3.y;
+			((unsigned int*)data)[i  + vsize + 8] = color3;
+			data[i + 9 + vsize] = xs * tangent3.x;
+			data[i + 10 + vsize] = ys * tangent3.y;
+			data[i + 11 + vsize] = zs * tangent3.z;
+			data[i + 12 + vsize] = xs * bitangent3.x;
+			data[i + 13 + vsize] = ys * bitangent3.y;
+			data[i + 14 + vsize] = zs * bitangent3.z;
+			data[i + 15 + vsize] = barycentric3.x;
+			data[i + 16 + vsize] = barycentric3.y;
+			data[i + 17 + vsize] = barycentric3.z;
+			data[i + 0 + vsize * 2] = xs * position2.x;
+			data[i + 1 + vsize * 2] = ys * position2.y;
+			data[i + 2 + vsize * 2] = zs * position2.z;
+			data[i + 3 + vsize * 2] = xs * normal2.x;
+			data[i + 4 + vsize * 2] = ys * normal2.y;
+			data[i + 5 + vsize * 2] = zs * normal2.z;
+			data[i + 6 + vsize * 2] = texcoord2.x;
+			data[i + 7 + vsize * 2] = texcoord2.y;
+			((unsigned int*)data)[i  + vsize * 2 + 8] = color2;
+			data[i + 9 + vsize * 2] = xs * tangent2.x;
+			data[i + 10 + vsize * 2] = ys * tangent2.y;
+			data[i + 11 + vsize * 2] = zs * tangent2.z;
+			data[i + 12 + vsize * 2] = xs * bitangent2.x;
+			data[i + 13 + vsize * 2] = ys * bitangent2.y;
+			data[i + 14 + vsize * 2] = zs * bitangent2.z;
+			data[i + 15 + vsize * 2] = barycentric2.x;
+			data[i + 16 + vsize * 2] = barycentric2.y;
+			data[i + 17 + vsize * 2] = barycentric2.z;
 		}
+	}
+
+	void mirror_axis_x(float* data, int len) {
+		mirror_axis_generic(data, len, -1.0, 1.0, 1.0);
 	}
 
 	void mirror_axis_y(float* data, int len) {
-		float x1, x2, x3, y1, y2, y3, z1, z2, z3;
-		int vsize = meshops::vertex_size;
-		int iteration = vsize * 3;
-
-		for (int i = 0; i < len; i += iteration) {
-			x1 = data[i + 0];
-			y1 = data[i + 1];
-			z1 = data[i + 2];
-			x2 = data[i + 0 + vsize];
-			y2 = data[i + 1 + vsize];
-			z2 = data[i + 2 + vsize];
-			x3 = data[i + 0 + vsize * 2];
-			y3 = data[i + 1 + vsize * 2];
-			z3 = data[i + 2 + vsize * 2];
-			data[i + 0] = -x1;
-			data[i + 1] = -y1;
-			data[i + 2] = -z1;
-			data[i + 0 + vsize] = -x3;
-			data[i + 1 + vsize] = -y3;
-			data[i + 2 + vsize] = -z3;
-			data[i + 0 + vsize * 2] = -x2;
-			data[i + 1 + vsize * 2] = -y2;
-			data[i + 2 + vsize * 2] = -z2;
-		}
+		mirror_axis_generic(data, len, 1.0, -1.0, 1.0);
 	}
 
 	void mirror_axis_z(float* data, int len) {
-		float x1, x2, x3, y1, y2, y3, z1, z2, z3;
-		int vsize = meshops::vertex_size;
-		int iteration = vsize * 3;
-
-		for (int i = 0; i < len; i += iteration) {
-			x1 = data[i + 0];
-			y1 = data[i + 1];
-			z1 = data[i + 2];
-			x2 = data[i + 0 + vsize];
-			y2 = data[i + 1 + vsize];
-			z2 = data[i + 2 + vsize];
-			x3 = data[i + 0 + vsize * 2];
-			y3 = data[i + 1 + vsize * 2];
-			z3 = data[i + 2 + vsize * 2];
-			data[i + 0] = -x1;
-			data[i + 1] = -y1;
-			data[i + 2] = -z1;
-			data[i + 0 + vsize] = -x3;
-			data[i + 1 + vsize] = -y3;
-			data[i + 2 + vsize] = -z3;
-			data[i + 0 + vsize * 2] = -x2;
-			data[i + 1 + vsize * 2] = -y2;
-			data[i + 2 + vsize * 2] = -z2;
-		}
+		mirror_axis_generic(data, len, 1.0, 1.0, -1.0);
 	}
 
 	// texture
