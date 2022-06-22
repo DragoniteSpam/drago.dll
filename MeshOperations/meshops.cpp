@@ -358,6 +358,22 @@ namespace meshops {
 		}
 	}
 
+	void multiply_colour(float* data, int len, unsigned int target) {
+		int vsize = meshops::vertex_size;
+		unsigned int tr = target & 0xff;
+		unsigned int tg = (target >> 8) & 0xff;
+		unsigned int tb = (target >> 16) & 0xff;
+		for (int i = 0; i < len; i += vsize) {
+			unsigned int color = ((unsigned int*)data)[i + 8];
+			unsigned int r = ((color & 0xff) * tr) >> 8;
+			unsigned int g = (((color >> 8) & 0xff) * tg) >> 8;
+			unsigned int b = (((color >> 16) & 0xff) * tb) >> 8;
+			unsigned int a = color & 0xff000000;
+			color &= 0x00ffffff;
+			((unsigned int*)data)[i + 8] = a | (b << 16) | (g << 8) | r;
+		}
+	}
+
 	// normals
 	void set_normals_flat(float* data, int len) {
 		Triangle triangle{ };

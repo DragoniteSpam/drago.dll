@@ -103,6 +103,11 @@ ex double meshops_blend_colour(float* data, double len, double target, double am
 	return 1.0;
 }
 
+ex double meshops_multiply_colour(float* data, double len, double target) {
+	meshops::multiply_colour(data, BYTES2FLOATS(len), (unsigned int)target);
+	return 1.0;
+}
+
 // normals
 ex double meshops_set_normals_flat(float* data, double len) {
 	meshops::set_normals_flat(data, BYTES2FLOATS(len));

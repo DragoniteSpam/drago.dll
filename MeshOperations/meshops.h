@@ -43,6 +43,7 @@ namespace meshops {
 	void set_colour_and_alpha(float*, int, int, int);
 	void invert_alpha(float*, int);
 	void blend_colour(float*, int, unsigned int, float);
+	void multiply_colour(float*, int, unsigned int);
 
 	// normals
 	void set_normals_flat(float*, int);
