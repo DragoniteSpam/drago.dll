@@ -319,6 +319,7 @@ namespace meshops {
 	void set_colour(float* data, int len, int colour) {
 		int vsize = meshops::vertex_size;
 		for (int i = 0; i < len; i += vsize) {
+			((unsigned int*)data)[i + 8] &= 0xff000000;
 			((unsigned int*)data)[i + 8] |= colour;
 		}
 	}
@@ -327,6 +328,7 @@ namespace meshops {
 		int vsize = meshops::vertex_size;
 		unsigned int a = alpha << 24;
 		for (int i = 0; i < len; i += vsize) {
+			((unsigned int*)data)[i + 8] &= 0x00ffffff;
 			((unsigned int*)data)[i + 8] |= a;
 		}
 	}
