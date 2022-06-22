@@ -134,7 +134,7 @@ namespace meshops {
 
 	// axes
 	void rotate_up(float* data, int len) {
-		float x, y, z, nx, ny, nz;
+		float x, y, z, nx, ny, nz, tx, ty, tz, bix, biy, biz;
 		int vsize = meshops::vertex_size;
 
 		for (int i = 0; i < len; i += vsize) {
@@ -144,12 +144,25 @@ namespace meshops {
 			nx = data[i + 3];
 			ny = data[i + 4];
 			nz = data[i + 5];
+			tx = data[i + 9];
+			ty = data[i + 10];
+			tz = data[i + 11];
+			bix = data[i + 12];
+			biy = data[i + 13];
+			biz = data[i + 14];
+
 			data[i + 0] = y;
-			data[i + 1] = z;
-			data[i + 2] = x;
+			data[i + 1] = x;
+			data[i + 2] = z;
 			data[i + 3] = ny;
-			data[i + 4] = nz;
-			data[i + 5] = nx;
+			data[i + 4] = nx;
+			data[i + 5] = nz;
+			data[i + 9] = ty;
+			data[i + 10] = tx;
+			data[i + 11] = tz;
+			data[i + 12] = biy;
+			data[i + 13] = bix;
+			data[i + 14] = biz;
 		}
 	}
 
