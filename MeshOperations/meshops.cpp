@@ -151,18 +151,18 @@ namespace meshops {
 			biy = data[i + 13];
 			biz = data[i + 14];
 
-			data[i + 0] = y;
+			data[i + 0] = z;
 			data[i + 1] = x;
-			data[i + 2] = z;
-			data[i + 3] = ny;
+			data[i + 2] = y;
+			data[i + 3] = nz;
 			data[i + 4] = nx;
-			data[i + 5] = nz;
-			data[i + 9] = ty;
+			data[i + 5] = ny;
+			data[i + 9] = tz;
 			data[i + 10] = tx;
-			data[i + 11] = tz;
-			data[i + 12] = biy;
+			data[i + 11] = ty;
+			data[i + 12] = biz;
 			data[i + 13] = bix;
-			data[i + 14] = biz;
+			data[i + 14] = biy;
 		}
 	}
 
