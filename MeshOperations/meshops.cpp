@@ -3,6 +3,7 @@
 namespace meshops {
 	Matrix4x4* transform_data = new Matrix4x4();
 	int vertex_size = 9;
+	std::map<std::string, Vector3>* normal_cache = new std::map<std::string, Vector3>();
 
 	const char* version() {
 		return __DRAGO_MESH_OP;
@@ -422,7 +423,7 @@ namespace meshops {
 		Vector3 e1{ }, e2{ };
 		int vsize = meshops::vertex_size;
 
-		std::map<std::string, Vector3> cache;
+		normal_cache->clear();
 
 		for (int i = 0; i < len; i += meshops::vertex_size * 3) {
 			triangle.a.x = data[i + 0];
@@ -462,13 +463,13 @@ namespace meshops {
 			};
 
 			for (int i = 0; i < 3; i++) {
-				if (cache.contains(keys[i])) {
-					Vector3* pcached = &cache[keys[i]];
+				if (normal_cache->contains(keys[i])) {
+					Vector3* pcached = &(*normal_cache)[keys[i]];
 					pcached->x += normal.x;
 					pcached->y += normal.y;
 					pcached->z += normal.z;
 				} else {
-					cache.insert(std::pair(keys[i], normal));
+					normal_cache->insert(std::pair(keys[i], normal));
 				}
 			}
 		}
@@ -481,7 +482,7 @@ namespace meshops {
 			normal.y = data[i + 4];
 			normal.z = data[i + 5];
 
-			cached = cache[std::format("{},{},{}", vertex.x, vertex.y, vertex.z)];
+			cached = (*normal_cache)[std::format("{},{},{}", vertex.x, vertex.y, vertex.z)];
 			NORMALIZE(cached);
 			if (DOT(normal, cached) > threshold) {
 				data[i + 3] = cached.z;
