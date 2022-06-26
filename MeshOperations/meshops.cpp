@@ -421,7 +421,7 @@ namespace meshops {
 		normal_cache->clear();
 	}
 
-	void set_normals_smooth_calculate(float* data, int len, float threshold) {
+	void set_normals_smooth_calculate(float* data, int len) {
 		Triangle triangle{ };
 		Vector3 vertex{ }, normal{ }, cached{ };
 		Vector3 e1{ }, e2{ };

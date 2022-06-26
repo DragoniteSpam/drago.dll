@@ -116,7 +116,22 @@ ex double meshops_set_normals_flat(float* data, double len) {
 
 ex double meshops_set_normals_smooth(float* data, double len, double threshold) {
 	meshops::set_normals_smooth_prepare();
-	meshops::set_normals_smooth_calculate(data, BYTES2FLOATS(len), (float)threshold);
+	meshops::set_normals_smooth_calculate(data, BYTES2FLOATS(len));
+	meshops::set_normals_smooth_finalize(data, BYTES2FLOATS(len), (float)threshold);
+	return 1.0;
+}
+
+ex double meshops_set_normals_smooth_multi_prepare() {
+	meshops::set_normals_smooth_prepare();
+	return 1.0;
+}
+
+ex double meshops_set_normals_smooth_multi_calculate(float* data, double len) {
+	meshops::set_normals_smooth_calculate(data, BYTES2FLOATS(len));
+	return 1.0;
+}
+
+ex double meshops_set_normals_smooth_multi_finalize(float* data, double len, double threshold) {
 	meshops::set_normals_smooth_finalize(data, BYTES2FLOATS(len), (float)threshold);
 	return 1.0;
 }
