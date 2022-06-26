@@ -48,7 +48,9 @@ namespace meshops {
 
 	// normals
 	void set_normals_flat(float*, int);
-	void set_normals_smooth(float*, int, float);
+	void set_normals_smooth_prepare();
+	void set_normals_smooth_calculate(float*, int, float);
+	void set_normals_smooth_finalize(float*, int, float);
 
 	// output
 	int export_d3d(float*, int, char*);
