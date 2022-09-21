@@ -148,7 +148,7 @@ struct Matrix4x4 {
 			position.x, position.y, position.z, 1
 		);
 	}
-
+	
 	static inline Matrix4x4 RotationX(float angle) {
 		angle = DEG2RAD(angle);
 		return Matrix4x4(
@@ -178,7 +178,7 @@ struct Matrix4x4 {
 			0, 0, 0, 1
 		);
 	}
-	
+
 	static inline Matrix4x4 YawPitchRoll(float yaw, float pitch, float roll) {
 		yaw = DEG2RAD(yaw);
 		pitch = DEG2RAD(pitch);

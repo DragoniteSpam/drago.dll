@@ -84,12 +84,13 @@ namespace meshops {
 		int vsize = meshops::vertex_size;
 		Vector4 position{}, normal{}, tangent{}, bitangent{};
 		Matrix4x4 mat = *meshops::transform_data;
-		position.w = 1;
-		normal.w = 0;
-		tangent.w = 0;
-		bitangent.w = 0;
 
 		for (int i = 0; i < len; i += vsize) {
+			position.w = 1;
+			normal.w = 0;
+			tangent.w = 0;
+			bitangent.w = 0;
+
 			position.x = data[i + 0];
 			position.y = data[i + 1];
 			position.z = data[i + 2];
