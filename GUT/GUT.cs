@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using System.IO;
 
 namespace GUT {
     public class GUT {
@@ -14,6 +15,7 @@ namespace GUT {
 
                 if (finder.ShowDialog() == DialogResult.OK) {
                     Reset();
+                    Extract(finder.FileName);
                 }
             }
         }
@@ -25,6 +27,13 @@ namespace GUT {
                 if (finder.ShowDialog() == DialogResult.OK) {
 
                 }
+            }
+        }
+
+        private void Extract(string filename) {
+            DirectoryInfo projectRootFolder = new DirectoryInfo(Path.GetDirectoryName(filename));
+            while (projectRootFolder != null && projectRootFolder.Name != "Assets") {
+                projectRootFolder = projectRootFolder.Parent;
             }
         }
     }
