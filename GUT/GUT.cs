@@ -9,32 +9,15 @@ namespace GUT {
 
         }
 
-        public void Open() {
-            using (OpenFileDialog finder = new OpenFileDialog()) {
-                finder.Filter = "Unity scenes (*.unity)|*.unity";
-
-                if (finder.ShowDialog() == DialogResult.OK) {
-                    Reset();
-                    Extract(finder.FileName);
-                }
-            }
-        }
-
-        public void Export() {
-            using (SaveFileDialog finder = new SaveFileDialog()) {
-                finder.Filter = /* come up with a file extension and format later */"";
-
-                if (finder.ShowDialog() == DialogResult.OK) {
-
-                }
-            }
-        }
-
-        private void Extract(string filename) {
+        public void Open(string filename) {
+            Reset();
             DirectoryInfo projectRootFolder = new DirectoryInfo(Path.GetDirectoryName(filename));
             while (projectRootFolder != null && projectRootFolder.Name != "Assets") {
                 projectRootFolder = projectRootFolder.Parent;
             }
+        }
+
+        public void Export(string filename) {
         }
     }
 }

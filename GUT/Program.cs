@@ -20,10 +20,23 @@ namespace GUT {
         }
 
         private void buttonLoad_Click(object sender, EventArgs e) {
+            using (OpenFileDialog finder = new OpenFileDialog()) {
+                finder.Filter = "Unity scenes (*.unity)|*.unity";
+
+                if (finder.ShowDialog() == DialogResult.OK) {
+                    data.Open(finder.FileName);
+                }
+            }
         }
 
         private void label1_Click(object sender, EventArgs e) {
+            using (SaveFileDialog finder = new SaveFileDialog()) {
+                finder.Filter = /* come up with a file extension and format later */"";
 
+                if (finder.ShowDialog() == DialogResult.OK) {
+                    data.Export(finder.FileName);
+                }
+            }
         }
     }
 }
