@@ -51,6 +51,7 @@ namespace terrainops {
 		unsigned int* texture_data = terrainops::save_texture_map;
 		unsigned int* colour_data = terrainops::save_colour_map;
 		float tex_size = terrainops::save_tex_size;
+		bool smooth_normals = true;
 
 		int x1 = std::max(0, terrainops::save_start.a);
 		int y1 = std::max(0, terrainops::save_start.b);
@@ -61,6 +62,9 @@ namespace terrainops {
 		unsigned int c00, c01, c10, c11;
 		Vector3 e1{ }, e2{ };
 		Vector3 normal{ }, tangent{ }, bitangent{ };
+		Vector3 normal00{ }, normal10{ }, normal01{ }, normal11{ };
+		Vector3 tangent00{ }, tangent10{ }, tangent01{ }, tangent11{ };
+		Vector3 bitangent00{ }, bitangent10{ }, bitangent01{ }, bitangent11{ };
 		Vector2 texcoord{ };
 
 		// we'll deal with these later
@@ -102,19 +106,11 @@ namespace terrainops {
 				z01 *= scale;
 				z11 *= scale;
 
-				if (swap_zup) {
-					float t = y00;
-					y00 = z00;
-					z00 = t;
-					t = y01;
-					y01 = z01;
-					z01 = t;
-					t = y11;
-					y11 = z11;
-					z11 = t;
-					t = y10;
-					y10 = z10;
-					z10 = t;
+				if (smooth_normals) {
+					terrainops::get_normal_smooth(data, &normal00, x00, y00, x00, y00, 0, w, h);
+					terrainops::get_normal_smooth(data, &normal10, x10, y10, x00, y00, 1, w, h);
+					terrainops::get_normal_smooth(data, &normal11, x11, y11, x00, y00, 2, w, h);
+					terrainops::get_normal_smooth(data, &normal01, x01, y01, x00, y00, 3, w, h);
 				}
 
 				terrainops::get_texcoord(texture_data, &texcoord, x, y, w, h, swap_uv);
@@ -126,35 +122,77 @@ namespace terrainops {
 
 				// first triangle
 				if (all || z00 >= water_level || z10 >= water_level || z11 >= water_level) {
-					get_normal(data, &normal, x00, y00, x10, y10, x11, y11, w, h);
-
-					if (swap_zup) {
-						float t = normal.z;
-						normal.z = normal.y;
-						normal.y = t;
+					if (!smooth_normals) {
+						terrainops::get_normal(data, &normal00, x00, y00, x10, y10, x11, y11, w, h);
+						normal10.x = normal00.x;
+						normal10.y = normal00.y;
+						normal11.y = normal00.y;
+						normal11.x = normal00.x;
 					}
+					/*
+					if (swap_zup) {
+						float t = y00;
+						y00 = z00;
+						z00 = t;
+						t = y01;
+						y01 = z01;
+						z01 = t;
+						t = y11;
+						y11 = z11;
+						z11 = t;
 
-					// if you do smoothed normals, it should go here
-
-					callback(out, content, format, index, x00, y00, z00, normal.x, normal.y, normal.z, texcoord.x, texcoord.y, c00, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 1, 0, 0);
-					callback(out, content, format, index, x10, y10, z10, normal.x, normal.y, normal.z, texcoord.x + tex_size, texcoord.y, c10, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 1, 0);
-					callback(out, content, format, index, x11, y11, z11, normal.x, normal.y, normal.z, texcoord.x + tex_size, texcoord.y + tex_size, c11, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 0, 1);
+						t = normal00.y;
+						normal00.y = normal00.z;
+						normal00.z = t;
+						t = normal10.y;
+						normal01.y = normal10.z;
+						normal01.z = t;
+						t = normal00.y;
+						normal11.y = normal11.z;
+						normal11.z = t;
+					}
+					*/
+					callback(out, content, format, index, x00, y00, z00, normal00.x, normal00.y, normal00.z, texcoord.x, texcoord.y, c00, tangent00.x, tangent00.y, tangent00.z, bitangent00.x, bitangent00.y, bitangent00.z, 1, 0, 0);
+					callback(out, content, format, index, x10, y10, z10, normal10.x, normal10.y, normal10.z, texcoord.x + tex_size, texcoord.y, c10, tangent10.x, tangent10.y, tangent10.z, bitangent10.x, bitangent10.y, bitangent10.z, 0, 1, 0);
+					callback(out, content, format, index, x11, y11, z11, normal11.x, normal11.y, normal11.z, texcoord.x + tex_size, texcoord.y + tex_size, c11, tangent11.x, tangent11.y, tangent11.z, bitangent11.x, bitangent11.y, bitangent11.z, 0, 0, 1);
 					(*vertices) += 3;
 				}
 
 				// second triangle
 				if (all || z11 >= water_level || z01 >= water_level || z00 >= water_level) {
-					get_normal(data, &normal, x11, y11, x01, y01, x00, y00, w, h);
-
-					if (swap_zup) {
-						float t = normal.z;
-						normal.z = normal.y;
-						normal.y = t;
+					if (!smooth_normals) {
+						terrainops::get_normal(data, &normal11, x11, y11, x01, y01, x00, y00, w, h);
+						normal01.x = normal11.x;
+						normal01.y = normal11.y;
+						normal00.y = normal11.y;
+						normal00.x = normal11.x;
 					}
+					/*
+					if (swap_zup) {
+						float t = y00;
+						y00 = z00;
+						z00 = t;
+						t = y01;
+						y01 = z01;
+						z01 = t;
+						t = y11;
+						y11 = z11;
+						z11 = t;
 
-					callback(out, content, format, index, x11, y11, z11, normal.x, normal.y, normal.z, texcoord.x + tex_size, texcoord.y + tex_size, c11, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 1, 0, 0);
-					callback(out, content, format, index, x01, y01, z01, normal.x, normal.y, normal.z, texcoord.x, texcoord.y + tex_size, c01, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 1, 0);
-					callback(out, content, format, index, x00, y00, z00, normal.x, normal.y, normal.z, texcoord.x, texcoord.y, c00, tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z, 0, 0, 1);
+						t = normal00.y;
+						normal00.y = normal00.z;
+						normal00.z = t;
+						t = normal11.y;
+						normal11.y = normal11.z;
+						normal11.z = t;
+						t = normal00.y;
+						normal01.y = normal01.z;
+						normal01.z = t;
+					}
+					*/
+					callback(out, content, format, index, x11, y11, z11, normal11.x, normal11.y, normal11.z, texcoord.x + tex_size, texcoord.y + tex_size, c11, tangent11.x, tangent11.y, tangent11.z, bitangent11.x, bitangent11.y, bitangent11.z, 1, 0, 0);
+					callback(out, content, format, index, x01, y01, z01, normal01.x, normal01.y, normal01.z, texcoord.x, texcoord.y + tex_size, c01, tangent01.x, tangent01.y, tangent01.z, bitangent01.x, bitangent01.y, bitangent01.z, 0, 1, 0);
+					callback(out, content, format, index, x00, y00, z00, normal00.x, normal00.y, normal00.z, texcoord.x, texcoord.y, c00, tangent00.x, tangent00.y, tangent00.z, bitangent00.x, bitangent00.y, bitangent00.z, 0, 0, 1);
 					(*vertices) += 3;
 				}
 			}
