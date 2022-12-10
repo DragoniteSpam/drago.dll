@@ -124,16 +124,9 @@ namespace terrainops {
 				c10 = terrainops::get_colour(colour_data, x + density, y, w, h, color_scale);
 				c11 = terrainops::get_colour(colour_data, x + density, y + density, w, h, color_scale);
 
+				// first triangle
 				if (all || z00 >= water_level || z10 >= water_level || z11 >= water_level) {
-					e1.x = x10 - x00;
-					e1.y = y10 - y00;
-					e1.z = z10 - z00;
-					e2.x = x11 - x00;
-					e2.y = y11 - y00;
-					e2.z = z11 - z00;
-
-					CROSS(normal, e1, e2);
-					NORMALIZE(normal);
+					get_normal(data, &normal, x00, y00, x10, y10, x11, y11, w, h);
 
 					if (swap_zup) {
 						float t = normal.z;
@@ -149,16 +142,9 @@ namespace terrainops {
 					(*vertices) += 3;
 				}
 
+				// second triangle
 				if (all || z11 >= water_level || z01 >= water_level || z00 >= water_level) {
-					e1.x = x01 - x11;
-					e1.y = y01 - y11;
-					e1.z = z01 - z11;
-					e2.x = x00 - x11;
-					e2.y = y00 - y11;
-					e2.z = z00 - z11;
-
-					CROSS(normal, e1, e2);
-					NORMALIZE(normal);
+					get_normal(data, &normal, x11, y11, x01, y01, x00, y00, w, h);
 
 					if (swap_zup) {
 						float t = normal.z;
