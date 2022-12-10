@@ -106,7 +106,7 @@ namespace terrainops {
 	inline void add_z(float*, float*, float*, int, int, int, int, float, int, int);
 	inline void set_z(float*, float*, float*, int, int, int, int, float, int, int);
 	inline void get_normal(float*, Vector3*, int, int, int, int, int, int, int, int);
-	inline void get_normal_smooth(float*, Vector3*, int, int, int, int, int, int, int, int);
+	inline void get_normal_smooth(float*, Vector3*, int, int, int, int, int, int, int);
 	inline void get_texcoord(unsigned int*, Vector2*, int, int, int, int, bool);
 	inline unsigned int get_colour(unsigned int*, int, int, int, int, float);
 	inline unsigned int get_vertex_index(int, int, int, int, int, int);
@@ -175,8 +175,208 @@ namespace terrainops {
 		NORMALIZE(*results);
 	}
 
-	inline void get_normal_smooth(float* data, Vector3* results, int x1, int y1, int x2, int y2, int x3, int y3, int w, int h) {
-		get_normal(data, results, x1, y1, x2, y2, x3, y3, w, h);
+	inline void append_triangle_normal(float* data, Vector3* results, Triangle triangle, int w, int h) {
+		// the abc members of Vector3s are integers, which is occasionally useful
+		float z1 = get_z(data, std::min(triangle.a.a, w - 1), std::min(triangle.a.b, h - 1), h);
+		float z2 = get_z(data, std::min(triangle.b.a, w - 1), std::min(triangle.b.b, h - 1), h);
+		float z3 = get_z(data, std::min(triangle.c.a, w - 1), std::min(triangle.c.b, h - 1), h);
+
+		Vector3 e1{ }, e2{ }, n{ };
+		e1.x = triangle.b.a - triangle.a.a;
+		e1.y = triangle.b.b - triangle.a.b;
+		e1.z = z2 - z1;
+		e2.x = triangle.c.a - triangle.a.a;
+		e2.y = triangle.c.b - triangle.a.b;
+		e2.z = z3 - z1;
+
+		CROSS(n, e1, e2);
+		NORMALIZE(n);
+
+		results->x += n.x;
+		results->y += n.y;
+		results->z += n.z;
+	}
+
+	inline void get_normal_smooth(float* data, Vector3* results, int x, int y, int originx, int originy, int corner, int w, int h) {
+		Vector3 norm{ };
+
+		Triangle ta{ }, tb{ }, tc{ }, td{ }, te{ }, tf{ }, tg{ }, th{ }, ti{ }, tj{ }, tk{ }, tl{ }, tm{ }, tn{ }, tone{ }, ttwo{ };
+		if (originx > 0) {
+			tn.a.a = originx - 1;
+			tn.a.b = originy;
+			tn.b.a = originx;
+			tn.b.b = originy + 1;
+			tn.c.a = originx - 1;
+			tn.c.b = originy + 1;
+
+			ta.a.a = originx - 1;
+			ta.a.b = originy;
+			ta.b.a = originx;
+			ta.b.b = originy;
+			ta.c.a = originx;
+			ta.c.b = originy + 1;
+		}
+
+		if (originx > 0 && originy > 0) {
+			tb.a.a = originx - 1;
+			tb.a.b = originy - 1;
+			tb.b.a = originx;
+			tb.b.b = originy;
+			tb.c.a = originx - 1;
+			tb.c.b = originy;
+
+			tc.a.a = originx - 1;
+			tc.a.b = originy - 1;
+			tc.b.a = originx;
+			tc.b.b = originy - 1;
+			tc.c.a = originx;
+			tc.c.b = originy;
+		}
+
+		if (originy > 0) {
+			td.a.a = originx;
+			td.a.b = originy - 1;
+			td.b.a = originx + 1;
+			td.b.b = originy;
+			td.c.a = originx;
+			td.c.b = originy;
+
+			te.a.a = originx;
+			te.a.b = originy - 1;
+			te.b.a = originx + 1;
+			te.b.b = originy - 1;
+			te.c.a = originx + 1;
+			te.c.b = originy;
+		}
+
+		if (originx < w - 1 && y > 0) {
+			tf.a.a = originx + 1;
+			tf.a.b = originy - 1;
+			tf.b.a = originx + 2;
+			tf.b.b = originy;
+			tf.c.a = originx + 1;
+			tf.c.b = originy;
+		}
+
+		if (originx < w - 1) {
+			tg.a.a = originx + 1;
+			tg.a.b = originy;
+			tg.b.a = originx + 2;
+			tg.b.b = originy;
+			tg.c.a = originx + 2;
+			tg.c.b = originy + 1;
+
+			th.a.a = originx + 1;
+			th.a.b = originy;
+			th.b.a = originx + 2;
+			th.b.b = originy + 1;
+			th.c.a = originx + 1;
+			th.c.b = originy + 1;
+		}
+
+		if (originx < w - 1 && originy < h - 1) {
+			ti.a.a = originx + 1;
+			ti.a.b = originy + 1;
+			ti.b.a = originx + 2;
+			ti.b.b = originy + 1;
+			ti.c.a = originx + 2;
+			ti.c.b = originy + 2;
+
+			tj.a.a = originx + 1;
+			tj.a.b = originy + 1;
+			tj.b.a = originx + 2;
+			tj.b.b = originy + 2;
+			tj.c.a = originx + 1;
+			tj.c.b = originy + 2;
+		}
+
+		if (originy < h - 1) {
+			tk.a.a = originx;
+			tk.a.b = originy + 1;
+			tk.b.a = originx + 1;
+			tk.b.b = originy + 1;
+			tk.c.a = originx + 1;
+			tk.c.b = originy + 2;
+
+			tl.a.a = originx;
+			tl.a.b = originy + 1;
+			tl.b.a = originx + 1;
+			tl.b.b = originy + 2;
+			tl.c.a = originx;
+			tl.c.b = originy + 2;
+		}
+
+		if (originx > 0 && originy < h - 1) {
+			tm.a.a = originx;
+			tm.a.b = originy + 2;
+			tm.b.a = originx - 1;
+			tm.b.b = originy + 1;
+			tm.c.a = originx;
+			tm.c.b = originy + 1;
+		}
+
+		tone.a.a = originx;
+		tone.a.b = originy;
+		tone.b.a = originx + 1;
+		tone.b.b = originy;
+		tone.c.a = originx + 1;
+		tone.c.b = originy + 1;
+
+		ttwo.a.a = originx + 1;
+		ttwo.a.b = originy + 1;
+		ttwo.b.a = originx;
+		ttwo.b.b = originy + 1;
+		ttwo.c.a = originx;
+		ttwo.c.b = originy;
+
+		switch (corner) {
+		case 0:	// northwest
+		{
+			if (originx > 0) append_triangle_normal(data, &norm, ta, w, h);
+			if (originx > 0 && originy > 0) append_triangle_normal(data, &norm, tb, w, h);
+			if (originx > 0 && originy > 0) append_triangle_normal(data, &norm, tc, w, h);
+			if (originy > 0) append_triangle_normal(data, &norm, td, w, h);
+			append_triangle_normal(data, &norm, tone, w, h);
+			append_triangle_normal(data, &norm, ttwo, w, h);
+			break;
+		}
+		case 1: // northeast
+		{
+			if (originy > 0) append_triangle_normal(data, &norm, td, w, h);
+			if (originy > 0) append_triangle_normal(data, &norm, te, w, h);
+			if (originx < w - 1 && y > 0) append_triangle_normal(data, &norm, tf, w, h);
+			if (originx < w - 1) append_triangle_normal(data, &norm, tg, w, h);
+			if (originx < w - 1) append_triangle_normal(data, &norm, th, w, h);
+			append_triangle_normal(data, &norm, tone, w, h);
+			break;
+		}
+		case 2: // southeast
+		{
+			if (originx < w - 1) append_triangle_normal(data, &norm, th, w, h);
+			if (originx < w - 1 && originy < h - 1) append_triangle_normal(data, &norm, ti, w, h);
+			if (originx < w - 1 && originy < h - 1) append_triangle_normal(data, &norm, tj, w, h);
+			if (originy < h - 1) append_triangle_normal(data, &norm, tk, w, h);
+			append_triangle_normal(data, &norm, tone, w, h);
+			append_triangle_normal(data, &norm, ttwo, w, h);
+			break;
+		}
+		case 3: // southwest
+		{
+			if (originy < h - 1) append_triangle_normal(data, &norm, tk, w, h);
+			if (originy < h - 1) append_triangle_normal(data, &norm, tl, w, h);
+			if (originx > 0 && originy < h - 1) append_triangle_normal(data, &norm, tm, w, h);
+			if (originx > 0) append_triangle_normal(data, &norm, tn, w, h);
+			if (originx > 0) append_triangle_normal(data, &norm, ta, w, h);
+			append_triangle_normal(data, &norm, ttwo, w, h);
+			break;
+		}
+		}
+
+		NORMALIZE(norm);
+		
+		results->x = norm.x;
+		results->y = norm.y;
+		results->z = norm.z;
 	}
 
 	inline void get_texcoord(unsigned int* texture_data, Vector2* results, int x, int y, int w, int h, bool swap_uvs) {
