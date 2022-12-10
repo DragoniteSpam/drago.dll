@@ -197,8 +197,8 @@ namespace terrainops {
 		results->z += n.z;
 	}
 
-	inline void get_normal_smooth(float* data, Vector3* results, int x, int y, int originx, int originy, int corner, int w, int h) {
-		Vector3 norm{ };
+	inline void get_normal_smooth(float* data, TerrainCell* results, int x, int y, int originx, int originy, int corner, int w, int h) {
+		Vector3 norm00{ }, norm10{ }, norm01{ }, norm11{ };
 
 		Triangle ta{ }, tb{ }, tc{ }, td{ }, te{ }, tf{ }, tg{ }, th{ }, ti{ }, tj{ }, tk{ }, tl{ }, tm{ }, tn{ }, tone{ }, ttwo{ };
 		if (originx > 0) {
@@ -329,54 +329,58 @@ namespace terrainops {
 		ttwo.c.a = originx;
 		ttwo.c.b = originy;
 
-		switch (corner) {
-		case 0:	// northwest
-		{
-			if (originx > 0) append_triangle_normal(data, &norm, ta, w, h);
-			if (originx > 0 && originy > 0) append_triangle_normal(data, &norm, tb, w, h);
-			if (originx > 0 && originy > 0) append_triangle_normal(data, &norm, tc, w, h);
-			if (originy > 0) append_triangle_normal(data, &norm, td, w, h);
-			append_triangle_normal(data, &norm, tone, w, h);
-			append_triangle_normal(data, &norm, ttwo, w, h);
-			break;
-		}
-		case 1: // northeast
-		{
-			if (originy > 0) append_triangle_normal(data, &norm, td, w, h);
-			if (originy > 0) append_triangle_normal(data, &norm, te, w, h);
-			if (originx < w - 1 && y > 0) append_triangle_normal(data, &norm, tf, w, h);
-			if (originx < w - 1) append_triangle_normal(data, &norm, tg, w, h);
-			if (originx < w - 1) append_triangle_normal(data, &norm, th, w, h);
-			append_triangle_normal(data, &norm, tone, w, h);
-			break;
-		}
-		case 2: // southeast
-		{
-			if (originx < w - 1) append_triangle_normal(data, &norm, th, w, h);
-			if (originx < w - 1 && originy < h - 1) append_triangle_normal(data, &norm, ti, w, h);
-			if (originx < w - 1 && originy < h - 1) append_triangle_normal(data, &norm, tj, w, h);
-			if (originy < h - 1) append_triangle_normal(data, &norm, tk, w, h);
-			append_triangle_normal(data, &norm, tone, w, h);
-			append_triangle_normal(data, &norm, ttwo, w, h);
-			break;
-		}
-		case 3: // southwest
-		{
-			if (originy < h - 1) append_triangle_normal(data, &norm, tk, w, h);
-			if (originy < h - 1) append_triangle_normal(data, &norm, tl, w, h);
-			if (originx > 0 && originy < h - 1) append_triangle_normal(data, &norm, tm, w, h);
-			if (originx > 0) append_triangle_normal(data, &norm, tn, w, h);
-			if (originx > 0) append_triangle_normal(data, &norm, ta, w, h);
-			append_triangle_normal(data, &norm, ttwo, w, h);
-			break;
-		}
-		}
+		// northwest
+		if (originx > 0) append_triangle_normal(data, &norm00, ta, w, h);
+		if (originx > 0 && originy > 0) append_triangle_normal(data, &norm00, tb, w, h);
+		if (originx > 0 && originy > 0) append_triangle_normal(data, &norm00, tc, w, h);
+		if (originy > 0) append_triangle_normal(data, &norm00, td, w, h);
+		append_triangle_normal(data, &norm00, tone, w, h);
+		append_triangle_normal(data, &norm00, ttwo, w, h);
 
-		NORMALIZE(norm);
+		// northeast
+		if (originy > 0) append_triangle_normal(data, &norm10, td, w, h);
+		if (originy > 0) append_triangle_normal(data, &norm10, te, w, h);
+		if (originx < w - 1 && y > 0) append_triangle_normal(data, &norm10, tf, w, h);
+		if (originx < w - 1) append_triangle_normal(data, &norm10, tg, w, h);
+		if (originx < w - 1) append_triangle_normal(data, &norm10, th, w, h);
+		append_triangle_normal(data, &norm10, tone, w, h);
 		
-		results->x = norm.x;
-		results->y = norm.y;
-		results->z = norm.z;
+		// southeast
+		if (originx < w - 1) append_triangle_normal(data, &norm11, th, w, h);
+		if (originx < w - 1 && originy < h - 1) append_triangle_normal(data, &norm11, ti, w, h);
+		if (originx < w - 1 && originy < h - 1) append_triangle_normal(data, &norm11, tj, w, h);
+		if (originy < h - 1) append_triangle_normal(data, &norm11, tk, w, h);
+		append_triangle_normal(data, &norm11, tone, w, h);
+		append_triangle_normal(data, &norm11, ttwo, w, h);
+		
+		// southwest
+		if (originy < h - 1) append_triangle_normal(data, &norm01, tk, w, h);
+		if (originy < h - 1) append_triangle_normal(data, &norm01, tl, w, h);
+		if (originx > 0 && originy < h - 1) append_triangle_normal(data, &norm01, tm, w, h);
+		if (originx > 0) append_triangle_normal(data, &norm01, tn, w, h);
+		if (originx > 0) append_triangle_normal(data, &norm01, ta, w, h);
+		append_triangle_normal(data, &norm01, ttwo, w, h);
+
+		NORMALIZE(norm00);
+		NORMALIZE(norm10);
+		NORMALIZE(norm11);
+		NORMALIZE(norm01);
+
+		results->nw.x = norm00.x;
+		results->nw.y = norm00.y;
+		results->nw.z = norm00.z;
+
+		results->ne.x = norm10.x;
+		results->ne.y = norm10.y;
+		results->ne.z = norm10.z;
+
+		results->se.x = norm11.x;
+		results->se.y = norm11.y;
+		results->se.z = norm11.z;
+
+		results->sw.x = norm01.x;
+		results->sw.y = norm01.y;
+		results->sw.z = norm01.z;
 	}
 
 	inline void get_texcoord(unsigned int* texture_data, Vector2* results, int x, int y, int w, int h, bool swap_uvs) {
