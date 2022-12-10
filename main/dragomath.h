@@ -28,6 +28,8 @@ constexpr float PI = 3.14159265358f;
 #define MAGNITUDE(vec3) sqrtf(DOT(vec3, vec3))
 #define NORMALIZE(vec3) { float mag = MAGNITUDE((vec3)); (vec3).x /= mag; (vec3).y /= mag; (vec3).z /= mag; }
 
+#define SWAPYZ(vec3) { float t = vec3.y; vec3.y = vec3.z; vec3.z = t; }
+
 // data structures
 struct Vector4;
 struct Vector3;
@@ -96,6 +98,33 @@ struct Vector2 {
 
 struct Triangle {
 	Vector3 a, b, c;
+};
+
+struct TerrainCell {
+	union {
+		struct {
+			Vector3 nw, ne, se, sw;
+		};
+		Vector3 asArray[4];
+	};
+};
+
+struct TerrainCellVector2 {
+	union {
+		struct {
+			Vector2 nw, ne, se, sw;
+		};
+		Vector2 asArray[4];
+	};
+};
+
+struct TerrainCellUInt {
+	union {
+		struct {
+			unsigned int nw, ne, se, sw;
+		};
+		unsigned int asArray[4];
+	};
 };
 
 // See here: https://github.com/gszauer/GamePhysicsCookbook/blob/master/Code/matrices.h
