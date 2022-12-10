@@ -4,7 +4,7 @@
 
 namespace terrainops {
 	// build vertex data
-	void build_settings(bool save_all, bool swap_zup, bool swap_uv, bool centered, int density, float scale, float tex_size, float color_scale, unsigned int format, float water_level) {
+	void build_settings(bool save_all, bool swap_zup, bool swap_uv, bool centered, int density, float scale, float tex_size, float color_scale, unsigned int format, float water_level, bool save_smooth_normals) {
 		terrainops::save_all = save_all;
 		terrainops::save_swap_zup = swap_zup;
 		terrainops::save_swap_uv = swap_uv;
@@ -15,6 +15,7 @@ namespace terrainops {
 		terrainops::save_color_scale = color_scale;
 		terrainops::save_format = format;
 		terrainops::save_water_level = water_level;
+		terrainops::save_smooth_normals = save_smooth_normals;
 	}
 
 	void build_bounds(int x1, int y1, int x2, int y2) {
@@ -51,7 +52,7 @@ namespace terrainops {
 		unsigned int* texture_data = terrainops::save_texture_map;
 		unsigned int* colour_data = terrainops::save_colour_map;
 		float tex_size = terrainops::save_tex_size;
-		bool smooth_normals = false;
+		bool smooth_normals = terrainops::save_smooth_normals;
 
 		int x1 = std::max(0, terrainops::save_start.a);
 		int y1 = std::max(0, terrainops::save_start.b);

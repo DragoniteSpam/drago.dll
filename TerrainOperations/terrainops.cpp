@@ -14,6 +14,7 @@ namespace terrainops {
 	float save_scale = 1;
 	float save_tex_size = 0.0625;
 	float save_color_scale = 8.0;
+	float save_smooth_normals = false;
 	Vector2 save_start;
 	Vector2 save_end;
 	unsigned int save_format = VFX_POSITION_3D | VFX_NORMAL | VFX_TEXCOORD | VFX_COLOUR;

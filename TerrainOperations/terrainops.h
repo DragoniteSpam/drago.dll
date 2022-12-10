@@ -7,8 +7,6 @@
 #include <sstream>
 #include <format>
 
-#include <iostream>
-
 #define DATA_INDEX(x, y, h) ((x) * (h) + (y))
 
 namespace terrainops {
@@ -22,6 +20,7 @@ namespace terrainops {
 	extern float save_tex_size;
 	extern float save_color_scale;
 	extern Vector2 save_start;
+	extern float save_smooth_normals;
 	extern Vector2 save_end;
 	extern unsigned int save_format;
 	extern unsigned int* save_texture_map;
@@ -80,7 +79,7 @@ namespace terrainops {
 	void mutate();
 
 	// build vertex data
-	void build_settings(bool, bool, bool, bool, int, float, float, float, unsigned int, float);
+	void build_settings(bool, bool, bool, bool, int, float, float, float, unsigned int, float, bool);
 	void build_texture(unsigned int*);
 	void build_vertex_colour(unsigned int*);
 	void build_bounds(int, int, int, int);

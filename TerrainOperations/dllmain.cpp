@@ -109,8 +109,8 @@ ex double terrainops_generate_lod_internal(float* out) {
 	return 1.0;
 }
 
-ex double terrainops_build_settings(double save_all, double swap_zup, double swap_uv, double center, double density, double scale, double tex_size, double color_scale, double format, double water_level) {
-	terrainops::build_settings((bool)save_all, (bool)swap_zup, (bool)swap_uv, (bool)center, (int)density, (float)scale, (float)tex_size, (float)color_scale, (unsigned int)format, (float)water_level);
+ex double terrainops_build_settings(double save_all, double swap_zup, double swap_uv, double center, double density, double scale, double tex_size, double color_scale, double format, double water_level, double save_smooth_normals) {
+	terrainops::build_settings((bool)save_all, (bool)swap_zup, (bool)swap_uv, (bool)center, (int)density, (float)scale, (float)tex_size, (float)color_scale, (unsigned int)format, (float)water_level, (bool)save_smooth_normals);
 	return 1.0;
 }
 
