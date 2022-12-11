@@ -83,21 +83,18 @@ namespace terrainops {
 	void build_texture(unsigned int*);
 	void build_vertex_colour(unsigned int*);
 	void build_bounds(int, int, int, int);
-	void build(float*, std::stringstream*, long long*, int*, void(float*, std::stringstream*, unsigned int, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float));
-	void build_obj(float*, std::stringstream*, long long*, int*);
 	void generate_internal(float*);
 	void generate_lod_internal(float*);
 
-	void build_write_vertex_vbuff(float*, std::stringstream*, unsigned int, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float);
-	void build_write_vertex_d3d(float*, std::stringstream*, unsigned int, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float);
+	void build(float*, std::stringstream*, long long*, int*);
+	long long build_obj(float*, unsigned int, float*);
+	long long build_d3d(float*, unsigned int, float*);
+	long long build_vbuff(float*, unsigned int, float*);
 
-	void build_setup_vbuff(float*);
-	void build_cleanup_vbuff(float*, long long*, int);
-	void build_setup_d3d(float*, std::stringstream*);
-	void build_cleanup_d3d(float*, std::stringstream*, long long*, int);
-	void build_setup_obj(float*, std::stringstream*);
-	void build_cleanup_obj(float*, std::stringstream*, long long*, int);
-
+	void build_write_vertex_internal(float*, long long, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float);
+	void build_write_vertex_vbuff(float*, long long, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float);
+	void build_write_vertex_d3d(std::stringstream, float, float, float, float, float, float, float, float, unsigned int);
+	
 	// helper functions
 	void invoke_deformation(bool, void(float*, float*, float*, int, int, int, int, float, float, float, int, int));
 
