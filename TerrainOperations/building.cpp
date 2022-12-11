@@ -196,30 +196,7 @@ namespace terrainops {
 			"mtllib terrain.mtl\r\n" <<
 			"usemtl terrain\r\n\r\n";
 
-		float* data = terrainops::data;
-		int len = terrainops::data_size.c;
-
-		bool all = terrainops::save_all;
-		float water_level = terrainops::save_water_level;
-		bool swap_uv = terrainops::save_swap_uv;
-		bool swap_zup = terrainops::save_swap_zup;
-		int density = terrainops::save_density;
-		int w = terrainops::data_size.a;
-		int h = terrainops::data_size.b;
-		float xoff = terrainops::save_centered ? (-(float)w / 2) : 0;
-		float yoff = terrainops::save_centered ? (-(float)h / 2) : 0;
-		float scale = terrainops::save_scale;
-		unsigned int format = terrainops::save_format;
-		unsigned int* texture_data = terrainops::save_texture_map;
-		unsigned int* colour_data = terrainops::save_colour_map;
-		float tex_size = terrainops::save_tex_size;
-
-		int x1 = terrainops::save_start.a;
-		int y1 = terrainops::save_start.b;
-		int x2 = terrainops::save_end.a;
-		int y2 = terrainops::save_end.b;
-
-		std::map<std::string, int> position_map, normal_map, texture_map;
+		std::map<std::string, size_t> position_map, normal_map, texture_map;
 		std::string position_hash, texture_hash, normal_hash;
 
 		Vector2 texcoord{ };
@@ -230,83 +207,43 @@ namespace terrainops {
 #define FORMATTED_TEXCOORD "%.8f %.8f"
 #define FORMATTED_NORMAL "%.4f %.4f %.4f"
 
-		for (int x = x1; x < x2 + density; x += density) {
-			for (int y = y1; y < y2 + density; y += density) {
-				char line[100]{ };
+		long long float_count = BYTES2FLOATS(raw_byte_length);
+		float x, y, z, nx, ny, nz, u, v;
 
-				if (swap_zup) {
-					sprintf_s(line, FORMATTED_POSITION,
-						//std::min((float)x2, x + xoff) * scale,
-						(std::min(x2, x) + xoff) * scale,
-						get_z(data, std::min(w - 1, x), std::min(h - 1, y), h) * scale,
-						//std::min((float)y2, y + yoff) * scale
-						(std::min(y2, y) + yoff) * scale
-					);
-				} else {
-					sprintf_s(line, FORMATTED_POSITION,
-						//std::min((float)x2, x + xoff) * scale,
-						(std::min(x2, x) + xoff) * scale,
-						//std::min((float)y2, y + yoff) * scale,
-						(std::min(y2, y) + yoff) * scale,
-						get_z(data, std::min(w - 1, x), std::min(h - 1, y), h) * scale
-					);
-				}
+		// first pass: index everything
+		for (long long i = 0; i < float_count; i += COMMON_VERTEX_SIZE_FLOATS) {
+			x = raw[i + 0];
+			y = raw[i + 1];
+			z = raw[i + 2];
+			nx = raw[i + 3];
+			ny = raw[i + 4];
+			nz = raw[i + 5];
+			u = raw[i + 6];
+			v = raw[i + 7];
 
-				position_hash = std::string(line);
-				position_map.insert(std::pair(position_hash, (int)position_map.size()));
+			char line[100]{ };
+			sprintf_s(line, FORMATTED_POSITION, x, y, z);
+			position_hash = std::string(line);
+			position_map.insert(std::pair(position_hash, position_map.size()));
 
-				// the final column/row of positions in a chunk are only needed to write out the positions
-				if (x >= x2 - density || y >= y2 - density) continue;
+			memset(line, 0, sizeof(line));
+			sprintf_s(line, FORMATTED_TEXCOORD, u, v);
+			texture_hash = std::string(line);
+			texture_map.insert(std::pair(texture_hash, texture_map.size()));
 
-				terrainops::get_texcoord(texture_data, &texcoord, x, y, w, h, swap_uv);
-
-				// tex00
-				memset(line, 0, sizeof(line));
-				sprintf_s(line, FORMATTED_TEXCOORD, texcoord.x, texcoord.y);
-				texture_hash = std::string(line);
-				texture_map.insert(std::pair(texture_hash, (int)texture_map.size()));
-				// tex10
-				memset(line, 0, sizeof(line));
-				sprintf_s(line, FORMATTED_TEXCOORD, texcoord.x + tex_size, texcoord.y);
-				texture_hash = std::string(line);
-				texture_map.insert(std::pair(texture_hash, (int)texture_map.size()));
-				// tex11
-				memset(line, 0, sizeof(line));
-				sprintf_s(line, FORMATTED_TEXCOORD, texcoord.x + tex_size, texcoord.y + tex_size);
-				texture_hash = std::string(line);
-				texture_map.insert(std::pair(texture_hash, (int)texture_map.size()));
-				// tex01
-				memset(line, 0, sizeof(line));
-				sprintf_s(line, FORMATTED_TEXCOORD, texcoord.x, texcoord.y + tex_size);
-				texture_hash = std::string(line);
-				texture_map.insert(std::pair(texture_hash, (int)texture_map.size()));
-
-				terrainops::get_normal(data, &t1norm, x, y, x + density, y, x + density, y + density, w, h);
-				terrainops::get_normal(data, &t2norm, x + density, y + density, x, y + density, x, y, w, h);
-
-				// getting smooth normals in here is going to be a bit more work but hopefully not too much
-				memset(line, 0, sizeof(line));
-				sprintf_s(line, FORMATTED_NORMAL, t1norm.x, t1norm.y, t1norm.z);
-				normal_hash = std::string(line);
-				normal_map.insert(std::pair(normal_hash, (int)normal_map.size()));
-
-				memset(line, 0, sizeof(line));
-				sprintf_s(line, FORMATTED_NORMAL, t2norm.x, t2norm.y, t2norm.z);
-				normal_hash = std::string(line);
-				normal_map.insert(std::pair(normal_hash, (int)normal_map.size()));
-			}
+			memset(line, 0, sizeof(line));
+			sprintf_s(line, FORMATTED_NORMAL, nx, ny, nz);
+			normal_hash = std::string(line);
+			normal_map.insert(std::pair(normal_hash, normal_map.size()));
 		}
-
-		// technically it'd be more efficient to figure this out with math because we
-		// know the structure of the grid, but also i can't be bothered to do that
-		// and i don't think it'll affect performance that badly
-		int position_count = (int)position_map.size();
+		
+		size_t position_count = position_map.size();
 		std::string* position_hashes = new std::string[position_count];
 		for (auto const& [key, val] : position_map) {
 			position_hashes[val] = key;
 		}
 
-		for (int i = 0; i < position_count; i++) {
+		for (size_t i = 0; i < position_count; i++) {
 			content << "v " << position_hashes[i] << "\r\n";
 		}
 
@@ -314,13 +251,13 @@ namespace terrainops {
 
 		content << "\r\n";
 
-		int tex_count = (int)texture_map.size();
+		size_t tex_count = texture_map.size();
 		std::string* tex_hashes = new std::string[tex_count];
 		for (auto const& [key, val] : texture_map) {
 			tex_hashes[val] = key;
 		}
 
-		for (int i = 0; i < tex_count; i++) {
+		for (size_t i = 0; i < tex_count; i++) {
 			content << "vt " << tex_hashes[i] << "\r\n";
 		}
 
@@ -328,154 +265,82 @@ namespace terrainops {
 
 		content << "\r\n";
 
-		int normal_count = (int)normal_map.size();
+		size_t normal_count = normal_map.size();
 		std::string* normal_hashes = new std::string[normal_count];
 		for (auto const& [key, val] : normal_map) {
 			normal_hashes[val] = key;
 		}
 
-		for (int i = 0; i < normal_count; i++) {
+		for (size_t i = 0; i < normal_count; i++) {
 			content << "vn " << normal_hashes[i] << "\r\n";
 		}
 
 		delete[] normal_hashes;
 
-		for (int x = x1; x < x2; x += density) {
-			for (int y = y1; y < y2; y += density) {
-				float x00 = (float)x;
-				float y00 = (float)y;
-				float z00 = get_z(data, x, y, h);
+		Triangle positions{ }, normals{ }, texcoords{ };
 
-				float x01 = (float)x;
-				float y01 = (float)std::min(y + density, y2);
-				float z01 = get_z(data, x, std::min(y + density, h - 1), h);
+		for (long long i = 0; i < float_count; i += COMMON_VERTEX_SIZE_FLOATS * 3) {
+			positions.a.x = raw[i + 0 * COMMON_VERTEX_SIZE_FLOATS + 0];
+			positions.a.y = raw[i + 0 * COMMON_VERTEX_SIZE_FLOATS + 1];
+			positions.a.z = raw[i + 0 * COMMON_VERTEX_SIZE_FLOATS + 2];
+			normals.a.x = raw[i + 0 * COMMON_VERTEX_SIZE_FLOATS + 3];
+			normals.a.y = raw[i + 0 * COMMON_VERTEX_SIZE_FLOATS + 4];
+			normals.a.z = raw[i + 0 * COMMON_VERTEX_SIZE_FLOATS + 5];
+			texcoords.a.x = raw[i + 0 * COMMON_VERTEX_SIZE_FLOATS + 6];
+			texcoords.a.y = raw[i + 0 * COMMON_VERTEX_SIZE_FLOATS + 7];
 
-				float x10 = (float)std::min(x + density, x2);
-				float y10 = (float)y;
-				float z10 = get_z(data, std::min(x + density, w - 1), y, h);
+			positions.b.x = raw[i + 1 * COMMON_VERTEX_SIZE_FLOATS + 0];
+			positions.b.y = raw[i + 1 * COMMON_VERTEX_SIZE_FLOATS + 1];
+			positions.b.z = raw[i + 1 * COMMON_VERTEX_SIZE_FLOATS + 2];
+			normals.b.x = raw[i + 1 * COMMON_VERTEX_SIZE_FLOATS + 3];
+			normals.b.y = raw[i + 1 * COMMON_VERTEX_SIZE_FLOATS + 4];
+			normals.b.z = raw[i + 1 * COMMON_VERTEX_SIZE_FLOATS + 5];
+			texcoords.b.x = raw[i + 1 * COMMON_VERTEX_SIZE_FLOATS + 6];
+			texcoords.b.y = raw[i + 1 * COMMON_VERTEX_SIZE_FLOATS + 7];
 
-				float x11 = (float)std::min(x + density, x2);
-				float y11 = (float)std::min(y + density, y2);
-				float z11 = get_z(data, std::min(x + density, w - 1), std::min(y + density, h - 1), h);
-				
-				x00 = (x00 + xoff) * scale;
-				x01 = (x01 + xoff) * scale;
-				x10 = (x10 + xoff) * scale;
-				x11 = (x11 + xoff) * scale;
-				y00 = (y00 + yoff) * scale;
-				y01 = (y01 + yoff) * scale;
-				y10 = (y10 + yoff) * scale;
-				y11 = (y11 + yoff) * scale;
-				z00 *= scale;
-				z10 *= scale;
-				z01 *= scale;
-				z11 *= scale;
+			positions.c.x = raw[i + 2 * COMMON_VERTEX_SIZE_FLOATS + 0];
+			positions.c.y = raw[i + 2 * COMMON_VERTEX_SIZE_FLOATS + 1];
+			positions.c.z = raw[i + 2 * COMMON_VERTEX_SIZE_FLOATS + 2];
+			normals.c.x = raw[i + 2 * COMMON_VERTEX_SIZE_FLOATS + 3];
+			normals.c.y = raw[i + 2 * COMMON_VERTEX_SIZE_FLOATS + 4];
+			normals.c.z = raw[i + 2 * COMMON_VERTEX_SIZE_FLOATS + 5];
+			texcoords.c.x = raw[i + 2 * COMMON_VERTEX_SIZE_FLOATS + 6];
+			texcoords.c.y = raw[i + 2 * COMMON_VERTEX_SIZE_FLOATS + 7];
 
-				if (swap_zup) {
-					float t = y00;
-					y00 = z00;
-					z00 = t;
-					t = y01;
-					y01 = z01;
-					z01 = t;
-					t = y11;
-					y11 = z11;
-					z11 = t;
-					t = y10;
-					y10 = z10;
-					z10 = t;
-				}
+			char line[100];
+			sprintf_s(line, FORMATTED_POSITION, positions.a.x, positions.a.y, positions.a.z);
+			std::string v1pos = std::string(line);
+			memset(line, 0, sizeof(line));
+			sprintf_s(line, FORMATTED_POSITION, positions.b.x, positions.b.y, positions.b.z);
+			std::string v2pos = std::string(line);
+			memset(line, 0, sizeof(line));
+			sprintf_s(line, FORMATTED_POSITION, positions.c.x, positions.c.y, positions.c.z);
+			std::string v3pos = std::string(line);
 
-				e1.x = x10 - x00;
-				e1.y = y10 - y00;
-				e1.z = z10 - z00;
-				e2.x = x11 - x00;
-				e2.y = y11 - y00;
-				e2.z = z11 - z00;
+			memset(line, 0, sizeof(line));
+			sprintf_s(line, FORMATTED_TEXCOORD, texcoords.a.x, texcoords.a.y);
+			std::string v1tex = std::string(line);
+			memset(line, 0, sizeof(line));
+			sprintf_s(line, FORMATTED_TEXCOORD, texcoords.b.x, texcoords.b.y);
+			std::string v2tex = std::string(line);
+			memset(line, 0, sizeof(line));
+			sprintf_s(line, FORMATTED_TEXCOORD, texcoords.c.x, texcoords.c.y);
+			std::string v3tex = std::string(line);
 
-				CROSS(t1norm, e1, e2);
-				NORMALIZE(t1norm);
+			memset(line, 0, sizeof(line));
+			sprintf_s(line, FORMATTED_TEXCOORD, normals.a.x, normals.a.y);
+			std::string v1norm = std::string(line);
+			memset(line, 0, sizeof(line));
+			sprintf_s(line, FORMATTED_TEXCOORD, normals.b.x, normals.b.y);
+			std::string v2norm = std::string(line);
+			memset(line, 0, sizeof(line));
+			sprintf_s(line, FORMATTED_TEXCOORD, normals.c.x, normals.c.y);
+			std::string v3norm = std::string(line);
 
-				e1.x = x01 - x11;
-				e1.y = y01 - y11;
-				e1.z = z01 - z11;
-				e2.x = x00 - x11;
-				e2.y = y00 - y11;
-				e2.z = z00 - z11;
-
-				CROSS(t2norm, e1, e2);
-				NORMALIZE(t2norm);
-
-				// if you do smoothed normals, it should go here
-
-				if (swap_zup) {
-					float t = t1norm.z;
-					t1norm.z = t1norm.y;
-					t1norm.y = t;
-					t = t2norm.z;
-					t2norm.z = t2norm.y;
-					t2norm.y = t;
-				}
-
-				char line[100];
-				sprintf_s(line, FORMATTED_POSITION, x00, y00, z00);
-				std::string v1pos = std::string(line);
-				memset(line, 0, sizeof(line));
-				sprintf_s(line, FORMATTED_POSITION, x10, y10, z10);
-				std::string v2pos = std::string(line);
-				memset(line, 0, sizeof(line));
-				sprintf_s(line, FORMATTED_POSITION, x11, y11, z11);
-				std::string v3pos = std::string(line);
-				memset(line, 0, sizeof(line));
-				sprintf_s(line, FORMATTED_POSITION, x01, y01, z01);
-				std::string v4pos = std::string(line);
-
-				terrainops::get_texcoord(texture_data, &texcoord, x, y, w, h, swap_uv);
-
-				// tex00
-				memset(line, 0, sizeof(line));
-				sprintf_s(line, FORMATTED_TEXCOORD, texcoord.x, texcoord.y);
-				std::string v1tex = std::string(line);
-				// tex10
-				memset(line, 0, sizeof(line));
-				sprintf_s(line, FORMATTED_TEXCOORD, texcoord.x + tex_size, texcoord.y);
-				std::string v2tex = std::string(line);
-				// tex11
-				memset(line, 0, sizeof(line));
-				sprintf_s(line, FORMATTED_TEXCOORD, texcoord.x + tex_size, texcoord.y + tex_size);
-				std::string v3tex = std::string(line);
-				// tex01
-				memset(line, 0, sizeof(line));
-				sprintf_s(line, FORMATTED_TEXCOORD, texcoord.x, texcoord.y + tex_size);
-				std::string v4tex = std::string(line);
-
-				get_normal(data, &t1norm, x, y, x + density, y, x + density, y + density, w, h);
-				get_normal(data, &t2norm, x + density, y + density, x, y + density, x, y, w, h);
-
-				// getting smooth normals in here is going to be a bit more work but hopefully not too much
-				memset(line, 0, sizeof(line));
-				sprintf_s(line, FORMATTED_NORMAL, t1norm.x, t1norm.y, t1norm.z);
-				std::string normt1 = std::string(line);
-
-				memset(line, 0, sizeof(line));
-				sprintf_s(line, FORMATTED_NORMAL, t2norm.x, t2norm.y, t2norm.z);
-				std::string normt2 = std::string(line);
-
-				// would use a four-vertex face for these but trying to do flat normals with that doesnt
-				// seem to work very well
-				if (all || (z00 >= water_level || z10 >= water_level || z11 >= water_level)) {
-					content << "f " <<
-						position_map[v1pos] + 1 << "/" << texture_map[v1tex] + 1 << "/" << normal_map[normt1] + 1 << " " <<
-						position_map[v2pos] + 1 << "/" << texture_map[v2tex] + 1 << "/" << normal_map[normt1] + 1 << " " <<
-						position_map[v3pos] + 1 << "/" << texture_map[v3tex] + 1 << "/" << normal_map[normt1] + 1 << " \r\n";
-				}
-				if (all || (z11 >= water_level || z01 >= water_level || z00 >= water_level)) {
-					content << "f " <<
-						position_map[v3pos] + 1 << "/" << texture_map[v3tex] + 1 << "/" << normal_map[normt2] + 1 << " " <<
-						position_map[v4pos] + 1 << "/" << texture_map[v4tex] + 1 << "/" << normal_map[normt2] + 1 << " " <<
-						position_map[v1pos] + 1 << "/" << texture_map[v1tex] + 1 << "/" << normal_map[normt2] + 1 << "\r\n";
-				}
-			}
+			content << "f " <<
+				position_map[v1pos] + 1 << "/" << texture_map[v1tex] + 1 << "/" << normal_map[v1norm] + 1 << " " <<
+				position_map[v2pos] + 1 << "/" << texture_map[v2tex] + 1 << "/" << normal_map[v1norm] + 1 << " " <<
+				position_map[v3pos] + 1 << "/" << texture_map[v3tex] + 1 << "/" << normal_map[v1norm] + 1 << " \r\n";
 		}
 
 		std::string result = content.str();
