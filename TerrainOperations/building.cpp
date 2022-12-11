@@ -490,7 +490,7 @@ namespace terrainops {
 
 	long long build_vbuff(float* raw, long long raw_byte_length, float* out) {
 		long long float_count = BYTES2FLOATS(raw_byte_length);
-		long long format = terrainops::save_format;
+		unsigned int format = terrainops::save_format;
 		long long address = 0;
 		float x, y, z, nx, ny, nz, u, v, tax, tay, taz, bix, biy, biz, bax, bay, baz;
 		unsigned int c;
