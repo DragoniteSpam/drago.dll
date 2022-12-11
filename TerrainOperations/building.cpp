@@ -390,7 +390,6 @@ namespace terrainops {
 		std::stringstream content, header, footer;
 
 		long long float_count = BYTES2FLOATS(raw_byte_length);
-		long long address = 0;
 		float x, y, z, nx, ny, nz, u, v;
 		unsigned int c;
 		
@@ -528,17 +527,5 @@ namespace terrainops {
 			u = floor(u * 255.0f);
 			((unsigned int*)out)[(*address)++] = (unsigned int)(nx + ny * 256.0 + nz * 65536.0 + u * 16777216.0);
 		}
-	}
-
-	void build_write_vertex_d3d(
-		std::stringstream* content,
-		float x, float y, float z,
-		float nx, float ny, float nz,
-		float u, float v,
-		unsigned int c
-	) {
-		char line[160];
-		sprintf_s(line, "9 %.1f %.1f %.5f %.3f %.3f %.3f %.6f %.6f %d %.3f\r\n", x, y, z, nx, ny, nz, u, v, c & 0x00ffffff, (c >> 24) / 255.0);
-		*content << std::string(line);
 	}
 }

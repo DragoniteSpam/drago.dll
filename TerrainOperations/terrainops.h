@@ -93,7 +93,6 @@ namespace terrainops {
 
 	void build_write_vertex_internal(float*, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float);
 	void build_write_vertex_vbuff(float*, unsigned int, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float);
-	void build_write_vertex_d3d(std::stringstream*, float, float, float, float, float, float, float, float, unsigned int);
 	
 	// helper functions
 	void invoke_deformation(bool, void(float*, float*, float*, int, int, int, int, float, float, float, int, int));
