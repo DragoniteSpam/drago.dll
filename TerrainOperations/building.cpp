@@ -156,14 +156,13 @@ namespace terrainops {
 				color.se = terrainops::get_colour(colour_data, x + density, y + density, w, h, color_scale);
 
 				if (swap_zup) {
-					SWAPYZ(position.nw);
-					SWAPYZ(position.ne);
-					SWAPYZ(position.se);
-					SWAPYZ(position.sw);
-					SWAPYZ(normal_smooth.nw);
-					SWAPYZ(normal_smooth.ne);
-					SWAPYZ(normal_smooth.se);
-					SWAPYZ(normal_smooth.sw);
+					SWAPCELLYZ(position);
+					SWAPCELLYZ((*normals_in_use_t1));
+					SWAPCELLYZ((*normals_in_use_t2));
+					SWAPCELLYZ((*tangents_in_use_t1));
+					SWAPCELLYZ((*tangents_in_use_t2));
+					SWAPCELLYZ((*bitangents_in_use_t1));
+					SWAPCELLYZ((*bitangents_in_use_t2));
 				}
 
 				if (all || position.nw.z >= water_level || position.ne.z >= water_level || position.se.z >= water_level) {

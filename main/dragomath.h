@@ -28,7 +28,10 @@ constexpr float PI = 3.14159265358f;
 #define MAGNITUDE(vec3) sqrtf(DOT(vec3, vec3))
 #define NORMALIZE(vec3) { float mag = MAGNITUDE((vec3)); (vec3).x /= mag; (vec3).y /= mag; (vec3).z /= mag; }
 
-#define SWAPYZ(vec3) { float t = vec3.y; vec3.y = vec3.z; vec3.z = t; }
+#define SWAPYZ(vec3) { float t = vec3.y; vec3.y = vec3.z; vec3.z = -t; }
+#define SWAPCELLYZ(cell) {												\
+	SWAPYZ(cell.nw); SWAPYZ(cell.ne); SWAPYZ(cell.se); SWAPYZ(cell.sw);	\
+}
 
 // data structures
 struct Vector4;
