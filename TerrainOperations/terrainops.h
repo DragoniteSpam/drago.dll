@@ -86,10 +86,10 @@ namespace terrainops {
 	void generate_internal(float*);
 	void generate_lod_internal(float*);
 
-	void build(float*, std::stringstream*, long long*, int*);
-	long long build_obj(float*, unsigned int, float*);
-	long long build_d3d(float*, unsigned int, float*);
-	long long build_vbuff(float*, unsigned int, float*);
+	long long build(float*);
+	long long build_obj(float*, long long, float*);
+	long long build_d3d(float*, long long, float*);
+	long long build_vbuff(float*, long long, float*);
 
 	void build_write_vertex_internal(float*, long long, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float);
 	void build_write_vertex_vbuff(float*, long long, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float);

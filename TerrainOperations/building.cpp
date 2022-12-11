@@ -33,7 +33,10 @@ namespace terrainops {
 		terrainops::save_colour_map = save_colour_map;
 	}
 
-	void build(float* out, std::stringstream* content, long long* index, int* vertices) {
+	long long build(float* out) {
+		long long address = 0;
+		long long vertices = 0;
+
 		float* data = terrainops::data;
 		int len = terrainops::data_size.c;
 
@@ -166,23 +169,33 @@ namespace terrainops {
 				}
 
 				if (all || position.nw.z >= water_level || position.ne.z >= water_level || position.se.z >= water_level) {
-					terrainops::build_write_vertex_internal(out, content, format, index, position.nw.x, position.nw.y, position.nw.z, normals_in_use_t1->nw.x, normals_in_use_t1->nw.y, normals_in_use_t1->nw.z, texcoord.nw.x, texcoord.nw.y, color.nw, tangents_in_use_t1->nw.x, tangents_in_use_t1->nw.y, tangents_in_use_t1->nw.z, bitangents_in_use_t1->nw.x, bitangents_in_use_t1->nw.y, bitangents_in_use_t1->nw.z, 1, 0, 0);
-					terrainops::build_write_vertex_internal(out, content, format, index, position.ne.x, position.ne.y, position.ne.z, normals_in_use_t1->ne.x, normals_in_use_t1->ne.y, normals_in_use_t1->ne.z, texcoord.ne.x, texcoord.ne.y, color.ne, tangents_in_use_t1->ne.x, tangents_in_use_t1->ne.y, tangents_in_use_t1->ne.z, bitangents_in_use_t1->ne.x, bitangents_in_use_t1->ne.y, bitangents_in_use_t1->ne.z, 0, 1, 0);
-					terrainops::build_write_vertex_internal(out, content, format, index, position.se.x, position.se.y, position.se.z, normals_in_use_t1->se.x, normals_in_use_t1->se.y, normals_in_use_t1->se.z, texcoord.se.x, texcoord.se.y, color.se, tangents_in_use_t1->se.x, tangents_in_use_t1->se.y, tangents_in_use_t1->se.z, bitangents_in_use_t1->se.x, bitangents_in_use_t1->se.y, bitangents_in_use_t1->se.z, 0, 0, 1);
-					(*vertices) += 3;
+					terrainops::build_write_vertex_internal(out, format, &address, position.nw.x, position.nw.y, position.nw.z, normals_in_use_t1->nw.x, normals_in_use_t1->nw.y, normals_in_use_t1->nw.z, texcoord.nw.x, texcoord.nw.y, color.nw, tangents_in_use_t1->nw.x, tangents_in_use_t1->nw.y, tangents_in_use_t1->nw.z, bitangents_in_use_t1->nw.x, bitangents_in_use_t1->nw.y, bitangents_in_use_t1->nw.z, 1, 0, 0);
+					terrainops::build_write_vertex_internal(out, format, &address, position.ne.x, position.ne.y, position.ne.z, normals_in_use_t1->ne.x, normals_in_use_t1->ne.y, normals_in_use_t1->ne.z, texcoord.ne.x, texcoord.ne.y, color.ne, tangents_in_use_t1->ne.x, tangents_in_use_t1->ne.y, tangents_in_use_t1->ne.z, bitangents_in_use_t1->ne.x, bitangents_in_use_t1->ne.y, bitangents_in_use_t1->ne.z, 0, 1, 0);
+					terrainops::build_write_vertex_internal(out, format, &address, position.se.x, position.se.y, position.se.z, normals_in_use_t1->se.x, normals_in_use_t1->se.y, normals_in_use_t1->se.z, texcoord.se.x, texcoord.se.y, color.se, tangents_in_use_t1->se.x, tangents_in_use_t1->se.y, tangents_in_use_t1->se.z, bitangents_in_use_t1->se.x, bitangents_in_use_t1->se.y, bitangents_in_use_t1->se.z, 0, 0, 1);
+					vertices += 3;
 				}
 
 				if (all || position.se.z >= water_level || position.sw.z >= water_level || position.nw.z >= water_level) {
-					terrainops::build_write_vertex_internal(out, content, format, index, position.se.x, position.se.y, position.se.z, normals_in_use_t2->se.x, normals_in_use_t2->se.y, normals_in_use_t2->se.z, texcoord.se.x, texcoord.se.y, color.se, tangents_in_use_t2->se.x, tangents_in_use_t2->se.y, tangents_in_use_t2->se.z, bitangents_in_use_t1->se.x, bitangents_in_use_t1->se.y, bitangents_in_use_t1->se.z, 1, 0, 0);
-					terrainops::build_write_vertex_internal(out, content, format, index, position.sw.x, position.sw.y, position.sw.z, normals_in_use_t2->sw.x, normals_in_use_t2->sw.y, normals_in_use_t2->sw.z, texcoord.sw.x, texcoord.sw.y, color.sw, tangents_in_use_t2->sw.x, tangents_in_use_t2->sw.y, tangents_in_use_t2->sw.z, bitangents_in_use_t1->sw.x, bitangents_in_use_t1->sw.y, bitangents_in_use_t1->sw.z, 0, 1, 0);
-					terrainops::build_write_vertex_internal(out, content, format, index, position.nw.x, position.nw.y, position.nw.z, normals_in_use_t2->nw.x, normals_in_use_t2->nw.y, normals_in_use_t2->nw.z, texcoord.nw.x, texcoord.nw.y, color.nw, tangents_in_use_t2->nw.x, tangents_in_use_t2->nw.y, tangents_in_use_t2->nw.z, bitangents_in_use_t1->nw.x, bitangents_in_use_t1->nw.y, bitangents_in_use_t1->nw.z, 0, 0, 1);
-					(*vertices) += 3;
+					terrainops::build_write_vertex_internal(out, format, &address, position.se.x, position.se.y, position.se.z, normals_in_use_t2->se.x, normals_in_use_t2->se.y, normals_in_use_t2->se.z, texcoord.se.x, texcoord.se.y, color.se, tangents_in_use_t2->se.x, tangents_in_use_t2->se.y, tangents_in_use_t2->se.z, bitangents_in_use_t1->se.x, bitangents_in_use_t1->se.y, bitangents_in_use_t1->se.z, 1, 0, 0);
+					terrainops::build_write_vertex_internal(out, format, &address, position.sw.x, position.sw.y, position.sw.z, normals_in_use_t2->sw.x, normals_in_use_t2->sw.y, normals_in_use_t2->sw.z, texcoord.sw.x, texcoord.sw.y, color.sw, tangents_in_use_t2->sw.x, tangents_in_use_t2->sw.y, tangents_in_use_t2->sw.z, bitangents_in_use_t1->sw.x, bitangents_in_use_t1->sw.y, bitangents_in_use_t1->sw.z, 0, 1, 0);
+					terrainops::build_write_vertex_internal(out, format, &address, position.nw.x, position.nw.y, position.nw.z, normals_in_use_t2->nw.x, normals_in_use_t2->nw.y, normals_in_use_t2->nw.z, texcoord.nw.x, texcoord.nw.y, color.nw, tangents_in_use_t2->nw.x, tangents_in_use_t2->nw.y, tangents_in_use_t2->nw.z, bitangents_in_use_t1->nw.x, bitangents_in_use_t1->nw.y, bitangents_in_use_t1->nw.z, 0, 0, 1);
+					vertices += 3;
 				}
 			}
 		}
+
+		// the vertex count isn't exactly used for anything, but it's pretty
+		// inexpensive so i dont mind keeping it around
+		return address;
 	}
 
-	void build_obj(float* out, std::stringstream* content, long long* index, int* vertices) {
+	long long build_obj(float* raw, long long raw_byte_length, float* out) {
+		std::stringstream content;
+
+		content << "# Terrain generated by drago's terrain editor: https://dragonite.itch.io/terrain\r\n" <<
+			"mtllib terrain.mtl\r\n" <<
+			"usemtl terrain\r\n\r\n";
+
 		float* data = terrainops::data;
 		int len = terrainops::data_size.c;
 
@@ -294,12 +307,12 @@ namespace terrainops {
 		}
 
 		for (int i = 0; i < position_count; i++) {
-			*content << "v " << position_hashes[i] << "\r\n";
+			content << "v " << position_hashes[i] << "\r\n";
 		}
 
 		delete[] position_hashes;
 
-		*content << "\r\n";
+		content << "\r\n";
 
 		int tex_count = (int)texture_map.size();
 		std::string* tex_hashes = new std::string[tex_count];
@@ -308,12 +321,12 @@ namespace terrainops {
 		}
 
 		for (int i = 0; i < tex_count; i++) {
-			*content << "vt " << tex_hashes[i] << "\r\n";
+			content << "vt " << tex_hashes[i] << "\r\n";
 		}
 
 		delete[] tex_hashes;
 
-		*content << "\r\n";
+		content << "\r\n";
 
 		int normal_count = (int)normal_map.size();
 		std::string* normal_hashes = new std::string[normal_count];
@@ -322,7 +335,7 @@ namespace terrainops {
 		}
 
 		for (int i = 0; i < normal_count; i++) {
-			*content << "vn " << normal_hashes[i] << "\r\n";
+			content << "vn " << normal_hashes[i] << "\r\n";
 		}
 
 		delete[] normal_hashes;
@@ -451,13 +464,13 @@ namespace terrainops {
 				// would use a four-vertex face for these but trying to do flat normals with that doesnt
 				// seem to work very well
 				if (all || (z00 >= water_level || z10 >= water_level || z11 >= water_level)) {
-					*content << "f " <<
+					content << "f " <<
 						position_map[v1pos] + 1 << "/" << texture_map[v1tex] + 1 << "/" << normal_map[normt1] + 1 << " " <<
 						position_map[v2pos] + 1 << "/" << texture_map[v2tex] + 1 << "/" << normal_map[normt1] + 1 << " " <<
 						position_map[v3pos] + 1 << "/" << texture_map[v3tex] + 1 << "/" << normal_map[normt1] + 1 << " \r\n";
 				}
 				if (all || (z11 >= water_level || z01 >= water_level || z00 >= water_level)) {
-					*content << "f " <<
+					content << "f " <<
 						position_map[v3pos] + 1 << "/" << texture_map[v3tex] + 1 << "/" << normal_map[normt2] + 1 << " " <<
 						position_map[v4pos] + 1 << "/" << texture_map[v4tex] + 1 << "/" << normal_map[normt2] + 1 << " " <<
 						position_map[v1pos] + 1 << "/" << texture_map[v1tex] + 1 << "/" << normal_map[normt2] + 1 << "\r\n";
@@ -465,6 +478,11 @@ namespace terrainops {
 			}
 		}
 
+		std::string result = content.str();
+		long long length = (long long)result.length();
+		result.copy((char*)out, length);
+
+		return length;
 #undef FORMATTED_POSITION
 #undef FORMATTED_TEXCOORD
 #undef FORMATTED_NORMAL
@@ -498,9 +516,11 @@ namespace terrainops {
 
 			terrainops::build_write_vertex_vbuff(out, format, &address, x, y, z, nx, ny, nz, u, v, c, tax, tay, taz, bix, biy, biz, bax, bay, baz);
 		}
+
+		return FLOATS2BYTES(address);
 	}
 
-	long long build_d3d(float* raw, unsigned int raw_byte_length, float* out) {
+	long long build_d3d(float* raw, long long raw_byte_length, float* out) {
 		long long vertices = 0;
 		long long length = 0;
 

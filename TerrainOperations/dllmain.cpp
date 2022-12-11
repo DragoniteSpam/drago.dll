@@ -131,24 +131,20 @@ ex double terrainops_build_bounds(double x1, double y1, double x2, double y2) {
 
 // output
 ex double terrainops_build_d3d(float* raw, double raw_vertices, float* out) {
-	return (double) terrainops::build_d3d(raw, (unsigned int)raw_vertices, out);
+	return (double) terrainops::build_d3d(raw, (long long)raw_vertices, out);
 }
 
 ex double terrainops_build_obj(float* raw, double raw_vertices, float* out) {
-	return (double) terrainops::build_obj(raw, (unsigned int)raw_vertices, out);
+	return (double) terrainops::build_obj(raw, (long long)raw_vertices, out);
 }
 
 ex double terrainops_build_vbuff(float* raw, double raw_vertices, float* out) {
 	// this used to return the FLOATS2BYTES version of this - we might revisit this later?
-	return (double) terrainops::build_vbuff(raw, (unsigned int)raw_vertices, out);
+	return (double) terrainops::build_vbuff(raw, (long long)raw_vertices, out);
 }
 
 ex double terrainops_build_internal(float* out) {
-	long long length = 0;
-	int vertices = 0;	// this isn't used right now but i'm keeping it because it's mildly interesting
-	terrainops::build(out, NULL, &length, &vertices);
-	length = (long long)FLOATS2BYTES(length);
-	return (double)length;
+	return (double)terrainops::build(out);
 }
 
 // other stuff
