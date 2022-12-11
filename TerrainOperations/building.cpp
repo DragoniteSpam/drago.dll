@@ -186,7 +186,7 @@ namespace terrainops {
 
 		// the vertex count isn't exactly used for anything, but it's pretty
 		// inexpensive so i dont mind keeping it around
-		return address;
+		return FLOATS2BYTES(address);
 	}
 
 	long long build_obj(float* raw, long long raw_byte_length, float* out) {
