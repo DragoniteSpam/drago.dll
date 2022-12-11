@@ -524,15 +524,37 @@ namespace terrainops {
 	long long build_d3d(float* raw, long long raw_byte_length, float* out) {
 		long long vertices = 0;
 		long long length = 0;
+		std::stringstream content, header, footer;
 
-		std::stringstream content;
-		std::stringstream header, footer;
+		long long float_count = BYTES2FLOATS(raw_byte_length);
+		long long address = 0;
+		float x, y, z, nx, ny, nz, u, v, tax, tay, taz, bix, biy, biz, bax, bay, baz;
+		unsigned int c;
+		
+		for (long long i = 0; i < float_count; i += COMMON_VERTEX_SIZE_FLOATS) {
+			x = raw[i + 0];
+			y = raw[i + 1];
+			z = raw[i + 2];
+			nx = raw[i + 3];
+			ny = raw[i + 4];
+			nz = raw[i + 5];
+			u = raw[i + 6];
+			v = raw[i + 7];
+			c = ((unsigned int*)raw)[i + 8];
+
+			char line[160];
+			sprintf_s(line, "9 %.1f %.1f %.5f %.3f %.3f %.3f %.6f %.6f %d %.3f\r\n", x, y, z, nx, ny, nz, u, v, c & 0x00ffffff, (c >> 24) / 255.0);
+			content << std::string(line);
+		}
+
 		header << std::format("100\r\n{}\r\n0 4\r\n", vertices + 2);
 		footer << "0\r\n";
 
 		std::string result = header.str() + content.str() + footer.str();
 		length = (int)result.length();
 		result.copy((char*)out, length);
+
+		return length;
 	}
 
 	void build_write_vertex_internal(
