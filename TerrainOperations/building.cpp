@@ -469,9 +469,87 @@ namespace terrainops {
 #undef FORMATTED_TEXCOORD
 #undef FORMATTED_NORMAL
 	}
-	
+
+	long long build_vbuff(float* raw, long long raw_byte_length, float* out) {
+		long long float_count = BYTES2FLOATS(raw_byte_length);
+		long long format = terrainops::save_format;
+		long long address = 0;
+		float x, y, z, nx, ny, nz, u, v, c, tax, tay, taz, bix, biy, biz, bax, bay, baz;
+
+		for (long long i = 0; i < float_count; i += COMMON_VERTEX_SIZE_FLOATS) {
+			x = raw[i + 0];
+			y = raw[i + 1];
+			z = raw[i + 2];
+			nx = raw[i + 3];
+			ny = raw[i + 4];
+			nz = raw[i + 5];
+			u = raw[i + 6];
+			v = raw[i + 7];
+			c = raw[i + 8];
+			tax = raw[i + 9];
+			tay = raw[i + 10];
+			taz = raw[i + 11];
+			bix = raw[i + 12];
+			biy = raw[i + 13];
+			biz = raw[i + 14];
+			bax = raw[i + 15];
+			bay = raw[i + 16];
+			baz = raw[i + 17];
+
+			terrainops::build_write_vertex_vbuff(out, format, &address, x, y, z, nx, ny, nz, u, v, c, tax, tay, taz, bix, biy, biz, bax, bay, baz);
+		}
+	}
+
+	long long build_d3d(float* raw, unsigned int raw_byte_length, float* out) {
+		long long vertices = 0;
+		long long length = 0;
+
+		std::stringstream content;
+		std::stringstream header, footer;
+		header << std::format("100\r\n{}\r\n0 4\r\n", vertices + 2);
+		footer << "0\r\n";
+
+		std::string result = header.str() + content.str() + footer.str();
+		length = (int)result.length();
+		result.copy((char*)out, length);
+	}
+
+	void build_write_vertex_internal(
+		float* out, unsigned int format, long long* address,
+		float x, float y, float z,
+		float nx, float ny, float nz,
+		float u, float v,
+		unsigned int c,
+		float tx, float ty, float tz,
+		float bx, float by, float bz,
+		float bc1, float bc2, float bc3
+	) {
+		// this is basically the same as ::build_write_vertex_vbuff but we
+		// don't use the format setting
+		out[(*address)++] = x;
+		out[(*address)++] = y;
+		out[(*address)++] = x;
+		out[(*address)++] = y;
+		out[(*address)++] = z;
+		out[(*address)++] = nx;
+		out[(*address)++] = ny;
+		out[(*address)++] = nz;
+		out[(*address)++] = u;
+		out[(*address)++] = v;
+		((unsigned int*)out)[(*address)++] = c;
+		out[(*address)++] = tx;
+		out[(*address)++] = ty;
+		out[(*address)++] = tz;
+		out[(*address)++] = bx;
+		out[(*address)++] = by;
+		out[(*address)++] = bz;
+		out[(*address)++] = bc1;
+		out[(*address)++] = bc2;
+		out[(*address)++] = bc3;
+	}
+
 	void build_write_vertex_vbuff(
-		float* out, std::stringstream* content, unsigned int format, long long* address,
+		float* out, unsigned int format, long long* address,
 		float x, float y, float z,
 		float nx, float ny, float nz,
 		float u, float v,
