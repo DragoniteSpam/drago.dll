@@ -3,4 +3,7 @@
 
 #define ex extern "C" __declspec (dllexport)
 
+#define COMMON_VERTEX_SIZE_BYTES		72
+#define COMMON_VERTEX_SIZE_FLOATS		18
+
 #endif
