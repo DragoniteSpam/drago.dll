@@ -1,5 +1,5 @@
 #ifndef __DRAGO_TERRAIN_OP
-#define __DRAGO_TERRAIN_OP "1.0.2"
+#define __DRAGO_TERRAIN_OP "1.0.3"
 
 #include "main/core.h"
 #include "SpriteOperations/spriteops.h"
