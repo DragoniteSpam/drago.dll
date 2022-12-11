@@ -522,8 +522,6 @@ namespace terrainops {
 	}
 
 	long long build_d3d(float* raw, long long raw_byte_length, float* out) {
-		long long vertices = 0;
-		long long length = 0;
 		std::stringstream content, header, footer;
 
 		long long float_count = BYTES2FLOATS(raw_byte_length);
@@ -547,11 +545,11 @@ namespace terrainops {
 			content << std::string(line);
 		}
 
-		header << std::format("100\r\n{}\r\n0 4\r\n", vertices + 2);
+		header << std::format("100\r\n{}\r\n0 4\r\n", raw_byte_length / COMMON_VERTEX_SIZE_BYTES + 2);
 		footer << "0\r\n";
 
 		std::string result = header.str() + content.str() + footer.str();
-		length = (int)result.length();
+		long long length = (long long)result.length();
 		result.copy((char*)out, length);
 
 		return length;
