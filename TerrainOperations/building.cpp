@@ -571,8 +571,6 @@ namespace terrainops {
 		// don't use the format setting
 		out[(*address)++] = x;
 		out[(*address)++] = y;
-		out[(*address)++] = x;
-		out[(*address)++] = y;
 		out[(*address)++] = z;
 		out[(*address)++] = nx;
 		out[(*address)++] = ny;

@@ -144,7 +144,7 @@ ex double terrainops_build_vbuff(float* raw, double raw_vertices, float* out) {
 }
 
 ex double terrainops_build_internal(float* out) {
-	return (double)terrainops::build(out);
+	return (double) terrainops::build(out);
 }
 
 // other stuff
