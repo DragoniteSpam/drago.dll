@@ -526,7 +526,7 @@ namespace terrainops {
 
 		long long float_count = BYTES2FLOATS(raw_byte_length);
 		long long address = 0;
-		float x, y, z, nx, ny, nz, u, v, tax, tay, taz, bix, biy, biz, bax, bay, baz;
+		float x, y, z, nx, ny, nz, u, v;
 		unsigned int c;
 		
 		for (long long i = 0; i < float_count; i += COMMON_VERTEX_SIZE_FLOATS) {
