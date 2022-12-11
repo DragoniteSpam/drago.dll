@@ -33,7 +33,7 @@ namespace terrainops {
 		terrainops::save_colour_map = save_colour_map;
 	}
 
-	void build(float* out, std::stringstream* content, long long* index, int* vertices, void(*callback)(float*, std::stringstream*, unsigned int, long long*, float, float, float, float, float, float, float, float, unsigned int, float, float, float, float, float, float, float, float, float)) {
+	void build(float* out, std::stringstream* content, long long* index, int* vertices) {
 		float* data = terrainops::data;
 		int len = terrainops::data_size.c;
 
@@ -166,16 +166,16 @@ namespace terrainops {
 				}
 
 				if (all || position.nw.z >= water_level || position.ne.z >= water_level || position.se.z >= water_level) {
-					callback(out, content, format, index, position.nw.x, position.nw.y, position.nw.z, normals_in_use_t1->nw.x, normals_in_use_t1->nw.y, normals_in_use_t1->nw.z, texcoord.nw.x, texcoord.nw.y, color.nw, tangents_in_use_t1->nw.x, tangents_in_use_t1->nw.y, tangents_in_use_t1->nw.z, bitangents_in_use_t1->nw.x, bitangents_in_use_t1->nw.y, bitangents_in_use_t1->nw.z, 1, 0, 0);
-					callback(out, content, format, index, position.ne.x, position.ne.y, position.ne.z, normals_in_use_t1->ne.x, normals_in_use_t1->ne.y, normals_in_use_t1->ne.z, texcoord.ne.x, texcoord.ne.y, color.ne, tangents_in_use_t1->ne.x, tangents_in_use_t1->ne.y, tangents_in_use_t1->ne.z, bitangents_in_use_t1->ne.x, bitangents_in_use_t1->ne.y, bitangents_in_use_t1->ne.z, 0, 1, 0);
-					callback(out, content, format, index, position.se.x, position.se.y, position.se.z, normals_in_use_t1->se.x, normals_in_use_t1->se.y, normals_in_use_t1->se.z, texcoord.se.x, texcoord.se.y, color.se, tangents_in_use_t1->se.x, tangents_in_use_t1->se.y, tangents_in_use_t1->se.z, bitangents_in_use_t1->se.x, bitangents_in_use_t1->se.y, bitangents_in_use_t1->se.z, 0, 0, 1);
+					terrainops::build_write_vertex_internal(out, content, format, index, position.nw.x, position.nw.y, position.nw.z, normals_in_use_t1->nw.x, normals_in_use_t1->nw.y, normals_in_use_t1->nw.z, texcoord.nw.x, texcoord.nw.y, color.nw, tangents_in_use_t1->nw.x, tangents_in_use_t1->nw.y, tangents_in_use_t1->nw.z, bitangents_in_use_t1->nw.x, bitangents_in_use_t1->nw.y, bitangents_in_use_t1->nw.z, 1, 0, 0);
+					terrainops::build_write_vertex_internal(out, content, format, index, position.ne.x, position.ne.y, position.ne.z, normals_in_use_t1->ne.x, normals_in_use_t1->ne.y, normals_in_use_t1->ne.z, texcoord.ne.x, texcoord.ne.y, color.ne, tangents_in_use_t1->ne.x, tangents_in_use_t1->ne.y, tangents_in_use_t1->ne.z, bitangents_in_use_t1->ne.x, bitangents_in_use_t1->ne.y, bitangents_in_use_t1->ne.z, 0, 1, 0);
+					terrainops::build_write_vertex_internal(out, content, format, index, position.se.x, position.se.y, position.se.z, normals_in_use_t1->se.x, normals_in_use_t1->se.y, normals_in_use_t1->se.z, texcoord.se.x, texcoord.se.y, color.se, tangents_in_use_t1->se.x, tangents_in_use_t1->se.y, tangents_in_use_t1->se.z, bitangents_in_use_t1->se.x, bitangents_in_use_t1->se.y, bitangents_in_use_t1->se.z, 0, 0, 1);
 					(*vertices) += 3;
 				}
 
 				if (all || position.se.z >= water_level || position.sw.z >= water_level || position.nw.z >= water_level) {
-					callback(out, content, format, index, position.se.x, position.se.y, position.se.z, normals_in_use_t2->se.x, normals_in_use_t2->se.y, normals_in_use_t2->se.z, texcoord.se.x, texcoord.se.y, color.se, tangents_in_use_t2->se.x, tangents_in_use_t2->se.y, tangents_in_use_t2->se.z, bitangents_in_use_t1->se.x, bitangents_in_use_t1->se.y, bitangents_in_use_t1->se.z, 1, 0, 0);
-					callback(out, content, format, index, position.sw.x, position.sw.y, position.sw.z, normals_in_use_t2->sw.x, normals_in_use_t2->sw.y, normals_in_use_t2->sw.z, texcoord.sw.x, texcoord.sw.y, color.sw, tangents_in_use_t2->sw.x, tangents_in_use_t2->sw.y, tangents_in_use_t2->sw.z, bitangents_in_use_t1->sw.x, bitangents_in_use_t1->sw.y, bitangents_in_use_t1->sw.z, 0, 1, 0);
-					callback(out, content, format, index, position.nw.x, position.nw.y, position.nw.z, normals_in_use_t2->nw.x, normals_in_use_t2->nw.y, normals_in_use_t2->nw.z, texcoord.nw.x, texcoord.nw.y, color.nw, tangents_in_use_t2->nw.x, tangents_in_use_t2->nw.y, tangents_in_use_t2->nw.z, bitangents_in_use_t1->nw.x, bitangents_in_use_t1->nw.y, bitangents_in_use_t1->nw.z, 0, 0, 1);
+					terrainops::build_write_vertex_internal(out, content, format, index, position.se.x, position.se.y, position.se.z, normals_in_use_t2->se.x, normals_in_use_t2->se.y, normals_in_use_t2->se.z, texcoord.se.x, texcoord.se.y, color.se, tangents_in_use_t2->se.x, tangents_in_use_t2->se.y, tangents_in_use_t2->se.z, bitangents_in_use_t1->se.x, bitangents_in_use_t1->se.y, bitangents_in_use_t1->se.z, 1, 0, 0);
+					terrainops::build_write_vertex_internal(out, content, format, index, position.sw.x, position.sw.y, position.sw.z, normals_in_use_t2->sw.x, normals_in_use_t2->sw.y, normals_in_use_t2->sw.z, texcoord.sw.x, texcoord.sw.y, color.sw, tangents_in_use_t2->sw.x, tangents_in_use_t2->sw.y, tangents_in_use_t2->sw.z, bitangents_in_use_t1->sw.x, bitangents_in_use_t1->sw.y, bitangents_in_use_t1->sw.z, 0, 1, 0);
+					terrainops::build_write_vertex_internal(out, content, format, index, position.nw.x, position.nw.y, position.nw.z, normals_in_use_t2->nw.x, normals_in_use_t2->nw.y, normals_in_use_t2->nw.z, texcoord.nw.x, texcoord.nw.y, color.nw, tangents_in_use_t2->nw.x, tangents_in_use_t2->nw.y, tangents_in_use_t2->nw.z, bitangents_in_use_t1->nw.x, bitangents_in_use_t1->nw.y, bitangents_in_use_t1->nw.z, 0, 0, 1);
 					(*vertices) += 3;
 				}
 			}
