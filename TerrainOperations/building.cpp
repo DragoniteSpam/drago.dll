@@ -95,19 +95,6 @@ namespace terrainops {
 				position.se.y = (float)std::min(y + density, h);
 				position.se.z = get_z(data, std::min(x + density, w - 1), std::min(y + density, h - 1), h);
 
-				position.nw.x = (position.nw.x + xoff) * scale;
-				position.ne.x = (position.ne.x + xoff) * scale;
-				position.se.x = (position.se.x + xoff) * scale;
-				position.sw.x = (position.sw.x + xoff) * scale;
-				position.nw.y = (position.nw.y + yoff) * scale;
-				position.ne.y = (position.ne.y + yoff) * scale;
-				position.se.y = (position.se.y + yoff) * scale;
-				position.sw.y = (position.sw.y + yoff) * scale;
-				position.nw.z *= scale;
-				position.ne.z *= scale;
-				position.se.z *= scale;
-				position.sw.z *= scale;
-
 				if (smooth_normals) {
 					terrainops::get_normal_smooth(data, &normal_smooth, position.nw.x, position.nw.y, 0, w, h);
 
@@ -157,6 +144,20 @@ namespace terrainops {
 				color.sw = terrainops::get_colour(colour_data, x, y + density, w, h, color_scale);
 				color.ne = terrainops::get_colour(colour_data, x + density, y, w, h, color_scale);
 				color.se = terrainops::get_colour(colour_data, x + density, y + density, w, h, color_scale);
+
+				// do this after all of the values have been accessed
+				position.nw.x = (position.nw.x + xoff) * scale;
+				position.ne.x = (position.ne.x + xoff) * scale;
+				position.se.x = (position.se.x + xoff) * scale;
+				position.sw.x = (position.sw.x + xoff) * scale;
+				position.nw.y = (position.nw.y + yoff) * scale;
+				position.ne.y = (position.ne.y + yoff) * scale;
+				position.se.y = (position.se.y + yoff) * scale;
+				position.sw.y = (position.sw.y + yoff) * scale;
+				position.nw.z *= scale;
+				position.ne.z *= scale;
+				position.se.z *= scale;
+				position.sw.z *= scale;
 
 				if (swap_zup) {
 					SWAPCELLYZ(position);
