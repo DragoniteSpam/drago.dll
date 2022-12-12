@@ -4,9 +4,10 @@
 
 namespace terrainops {
 	// build vertex data
-	void build_settings(bool save_all, bool swap_zup, bool swap_uv, bool centered, int density, float scale, float tex_size, float color_scale, unsigned int format, float water_level, bool save_smooth_normals) {
+	void build_settings(bool save_all, bool swap_zup, bool swap_handedness, bool swap_uv, bool centered, int density, float scale, float tex_size, float color_scale, unsigned int format, float water_level, bool save_smooth_normals) {
 		terrainops::save_all = save_all;
 		terrainops::save_swap_zup = swap_zup;
+		terrainops::save_swap_handedness = swap_handedness;
 		terrainops::save_swap_uv = swap_uv;
 		terrainops::save_centered = centered;
 		terrainops::save_density = density;
@@ -43,6 +44,7 @@ namespace terrainops {
 		bool all = terrainops::save_all;
 		float water_level = terrainops::save_water_level;
 		bool swap_uv = terrainops::save_swap_uv;
+		bool swap_handedness = terrainops::save_swap_handedness;
 		bool swap_zup = terrainops::save_swap_zup;
 		int density = terrainops::save_density;
 		int w = terrainops::data_size.a;
@@ -159,7 +161,7 @@ namespace terrainops {
 				position.se.z *= scale;
 				position.sw.z *= scale;
 
-				if (swap_zup) {
+				if (swap_zup && swap_handedness) {
 					SWAPCELLYZ(position);
 					SWAPCELLYZ((*normals_in_use_t1));
 					SWAPCELLYZ((*normals_in_use_t2));
@@ -184,6 +186,16 @@ namespace terrainops {
 						vertices += 3;
 					}
 				} else {
+					// you can swap zup without swapping handedness
+					if (swap_zup) {
+						SWAPCELLYZ(position);
+						SWAPCELLYZ((*normals_in_use_t1));
+						SWAPCELLYZ((*normals_in_use_t2));
+						SWAPCELLYZ((*tangents_in_use_t1));
+						SWAPCELLYZ((*tangents_in_use_t2));
+						SWAPCELLYZ((*bitangents_in_use_t1));
+						SWAPCELLYZ((*bitangents_in_use_t2));
+					}
 					if (all || position.nw.z >= water_level || position.ne.z >= water_level || position.se.z >= water_level) {
 						terrainops::build_write_vertex_internal(out, &address, position.nw.x, position.nw.y, position.nw.z, normals_in_use_t1->nw.x, normals_in_use_t1->nw.y, normals_in_use_t1->nw.z, texcoord.nw.x, texcoord.nw.y, color.nw, tangents_in_use_t1->nw.x, tangents_in_use_t1->nw.y, tangents_in_use_t1->nw.z, bitangents_in_use_t1->nw.x, bitangents_in_use_t1->nw.y, bitangents_in_use_t1->nw.z, 1, 0, 0);
 						terrainops::build_write_vertex_internal(out, &address, position.ne.x, position.ne.y, position.ne.z, normals_in_use_t1->ne.x, normals_in_use_t1->ne.y, normals_in_use_t1->ne.z, texcoord.ne.x, texcoord.ne.y, color.ne, tangents_in_use_t1->ne.x, tangents_in_use_t1->ne.y, tangents_in_use_t1->ne.z, bitangents_in_use_t1->ne.x, bitangents_in_use_t1->ne.y, bitangents_in_use_t1->ne.z, 0, 1, 0);

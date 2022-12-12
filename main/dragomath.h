@@ -28,11 +28,31 @@ constexpr float PI = 3.14159265358f;
 #define MAGNITUDE(vec3) sqrtf(DOT(vec3, vec3))
 #define NORMALIZE(vec3) { float mag = MAGNITUDE((vec3)); (vec3).x /= mag; (vec3).y /= mag; (vec3).z /= mag; }
 
-//#define SWAPYZ(vec3) { float t = vec3.y; vec3.y = vec3.z; vec3.z = -t; }
+#define SWAPYZ(vec3) {						\
+	float t = vec3.y;						\
+	vec3.y = vec3.z;						\
+	vec3.z = -t;							\
+}
+#define SWAPCELLYZ(cell) {					\
+	SWAPYZ(cell.nw);						\
+	SWAPYZ(cell.ne);						\
+	SWAPYZ(cell.se);						\
+	SWAPYZ(cell.sw);						\
+}
 // this will swap and rotate the handedness
-#define SWAPYZ(vec3) { float ox = vec3.x; float oy = vec3.y; float oz = vec3.z; vec3.x = oy; vec3.z = ox; vec3.y = -oz; }
-#define SWAPCELLYZ(cell) {												\
-	SWAPYZ(cell.nw); SWAPYZ(cell.ne); SWAPYZ(cell.se); SWAPYZ(cell.sw);	\
+#define SWAPYZ_HANDEDNESS(vec3) {			\
+	float ox = vec3.x;						\
+	float oy = vec3.y;						\
+	float oz = vec3.z;						\
+	vec3.x = oy;							\
+	vec3.z = ox;							\
+	vec3.y = -oz;							\
+}
+#define SWAPCELLYZ_HANDEDNESS(cell) {		\
+	SWAPYZ_HANDEDNESS(cell.nw);				\
+	SWAPYZ_HANDEDNESS(cell.ne);				\
+	SWAPYZ_HANDEDNESS(cell.se);				\
+	SWAPYZ_HANDEDNESS(cell.sw);				\
 }
 
 // data structures

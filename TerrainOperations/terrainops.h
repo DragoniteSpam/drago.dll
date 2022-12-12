@@ -13,6 +13,7 @@ namespace terrainops {
 	extern bool save_all;
 	extern float save_water_level;
 	extern bool save_swap_zup;
+	extern bool save_swap_handedness;
 	extern bool save_swap_uv;
 	extern bool save_centered;
 	extern int save_density;
@@ -79,7 +80,7 @@ namespace terrainops {
 	void mutate();
 
 	// build vertex data
-	void build_settings(bool, bool, bool, bool, int, float, float, float, unsigned int, float, bool);
+	void build_settings(bool, bool, bool, bool, bool, int, float, float, float, unsigned int, float, bool);
 	void build_texture(unsigned int*);
 	void build_vertex_colour(unsigned int*);
 	void build_bounds(int, int, int, int);
