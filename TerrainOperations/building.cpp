@@ -278,6 +278,8 @@ namespace terrainops {
 
 		delete[] normal_hashes;
 
+		content << "\r\n";
+
 		Triangle positions{ }, normals{ }, texcoords{ };
 
 		for (long long i = 0; i < float_count; i += COMMON_VERTEX_SIZE_FLOATS * 3) {
