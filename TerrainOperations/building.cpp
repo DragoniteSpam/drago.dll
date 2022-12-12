@@ -169,13 +169,13 @@ namespace terrainops {
 				vertical_sw = position.sw.z;
 
 				if (swap_zup && swap_handedness) {
-					SWAPCELLYZ(position);
-					SWAPCELLYZ((*normals_in_use_t1));
-					SWAPCELLYZ((*normals_in_use_t2));
-					SWAPCELLYZ((*tangents_in_use_t1));
-					SWAPCELLYZ((*tangents_in_use_t2));
-					SWAPCELLYZ((*bitangents_in_use_t1));
-					SWAPCELLYZ((*bitangents_in_use_t2));
+					SWAPCELLYZ_HANDEDNESS(position);
+					SWAPCELLYZ_HANDEDNESS((*normals_in_use_t1));
+					SWAPCELLYZ_HANDEDNESS((*normals_in_use_t2));
+					SWAPCELLYZ_HANDEDNESS((*tangents_in_use_t1));
+					SWAPCELLYZ_HANDEDNESS((*tangents_in_use_t2));
+					SWAPCELLYZ_HANDEDNESS((*bitangents_in_use_t1));
+					SWAPCELLYZ_HANDEDNESS((*bitangents_in_use_t2));
 
 					// if you swap the axis and rotate the handedness, you also
 					// have to invert the faces
