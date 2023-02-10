@@ -170,12 +170,20 @@ namespace terrainops {
 
 				if (swap_zup && swap_handedness) {
 					SWAPCELLYZ_HANDEDNESS(position);
+
+					// if the pointers are the same, you just end up with them back where they started
 					SWAPCELLYZ_HANDEDNESS((*normals_in_use_t1));
-					SWAPCELLYZ_HANDEDNESS((*normals_in_use_t2));
+					if (normals_in_use_t1 != normals_in_use_t2) {
+						SWAPCELLYZ_HANDEDNESS((*normals_in_use_t2));
+					}
 					SWAPCELLYZ_HANDEDNESS((*tangents_in_use_t1));
-					SWAPCELLYZ_HANDEDNESS((*tangents_in_use_t2));
+					if (tangents_in_use_t1 != tangents_in_use_t2) {
+						SWAPCELLYZ_HANDEDNESS((*tangents_in_use_t2));
+					}
 					SWAPCELLYZ_HANDEDNESS((*bitangents_in_use_t1));
-					SWAPCELLYZ_HANDEDNESS((*bitangents_in_use_t2));
+					if (bitangents_in_use_t1 != bitangents_in_use_t2) {
+						SWAPCELLYZ_HANDEDNESS((*bitangents_in_use_t2));
+					}
 
 					// if you swap the axis and rotate the handedness, you also
 					// have to invert the faces
@@ -197,11 +205,17 @@ namespace terrainops {
 					if (swap_zup) {
 						SWAPCELLYZ(position);
 						SWAPCELLYZ((*normals_in_use_t1));
-						SWAPCELLYZ((*normals_in_use_t2));
+						if (normals_in_use_t1 != normals_in_use_t2) {
+							SWAPCELLYZ((*normals_in_use_t2));
+						}
 						SWAPCELLYZ((*tangents_in_use_t1));
-						SWAPCELLYZ((*tangents_in_use_t2));
+						if (tangents_in_use_t1 != tangents_in_use_t2) {
+							SWAPCELLYZ((*tangents_in_use_t2));
+						}
 						SWAPCELLYZ((*bitangents_in_use_t1));
-						SWAPCELLYZ((*bitangents_in_use_t2));
+						if (bitangents_in_use_t1 != bitangents_in_use_t2) {
+							SWAPCELLYZ((*bitangents_in_use_t2));
+						}
 					}
 
 					if (all || vertical_nw >= water_level || vertical_ne >= water_level || vertical_se >= water_level) {
