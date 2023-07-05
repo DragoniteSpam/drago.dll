@@ -178,11 +178,11 @@ namespace terrainops {
 		float z3 = get_z(data, std::min(triangle.c.a, w - 1), std::min(triangle.c.b, h - 1), h);
 
 		Vector3 e1{ }, e2{ }, n{ };
-		e1.x = triangle.b.a - triangle.a.a;
-		e1.y = triangle.b.b - triangle.a.b;
+		e1.x = (float)(triangle.b.a - triangle.a.a);
+		e1.y = (float)(triangle.b.b - triangle.a.b);
 		e1.z = z2 - z1;
-		e2.x = triangle.c.a - triangle.a.a;
-		e2.y = triangle.c.b - triangle.a.b;
+		e2.x = (float)(triangle.c.a - triangle.a.a);
+		e2.y = (float)(triangle.c.b - triangle.a.b);
 		e2.z = z3 - z1;
 
 		CROSS(n, e1, e2);

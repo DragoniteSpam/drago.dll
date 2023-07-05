@@ -100,7 +100,7 @@ namespace terrainops {
 				position.se.z = get_z(data, std::min(x + density, w - 1), std::min(y + density, h - 1), h);
 
 				if (smooth_normals) {
-					terrainops::get_normal_smooth(data, &normal_smooth, position.nw.x, position.nw.y, 0, w, h);
+					terrainops::get_normal_smooth(data, &normal_smooth, (int)position.nw.x, (int)position.nw.y, 0, w, h);
 
 					// we'll deal with the tangents and bitangents later, maybe
 
@@ -111,8 +111,8 @@ namespace terrainops {
 					bitangents_in_use_t1 = &bitangent_smooth;
 					bitangents_in_use_t2 = &bitangent_smooth;
 				} else {
-					terrainops::get_normal(data, &normal_t1.nw, position.nw.x, position.nw.y, position.ne.x, position.ne.y, position.se.x, position.se.y, w, h);
-					terrainops::get_normal(data, &normal_t2.nw, position.se.x, position.se.y, position.sw.x, position.sw.y, position.nw.x, position.nw.y, w, h);
+					terrainops::get_normal(data, &normal_t1.nw, (int)position.nw.x, (int)position.nw.y, (int)position.ne.x, (int)position.ne.y, (int)position.se.x, (int)position.se.y, w, h);
+					terrainops::get_normal(data, &normal_t2.nw, (int)position.se.x, (int)position.se.y, (int)position.sw.x, (int)position.sw.y, (int)position.nw.x, (int)position.nw.y, w, h);
 
 					normal_t1.ne.x = normal_t1.nw.x;
 					normal_t1.ne.y = normal_t1.nw.y;
