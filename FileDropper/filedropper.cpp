@@ -2,7 +2,7 @@
 
 namespace file_dropper {
     LONG_PTR window_original;
-    std::vector<std::string> names;
+    std::vector<std::wstring> names;
 
     void init(HWND hWnd) {
         window_original = GetWindowLongPtr(hWnd, GWLP_WNDPROC);
@@ -18,11 +18,10 @@ namespace file_dropper {
 	}
     
 	char* get(int n) {
-		std::string path(names.at(n));
-		char* cstr = new char[path.size() + 1];
-		strcpy_s(cstr, path.size() + 1, path.c_str());
-		return cstr;
-        return (char*)"";
+		std::wstring path(names.at(n));
+		wchar_t* cstr = new wchar_t[path.size() + 1];
+        wcscpy_s(cstr, path.size() + 1, path.c_str());
+		return (char*)cstr;
 	}
     
 	void flush() {
@@ -42,9 +41,8 @@ namespace file_dropper {
             if (size > 0) {
                 buffer.resize(size + (size_t)(1));
                 DragQueryFileW(hdr, i, buffer.data(), size + 1);
-                std::wstring tws(buffer.data());
-                std::string path = "";
-                names.push_back(std::string(tws.begin(), tws.end()));
+                std::wstring path(buffer.data());
+                names.push_back(std::wstring(path.begin(), path.end()));
             }
         }
 

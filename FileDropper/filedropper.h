@@ -9,7 +9,7 @@
 
 namespace file_dropper {
 	extern LONG_PTR window_original;
-	extern std::vector<std::string> names;
+	extern std::vector<std::wstring> names;
 	LRESULT WINAPI MsgProc(HWND, UINT, WPARAM, LPARAM);
 	
 	const char* version();
