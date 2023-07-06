@@ -2,6 +2,7 @@
 //#include "Bullet/bulletgml.h"
 #include "SpriteOperations/spriteops.h"
 #include "main/dragomath.h"
+#include "MeshOperations/assops.h"
 
 using namespace std;
 
@@ -33,6 +34,18 @@ void matrix_building_tests(Matrix4x4 printme) {
 		if (i % 4 == 3)
 			cout << "\n";
 	}
+	cout << "\n\n";
+	Matrix4x4 translate = Matrix4x4::Transform(10, 10, 10, 0, 0, 0, 1, 1, 1);
+	Matrix4x4 rotate = Matrix4x4::Transform(0, 0, 0, 15, 20, 30, 1, 1, 1);
+	Matrix4x4 scale = Matrix4x4::Transform(0, 0, 0, 0, 0, 0, 1, 2, 1);
+
+	cout << "rotate scale translate" << endl;
+
+	matrix_building_tests((rotate* scale)* translate);
+
+	cout << "scale rotate translate" << endl;
+
+	matrix_building_tests((scale* rotate)* translate);
 }
 
 void matrix_transform_tests() {
@@ -57,16 +70,6 @@ void matrix_transform_tests() {
 }
 
 int main() {
-	Matrix4x4 translate = Matrix4x4::Transform(10, 10, 10, 0, 0, 0, 1, 1, 1);
-	Matrix4x4 rotate = Matrix4x4::Transform(0, 0, 0, 15, 20, 30, 1, 1, 1);
-	Matrix4x4 scale = Matrix4x4::Transform(0, 0, 0, 0, 0, 0, 1, 2, 1);
-
-	cout << "rotate scale translate" << endl;
-
-	matrix_building_tests((rotate * scale) * translate);
-
-	cout << "scale rotate translate" << endl;
-
-	matrix_building_tests((scale * rotate) * translate);
+	assops::convert_fbx(std::string("test.fbx"), std::string("test.obj"));
 	return 0;
 }
