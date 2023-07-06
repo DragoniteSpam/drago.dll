@@ -1,6 +1,7 @@
 #include "main/core.h"
 #include "meshops.h"
 #include "building.h"
+#include "assops.h"
 
 ex double meshops_init(double vertex_size) {
 	// in gamemaker, our vertex size is in bytes; here we don't care about
@@ -158,5 +159,11 @@ ex double meshops_chunk_analyze(float* data, long long* meta, double data_len, d
 
 ex double meshops_chunk(float* data, long long* meta, double len) {
 	meshops::chunk(data, meta, BYTES2FLOATS(len));
+	return 1.0;
+}
+
+// assimp
+ex double convert_fbx(const char* filename, const char* output_name) {
+	assops::convert_fbx(std::string(filename), std::string(output_name));
 	return 1.0;
 }
