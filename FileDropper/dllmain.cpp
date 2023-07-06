@@ -1,25 +1,25 @@
 #include "filedropper.h"
 
-ex double file_drop_init(HWND hWnd) {
+dllex double file_drop_init(HWND hWnd) {
     file_dropper::init(hWnd);
     SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)MsgProc);
     return 1.0;
 }
 
-ex double file_drop_count() {
+dllex double file_drop_count() {
     return 1.0 * file_dropper::count();
 }
 
-ex char* file_drop_get(double n) {
+dllex char* file_drop_get(double n) {
     return file_dropper::get((int)n);
 }
 
-ex double file_drop_flush() {
+dllex double file_drop_flush() {
     file_dropper::flush();
     return 0.0;
 }
 
-ex const char* file_dropper_version() {
+dllex const char* file_dropper_version() {
     return file_dropper::version();
 }
 
