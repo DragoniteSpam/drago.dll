@@ -161,9 +161,3 @@ dllex double meshops_chunk(float* data, long long* meta, double len) {
 	meshops::chunk(data, meta, BYTES2FLOATS(len));
 	return 1.0;
 }
-
-// assimp
-dllex double convert_fbx(const char* filename, const char* output_name) {
-	assops::convert_fbx(std::string(filename), std::string(output_name));
-	return 1.0;
-}
