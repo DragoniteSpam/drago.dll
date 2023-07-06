@@ -146,13 +146,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\AssimpOperations\assops.cpp" />
     <ClCompile Include="..\main\dragomath.cpp" />
-    <ClCompile Include="..\MeshOperations\assops.cpp" />
     <ClCompile Include="..\SpriteOperations\spriteops.cpp" />
     <ClCompile Include="Tests.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\MeshOperations\assops.h" />
+    <ClInclude Include="..\AssimpOperations\assops.h" />
     <ClInclude Include="..\SpriteOperations\spriteops.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

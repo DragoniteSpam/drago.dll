@@ -1,7 +1,7 @@
 #include "main/core.h"
 #include "assops.h"
 
-dllex const char* meshops_version() {
+dllex const char* assops_version() {
 	return "0.0";
 }
 

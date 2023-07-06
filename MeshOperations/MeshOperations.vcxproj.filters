@@ -8,14 +8,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\SpriteOperations\spriteops.cpp" />
-    <ClCompile Include="assops.cpp" />
     <ClCompile Include="building.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="..\main\dragomath.cpp" />
     <ClCompile Include="meshops.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="assops.h" />
     <ClInclude Include="building.h" />
     <ClInclude Include="meshops.h" />
     <ClInclude Include="..\SpriteOperations\spriteops.h" />

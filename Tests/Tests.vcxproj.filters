@@ -7,13 +7,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\MeshOperations\assops.cpp" />
     <ClCompile Include="..\main\dragomath.cpp" />
     <ClCompile Include="..\SpriteOperations\spriteops.cpp" />
     <ClCompile Include="Tests.cpp" />
+    <ClCompile Include="..\AssimpOperations\assops.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\MeshOperations\assops.h" />
     <ClInclude Include="..\SpriteOperations\spriteops.h" />
+    <ClInclude Include="..\AssimpOperations\assops.h" />
   </ItemGroup>
 </Project>
