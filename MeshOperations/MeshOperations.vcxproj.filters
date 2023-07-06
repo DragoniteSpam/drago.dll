@@ -30,6 +30,9 @@
     <ClCompile Include="..\SpriteOperations\spriteops.cpp">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="assops.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="meshops.h">
@@ -39,6 +42,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\SpriteOperations\spriteops.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assops.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

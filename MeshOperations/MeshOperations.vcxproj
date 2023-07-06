@@ -159,12 +159,14 @@
   <ItemGroup>
     <ClCompile Include="..\main\dragomath.cpp" />
     <ClCompile Include="..\SpriteOperations\spriteops.cpp" />
+    <ClCompile Include="assops.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="meshops.cpp" />
     <ClCompile Include="building.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\SpriteOperations\spriteops.h" />
+    <ClInclude Include="assops.h" />
     <ClInclude Include="building.h" />
     <ClInclude Include="meshops.h" />
   </ItemGroup>

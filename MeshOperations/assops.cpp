@@ -2,9 +2,10 @@
 
 #include <iostream>
 
-float assops::convert_fbx(const std::string filename) {
+float assops::convert_fbx(const std::string filename, std::string output_filename) {
     // Create an instance of the Importer class
     Assimp::Importer importer;
+    Assimp::Exporter exporter;
 
     // And have it read the given file with some example postprocessing
     // Usually - if speed is not the most important aspect for you - you'll
@@ -24,6 +25,8 @@ float assops::convert_fbx(const std::string filename) {
     // Now we can access the file's contents.
     std::cout << "imported the file" << std::endl;
 
-    // We're done. Everything will be cleaned up by the importer destructor
+    exporter.Export(scene, "obj", output_filename);
+    std::cout << "exported the converted file" << std::endl;
+
     return 1.0;
 }
