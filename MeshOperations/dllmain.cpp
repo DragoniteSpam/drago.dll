@@ -1,7 +1,6 @@
 #include "main/core.h"
 #include "meshops.h"
 #include "building.h"
-#include "assops.h"
 
 dllex double meshops_init(double vertex_size) {
 	// in gamemaker, our vertex size is in bytes; here we don't care about

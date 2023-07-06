@@ -2,7 +2,7 @@
 //#include "Bullet/bulletgml.h"
 #include "SpriteOperations/spriteops.h"
 #include "main/dragomath.h"
-#include "MeshOperations/assops.h"
+#include "AssimpOperations/assops.h"
 
 using namespace std;
 
