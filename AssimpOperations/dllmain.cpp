@@ -2,7 +2,7 @@
 #include "assops.h"
 
 dllex const char* assops_version() {
-	return "0.0";
+	return assops::version();
 }
 
 // assimp

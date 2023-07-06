@@ -2,6 +2,10 @@
 
 #include <iostream>
 
+const char* assops::version() {
+    return __DRAGO_ASS_OP;
+}
+
 float assops::convert_fbx(const std::string filename, std::string output_filename) {
     // Create an instance of the Importer class
     Assimp::Importer importer;

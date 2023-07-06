@@ -1,5 +1,5 @@
 #ifndef __DRAGO_ASS_OP
-#define __DRAGO_ASS_OP
+#define __DRAGO_ASS_OP "0.0"
 
 #include <assimp/Importer.hpp>
 #include <assimp/Exporter.hpp>
@@ -7,6 +7,7 @@
 #include <assimp/postprocess.h>
 
 namespace assops {
+    const char* version();
     float convert_fbx(const std::string, std::string);
 }
 
