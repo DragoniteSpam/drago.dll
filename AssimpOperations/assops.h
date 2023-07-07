@@ -7,8 +7,11 @@
 #include <assimp/postprocess.h>
 
 namespace assops {
+    extern Assimp::Importer importer;
+    extern Assimp::Exporter exporter;
+
     const char* version();
-    float convert_fbx(const std::string, std::string);
+    float convert_obj(const std::string, std::string);
 }
 
 #endif
