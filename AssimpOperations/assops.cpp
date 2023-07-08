@@ -5,6 +5,7 @@
 namespace assops {
     Assimp::Importer importer;
     Assimp::Exporter exporter;
+    std::vector<std::string> conversion_files;
 
     const unsigned int import_flags = aiProcess_CalcTangentSpace |
         aiProcess_Triangulate |
@@ -15,6 +16,12 @@ namespace assops {
 
     const char* version() {
         return __DRAGO_ASS_OP;
+    }
+
+    float add_file(const char* input_file, const char* output_file) {
+        //convert_obj(input_file, output_file);
+        conversion_files.push_back(std::string(input_file));
+        conversion_files.push_back(std::string(output_file));
     }
 
     float convert_x(const std::string filename, std::string output_filename, std::string output_type) {

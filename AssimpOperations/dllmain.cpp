@@ -5,6 +5,11 @@ dllex const char* version() {
 	return assops::version();
 }
 
+dllex float add_file(const char* input_file, const char* output_file) {
+	assops::add_file(input_file, output_file);
+	return 1.0;
+}
+
 dllex double convert_obj(const char* filename, const char* output_name) {
 	assops::convert_obj(std::string(filename), std::string(output_name));
 	return 1.0;

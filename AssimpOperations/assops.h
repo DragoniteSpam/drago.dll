@@ -6,12 +6,17 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
+#include <vector>
+
 namespace assops {
     extern Assimp::Importer importer;
     extern Assimp::Exporter exporter;
+    extern std::vector<std::string> conversion_files;
 
     const char* version();
-
+    
+    float add_file(const char*, const char*);
+    
     float convert_x(const std::string, std::string, std::string);
 
     // used for importing
