@@ -10,6 +10,11 @@ dllex float add_file(const char* input_file, const char* output_file) {
 	return 1.0;
 }
 
+dllex float convert_all_obj() {
+	assops::convert_all_obj();
+	return 1.0;
+}
+
 dllex double convert_obj(const char* filename, const char* output_name) {
 	assops::convert_obj(std::string(filename), std::string(output_name));
 	return 1.0;
@@ -47,5 +52,40 @@ dllex double convert_ply(const char* filename, const char* output_name) {
 
 dllex double convert_plyb(const char* filename, const char* output_name) {
 	assops::convert_plyb(std::string(filename), std::string(output_name));
+	return 1.0;
+}
+
+dllex float convert_all_fbx() {
+	assops::convert_all_fbx();
+	return 1.0;
+}
+
+dllex float convert_all_dae() {
+	assops::convert_all_dae();
+	return 1.0;
+}
+
+dllex float convert_all_stl() {
+	assops::convert_all_stl();
+	return 1.0;
+}
+
+dllex float convert_all_ply() {
+	assops::convert_all_ply();
+	return 1.0;
+}
+
+dllex float convert_all_plyb() {
+	assops::convert_all_plyb();
+	return 1.0;
+}
+
+dllex float convert_all_gltf() {
+	assops::convert_all_gltf();
+	return 1.0;
+}
+
+dllex float convert_all_glb() {
+	assops::convert_all_glb();
 	return 1.0;
 }
