@@ -14,6 +14,7 @@ namespace meshops {
 	extern Matrix4x4* transform_data;
 	extern int vertex_size;
 	extern std::map<std::string, Vector3>* normal_cache;
+	extern Vector2* uvStart1, uvStart2, uvEnd1, uvEnd2;
 	
 	const char* version();
 	void init(int);
@@ -27,6 +28,9 @@ namespace meshops {
 	void transform_set_matrix_raw(float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float);
 	void transform(float*, int);
 	void reverse(float*, int);
+	// UV transform
+	void transform_set_uvs(float, float, float, float, float, float, float, float);
+	void transform_uvs(float*, int, int);
 	// axes
 	void rotate_up(float*, int);
 	void mirror_axis_generic(float*, int, float, float, float);

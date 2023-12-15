@@ -45,6 +45,18 @@ dllex double meshops_reverse(float* data, double len) {
 	return 1.0;
 }
 
+// UV transformations
+
+dllex double meshops_transform_set_uvs(double startx1, double starty1, double startx2, double starty2, double endx1, double endy1, double endx2, double endy2) {
+	meshops::transform_set_uvs((float)startx1, (float)starty1, (float)startx2, (float)starty2, (float)endx1, (float)endy1, (float)endx2, (float)endy2);
+	return 1.0;
+}
+
+dllex double meshops_transform_uvs(float* data, double offset, double vertex_count) {
+	meshops::transform_uvs(data, (int)offset, (int)vertex_count);
+	return 1.0;
+}
+
 // axes
 dllex double meshops_rotate_up(float* data, double len) {
 	meshops::rotate_up(data, BYTES2FLOATS(len));

@@ -4,6 +4,10 @@ namespace meshops {
 	Matrix4x4* transform_data = new Matrix4x4();
 	int vertex_size = 9;
 	std::map<std::string, Vector3>* normal_cache = new std::map<std::string, Vector3>();
+	Vector2* uvStart1 = new Vector2();
+	Vector2* uvStart2 = new Vector2();
+	Vector2* uvEnd1 = new Vector2();
+	Vector2* uvEnd2 = new Vector2();
 
 	const char* version() {
 		return __DRAGO_MESH_OP;
@@ -132,6 +136,24 @@ namespace meshops {
 	void reverse(float* data, int len) {
 		// this is by far the least troublesome way to reverse faces
 		mirror_axis_generic(data, len, 1.0, 1.0, 1.0);
+	}
+
+	// UV transform
+	void transform_set_uvs(float startx1, float starty1, float startx2, float starty2, float endx1, float endy1, float endx2, float endy2) {
+		meshops::uvStart1->x = startx1;
+		meshops::uvStart1->y = starty1;
+		meshops::uvStart2->x = startx2;
+		meshops::uvStart2->y = starty2;
+		meshops::uvEnd1->x = endx1;
+		meshops::uvEnd1->y = endy1;
+		meshops::uvEnd2->x = endx2;
+		meshops::uvEnd2->y = endy2;
+	}
+
+	void transform_uvs(float* data, int offset, int vertex_count) {
+		int vsize = meshops::vertex_size;
+		for (int i = offset; i < offset + vertex_count; i += vsize) {
+		}
 	}
 
 	// axes
