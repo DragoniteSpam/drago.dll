@@ -120,6 +120,21 @@ struct Vector2 {
 		float y;
 		int b;
 	};
+
+	inline Vector2() {
+		this->x = 0.0;
+		this->y = 0.0;
+	}
+
+	inline Vector2(float x, float y) {
+		this->x = x;
+		this->y = y;
+	}
+
+	inline void Remap(Vector2* start1, Vector2* start2, Vector2* end1, Vector2* end2) {
+		this->x = end1->x + (this->x - start1->x) * (end2->x - end1->x) / (start2->x - start1->x);
+		this->y = end1->y + (this->y - start1->y) * (end2->y - end1->y) / (start2->y - start1->y);
+	}
 };
 
 struct Triangle {
