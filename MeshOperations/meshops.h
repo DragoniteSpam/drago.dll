@@ -14,7 +14,10 @@ namespace meshops {
 	extern Matrix4x4* transform_data;
 	extern int vertex_size;
 	extern std::map<std::string, Vector3>* normal_cache;
-	extern Vector2* uvStart1, uvStart2, uvEnd1, uvEnd2;
+	extern Vector2* uvStart1;
+	extern Vector2* uvStart2;
+	extern Vector2* uvEnd1;
+	extern Vector2* uvEnd2;
 	
 	const char* version();
 	void init(int);

@@ -52,8 +52,8 @@ dllex double meshops_transform_set_uvs(double startx1, double starty1, double st
 	return 1.0;
 }
 
-dllex double meshops_transform_uvs(float* data, double offset, double vertex_count) {
-	meshops::transform_uvs(data, (int)offset, (int)vertex_count);
+dllex double meshops_transform_uvs(float* data, double offset, double length) {
+	meshops::transform_uvs(data, (int)offset, (int)length);
 	return 1.0;
 }
 

@@ -92,3 +92,4 @@ namespace sprite_atlas {
 #undef SPRITE_DATA_W
 #undef SPRITE_DATA_H
 #undef PADDING
+#undef SPRITE_SIZE

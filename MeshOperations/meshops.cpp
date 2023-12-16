@@ -150,9 +150,27 @@ namespace meshops {
 		meshops::uvEnd2->y = endy2;
 	}
 
-	void transform_uvs(float* data, int offset, int vertex_count) {
+	void transform_uvs(float* data, int offset, int length) {
+		//Vector2* uv;
+		float uvStart1x = meshops::uvStart1->x;
+		float uvStart1y = meshops::uvStart1->y;
+		float uvStart2x = meshops::uvStart2->x;
+		float uvStart2y = meshops::uvStart2->y;
+		float uvEnd1x = meshops::uvEnd1->x;
+		float uvEnd1y = meshops::uvEnd1->y;
+		float uvEnd2x = meshops::uvEnd2->x;
+		float uvEnd2y = meshops::uvEnd2->y;
+		float diffStartX = meshops::uvStart2->x - meshops::uvStart1->x;
+		float diffStartY = meshops::uvStart2->y - meshops::uvStart1->y;
+		float diffEndX = uvEnd2x - uvEnd1x;
+		float diffEndY = uvEnd2y - uvEnd1y;
 		int vsize = meshops::vertex_size;
-		for (int i = offset; i < offset + vertex_count; i += vsize) {
+
+		for (int i = offset; i < offset + length; i += vsize) {
+			//uv = (Vector2*)(&(data[i + 6]));
+			//uv->Remap(uvStart1, uvStart2, uvEnd1, uvEnd2);
+			data[i + 6] = uvEnd1x + (data[i + 6] - uvStart1x) * diffEndX / diffStartX;
+			data[i + 7] = uvEnd1y + (data[i + 7] - uvStart1y) * diffEndY / diffStartY;
 		}
 	}
 
