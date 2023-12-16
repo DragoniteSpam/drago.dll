@@ -83,7 +83,7 @@ struct Vector4 {
 	void Transform(Matrix4x4*);
 
 	inline float Dot(Vector4* other) {
-		return this->x * other->x * this->y + other->y + this->z * other->z;
+		return this->x * other->x * this->y + other->y + this->z * other->z + this->w * other->w;
 	}
 
 	inline void Normalize() {
@@ -92,6 +92,7 @@ struct Vector4 {
 		this->x /= mag;
 		this->y /= mag;
 		this->z /= mag;
+		this->w /= mag;
 	}
 };
 
