@@ -4,11 +4,9 @@
 #define SPRITE_DATA_Y 1
 #define SPRITE_DATA_W 2
 #define SPRITE_DATA_H 3
-#define PADDING 4
 #define SPRITE_SIZE 4
 
 #include "spriteatlas.h"
-#include <cmath>
 #include <algorithm>
 
 namespace sprite_atlas {
@@ -17,7 +15,7 @@ namespace sprite_atlas {
 	}
 
 	// we just give it a pointer to a blob of sprite data and tell it how long it is
-	double pack(int* sprite_data, int ints) {
+	double pack(int* sprite_data, int ints, int stride, bool force_po2) {
 		int maxx = 0, maxy = 0, nextx = 0, nexty = 0;
 
 		for (int i = 0; i < ints; i += SPRITE_SIZE) {
@@ -26,10 +24,10 @@ namespace sprite_atlas {
 			if (maxx == 0) {
 				sprite_data[i + SPRITE_DATA_X] = 0;
 				sprite_data[i + SPRITE_DATA_Y] = 0;
-				nextx += ww + PADDING;
+				nextx += ww + stride;
 			}
 			else {
-				if (!place_sprite(sprite_data, ints, i, maxx, maxy)) {
+				if (!place_sprite(sprite_data, ints, i, maxx, maxy, stride)) {
 					// if you cant place a sprite in the existing space, extend the
 					// bounds of the atlas
 					if (nextx + ww > maxy) {
@@ -38,29 +36,33 @@ namespace sprite_atlas {
 					}
 					sprite_data[i + SPRITE_DATA_X] = nextx;
 					sprite_data[i + SPRITE_DATA_Y] = nexty;
-					nextx += ww + PADDING;
+					nextx += ww + stride;
 				}
 			}
 
 			// recalculate the bounds
-			maxx = std::max(maxx, sprite_data[i + SPRITE_DATA_X] + ww + PADDING);
-			maxy = std::max(maxy, sprite_data[i + SPRITE_DATA_Y] + hh + PADDING);
+			maxx = std::max(maxx, sprite_data[i + SPRITE_DATA_X] + ww + stride);
+			maxy = std::max(maxy, sprite_data[i + SPRITE_DATA_Y] + hh + stride);
 		}
-
-		// force the bounds to a power of 2 and write them to the final two
-		// integers in the buffer (this looks worse than it really is, it's
-		// it's not actually an array index out of bounds)
-		sprite_data[ints] = 1 << ((int)ceil(log2((double)std::max(1, maxx))));
-		sprite_data[ints + 1] = 1 << ((int)ceil(log2((double)std::max(1, maxy))));
-
+		
+		if (force_po2) {
+			maxx = 1 << ((int)ceil(log2((double)std::max(1, maxx))));
+			maxy = 1 << ((int)ceil(log2((double)std::max(1, maxy))));
+		}
+		
+		// write them to the final two integers in the buffer (this looks worse than
+		// it really is, it's it's not actually an array index out of bounds)
+		sprite_data[ints] = maxx;
+		sprite_data[ints + 1] = maxy;
+		
 		// theoretically other return values might indicate some error code
 		return 1.0;
 	}
 
-	bool place_sprite(int* sprite_data, int ints, int index, int maxx, int maxy) {
-		for (int x = 0; x < maxx; x += PADDING) {
-			for (int y = 0; y < maxx; y += PADDING) {
-				if (!collide_sprite(sprite_data, ints, index, x, y)) {
+	inline bool place_sprite(int* sprite_data, int ints, int index, int maxx, int maxy, int stride) {
+		for (int x = 0; x < maxx; x += stride) {
+			for (int y = 0; y < maxy; y += stride) {
+				if (!collide_sprite(sprite_data, ints, index, x, y, stride)) {
 					sprite_data[index + SPRITE_DATA_X] = x;
 					sprite_data[index + SPRITE_DATA_Y] = y;
 					return true;
@@ -70,7 +72,7 @@ namespace sprite_atlas {
 		return false;
 	}
 
-	bool collide_sprite(int* sprite_data, int ints, int index, int x, int y) {
+	inline bool collide_sprite(int* sprite_data, int ints, int index, int x, int y, int stride) {
 		int ow = sprite_data[index + SPRITE_DATA_W];
 		int oh = sprite_data[index + SPRITE_DATA_H];
 
@@ -80,7 +82,7 @@ namespace sprite_atlas {
 				int yy = sprite_data[i + SPRITE_DATA_Y];
 				int ww = sprite_data[i + SPRITE_DATA_W];
 				int hh = sprite_data[i + SPRITE_DATA_H];
-				if (!((xx + ww + PADDING < x) || (xx > x + ow + PADDING) || (yy + hh + PADDING < y) || (yy > y + oh + PADDING))) return true;
+				if (!((xx + ww + stride < x) || (xx > x + ow + stride) || (yy + hh + stride < y) || (yy > y + oh + stride))) return true;
 			}
 		}
 		return false;
@@ -91,5 +93,4 @@ namespace sprite_atlas {
 #undef SPRITE_DATA_Y
 #undef SPRITE_DATA_W
 #undef SPRITE_DATA_H
-#undef PADDING
 #undef SPRITE_SIZE
