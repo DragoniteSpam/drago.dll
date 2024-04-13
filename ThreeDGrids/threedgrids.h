@@ -23,13 +23,16 @@ namespace threedgrids {
 	extern int y2;
 	extern int z2;
 	extern float r;
+	extern int other_x;
+	extern int other_y;
+	extern int other_z;
 
 	extern double value;
 
 	void set_region();
 	void set_sphere();
-	void set_region_grid();
-	void set_region_sphere();
+	void set_grid_region();
+	void set_grid_sphere();
 
 	void get_region_mean();
 	void get_region_min();

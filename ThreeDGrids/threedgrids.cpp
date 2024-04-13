@@ -33,6 +33,42 @@ namespace threedgrids {
 		}
 	}
 
+	void set_grid_region() {
+		// grid, x1, y1, z1, x2, y2, z2, other, other_x, other_y, other_z
+		int dx = other_x - x1;
+		int dy = other_y - y1;
+		int dz = other_z - z1;
+		for (int i = x1; i <= x2; i++) {
+			for (int j = y1; j <= y2; j++) {
+				for (int k = z1; k <= z2; k++) {
+					grid[DATA_INDEX(i, j, k, h, d)] = other[DATA_INDEX(i + dx, j + dy, k + dz, other_h, other_d)];
+				}
+			}
+		}
+	}
+
+	void set_grid_sphere() {
+		// grid, x1, y1, z1, r, other, other_x, other_y, other_z
+		int xx1 = x1 - r;
+		int yy1 = y1 - r;
+		int zz1 = z1 - r;
+		int xx2 = x1 + r;
+		int yy2 = y1 + r;
+		int zz2 = z1 + r;
+		int dx = other_x - x1;
+		int dy = other_y - y1;
+		int dz = other_z - z1;
+		for (int i = xx1; i <= xx2; i++) {
+			for (int j = yy1; j <= yy2; j++) {
+				for (int k = zz1; k <= zz2; k++) {
+					if (distance3D(x1, y1, z1, i, j, k) <= r) {
+						grid[DATA_INDEX(i, j, k, h, d)] = other[DATA_INDEX(i + dx, j + dy, k + dz, other_h, other_d)];
+					}
+				}
+			}
+		}
+	}
+
 	float distance3D(float x1, float y1, float z1, float x2, float y2, float z2) {
 		return sqrt(powf(x2 - x1, 2.0) + powf(y2 - y1, 2.0) + powf(z2 - z1, 2.0));
 	}
