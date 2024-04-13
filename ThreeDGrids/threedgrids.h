@@ -28,6 +28,7 @@ namespace threedgrids {
 	extern int other_z;
 
 	extern double value;
+	extern double f;
 
 	void set_region();
 	void set_sphere();
