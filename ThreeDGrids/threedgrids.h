@@ -22,7 +22,7 @@ namespace threedgrids {
 	extern int x2;
 	extern int y2;
 	extern int z2;
-	extern int r;
+	extern float r;
 
 	extern double value;
 
@@ -55,5 +55,7 @@ namespace threedgrids {
 	void lerp_sphere();
 	void lerp_grid_region();
 	void lerp_grid_sphere();
+
+	float distance3D(float, float, float, float, float, float);
 }
 #endif
