@@ -34,16 +34,16 @@ namespace threedgrids {
 	void set_grid_region();
 	void set_grid_sphere();
 
-	void get_region_mean();
-	void get_region_min();
-	void get_region_max();
-	void get_region_sum();
-	void get_region_standard_deviation();
-	void get_sphere_mean();
-	void get_sphere_min();
-	void get_sphere_max();
-	void get_sphere_sum();
-	void get_sphere_standard_deviation();
+	double get_region_mean();
+	double get_region_min();
+	double get_region_max();
+	double get_region_sum();
+	double get_region_standard_deviation();
+	double get_sphere_mean();
+	double get_sphere_min();
+	double get_sphere_max();
+	double get_sphere_sum();
+	double get_sphere_standard_deviation();
 
 	void add_region();
 	void add_sphere();

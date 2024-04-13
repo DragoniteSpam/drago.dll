@@ -1,6 +1,7 @@
 #include "threedgrids.h"
 #include <main/dragomath.h>
 #include <math.h>
+#include <limits>
 
 namespace threedgrids {
 	void set_region() {
@@ -67,6 +68,121 @@ namespace threedgrids {
 				}
 			}
 		}
+	}
+
+	double get_region_mean() {
+		double total = 0;
+		int n = (x2 - x1 + 1) * (y2 - y1 + 1) * (z2 - z1 + 1);
+		// grid, x1, y1, z1, x2, y2, z2
+		for (int i = x1; i <= x2; i++) {
+			for (int j = y1; j <= y2; j++) {
+				for (int k = z1; k <= z2; k++) {
+					total += grid[DATA_INDEX(i, j, k, h, d)];
+				}
+			}
+		}
+		return total / n;
+	}
+
+	double get_region_min() {
+		double lowest = std::numeric_limits<double>::infinity();
+		// grid, x1, y1, z1, x2, y2, z2
+		for (int i = x1; i <= x2; i++) {
+			for (int j = y1; j <= y2; j++) {
+				for (int k = z1; k <= z2; k++) {
+					lowest = fmin(grid[DATA_INDEX(i, j, k, h, d)], lowest);
+				}
+			}
+		}
+		return lowest;
+	}
+
+	double get_region_max() {
+		double highest = -std::numeric_limits<double>::infinity();
+		// grid, x1, y1, z1, x2, y2, z2
+		for (int i = x1; i <= x2; i++) {
+			for (int j = y1; j <= y2; j++) {
+				for (int k = z1; k <= z2; k++) {
+					highest = fmax(grid[DATA_INDEX(i, j, k, h, d)], highest);
+				}
+			}
+		}
+		return highest;
+	}
+
+	double get_region_sum() {
+		double total = 0;
+		// grid, x1, y1, z1, x2, y2, z2
+		for (int i = x1; i <= x2; i++) {
+			for (int j = y1; j <= y2; j++) {
+				for (int k = z1; k <= z2; k++) {
+					total += grid[DATA_INDEX(i, j, k, h, d)];
+				}
+			}
+		}
+		return total;
+	}
+
+	double get_sphere_mean() {
+		double total = 0;
+		int n = 0;
+		// grid, x1, y1, z1, r
+		for (int i = x1; i <= x2; i++) {
+			for (int j = y1; j <= y2; j++) {
+				for (int k = z1; k <= z2; k++) {
+					if (distance3D(x1, y1, z1, i, j, k) <= r) {
+						total += grid[DATA_INDEX(i, j, k, h, d)];
+						n++;
+					}
+				}
+			}
+		}
+		return total / n;
+	}
+
+	double get_sphere_min() {
+		double lowest = std::numeric_limits<double>::infinity();
+		// grid, x1, y1, z1, r
+		for (int i = x1; i <= x2; i++) {
+			for (int j = y1; j <= y2; j++) {
+				for (int k = z1; k <= z2; k++) {
+					if (distance3D(x1, y1, z1, i, j, k) <= r) {
+						lowest = fmin(grid[DATA_INDEX(i, j, k, h, d)], lowest);
+					}
+				}
+			}
+		}
+		return lowest;
+	}
+
+	double get_sphere_max() {
+		double highest = -std::numeric_limits<double>::infinity();
+		// grid, x1, y1, z1, r
+		for (int i = x1; i <= x2; i++) {
+			for (int j = y1; j <= y2; j++) {
+				for (int k = z1; k <= z2; k++) {
+					if (distance3D(x1, y1, z1, i, j, k) <= r) {
+						highest = fmax(grid[DATA_INDEX(i, j, k, h, d)], highest);
+					}
+				}
+			}
+		}
+		return highest;
+	}
+
+	double get_sphere_sum() {
+		double total = 0;
+		// grid, x1, y1, z1, r
+		for (int i = x1; i <= x2; i++) {
+			for (int j = y1; j <= y2; j++) {
+				for (int k = z1; k <= z2; k++) {
+					if (distance3D(x1, y1, z1, i, j, k) <= r) {
+						total += grid[DATA_INDEX(i, j, k, h, d)];
+					}
+				}
+			}
+		}
+		return total;
 	}
 
 	float distance3D(float x1, float y1, float z1, float x2, float y2, float z2) {
