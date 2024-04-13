@@ -123,6 +123,21 @@ namespace threedgrids {
 		return total;
 	}
 
+	double get_region_standard_deviation() {
+		// grid, x1, y1, z1, x2, y2, z2
+		double mean = get_region_mean();
+		int n = (x2 - x1 + 1) * (y2 - y1 + 1) * (z2 - z1 + 1);
+		double squares = 0;
+		for (int i = x1; i <= x2; i++) {
+			for (int j = y1; j <= y2; j++) {
+				for (int k = z1; k <= z2; k++) {
+					squares += pow(grid[DATA_INDEX(i, j, k, h, d)] - mean, 2.0);
+				}
+			}
+		}
+		return sqrt(mean / n);
+	}
+
 	double get_sphere_mean() {
 		double total = 0;
 		int n = 0;
@@ -183,6 +198,24 @@ namespace threedgrids {
 			}
 		}
 		return total;
+	}
+
+	double get_sphere_standard_deviation() {
+		// grid, x1, y1, z1, r
+		double mean = get_sphere_mean();
+		double squares = 0;
+		int n = 0;
+		for (int i = x1; i <= x2; i++) {
+			for (int j = y1; j <= y2; j++) {
+				for (int k = z1; k <= z2; k++) {
+					if (distance3D(x1, y1, z1, i, j, k) <= r) {
+						squares += pow(grid[DATA_INDEX(i, j, k, h, d)] - mean, 2.0);
+						n++;
+					}
+				}
+			}
+		}
+		return sqrt(mean / n);
 	}
 
 	float distance3D(float x1, float y1, float z1, float x2, float y2, float z2) {
