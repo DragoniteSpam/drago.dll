@@ -80,6 +80,10 @@ struct Vector4 {
 		float a;
 	};
 
+	inline bool Equals(Vector4* a) {
+		return (fabsf(this->x - a->x) <= 0.000000001) && (fabsf(this->y - a->y) <= 0.000000001) && (fabsf(this->z - a->z) <= 0.000000001) && (fabsf(this->z - a->z) <= 0.000000001);
+	}
+
 	inline float Dot(Vector4* other) const {
 		return this->x * other->x * this->y + other->y + this->z * other->z + this->w * other->w;
 	}
@@ -123,6 +127,10 @@ struct Vector3 {
 		float z;
 		int c;
 	};
+
+	inline bool Equals(Vector3* a) {
+		return (fabsf(this->x - a->x) <= 0.000000001) && (fabsf(this->y - a->y) <= 0.000000001) && (fabsf(this->z - a->z) <= 0.000000001);
+	}
 
 	inline float Dot(Vector3* other) const {
 		return this->x * other->x * this->y + other->y + this->z * other->z;
@@ -169,6 +177,10 @@ struct Vector2 {
 		this->x = x;
 		this->y = y;
 	};
+
+	inline bool Equals(Vector2* a) {
+		return (fabsf(this->x - a->x) <= 0.000000001) && (fabsf(this->y - a->y) <= 0.000000001);
+	}
 
 	inline float Dot(Vector2* other) const {
 		return this->x * other->x * this->y + other->y;
