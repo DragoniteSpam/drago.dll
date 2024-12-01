@@ -339,15 +339,39 @@ Vector4 operator+(const Vector4&, const Vector4&);
 Vector4 operator-(const Vector4&, const Vector4&);
 Vector4 operator*(const Vector4&, const Vector4&);
 Vector4 operator/(const Vector4&, const Vector4&);
+Vector4 operator+(const Vector4&, float);
+Vector4 operator-(const Vector4&, float);
+Vector4 operator*(const Vector4&, float);
+Vector4 operator/(const Vector4&, float);
+Vector4 operator+(float, const Vector4&);
+Vector4 operator-(float, const Vector4&);
+Vector4 operator*(float, const Vector4&);
+Vector4 operator/(float, const Vector4&);
 
 Vector3 operator+(const Vector3&, const Vector3&);
 Vector3 operator-(const Vector3&, const Vector3&);
 Vector3 operator*(const Vector3&, const Vector3&);
 Vector3 operator/(const Vector3&, const Vector3&);
+Vector3 operator+(const Vector3&, float);
+Vector3 operator-(const Vector3&, float);
+Vector3 operator*(const Vector3&, float);
+Vector3 operator/(const Vector3&, float);
+Vector3 operator+(float, const Vector3&);
+Vector3 operator-(float, const Vector3&);
+Vector3 operator*(float, const Vector3&);
+Vector3 operator/(float, const Vector3&);
 
 Vector2 operator+(const Vector2&, const Vector2&);
 Vector2 operator-(const Vector2&, const Vector2&);
 Vector2 operator*(const Vector2&, const Vector2&);
 Vector2 operator/(const Vector2&, const Vector2&);
+Vector2 operator+(const Vector2&, float);
+Vector2 operator-(const Vector2&, float);
+Vector2 operator*(const Vector2&, float);
+Vector2 operator/(const Vector2&, float);
+Vector2 operator+(float, const Vector2&);
+Vector2 operator-(float, const Vector2&);
+Vector2 operator*(float, const Vector2&);
+Vector2 operator/(float, const Vector2&);
 
 #endif
