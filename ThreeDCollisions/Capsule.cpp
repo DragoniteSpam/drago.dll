@@ -1,10 +1,10 @@
 #include "Shapes.h"
 
 class ShapeCapsule : Shape {
-private:
+public:
 	ShapeLine* line;
 	float radius;
-public:
+
 	void Set(const ShapeLine* line, float radius) {
 		//this->line->Set(line);
 		this->radius = radius;

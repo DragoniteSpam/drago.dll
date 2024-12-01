@@ -1,11 +1,11 @@
 #include "Shapes.h"
 
 class ShapeOBB : Shape {
-private:
+public:
 	Vector3* position;
 	Vector3* size;
 	Matrix4x4* orientation;
-public:
+
 	void Set(const Vector3* position, const Vector3* size, const Matrix4x4* orientation) {
 		this->position->Set(position);
 		this->size->Set(size);

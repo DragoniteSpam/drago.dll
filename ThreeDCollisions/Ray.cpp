@@ -1,10 +1,10 @@
 #include "Shapes.h"
 
 class ShapeRay : Shape {
-private:
+public:
 	Vector3* position;
 	Vector3* direction;
-public:
+
 	void Set(const Vector3* position, const Vector3* direction) {
 		this->position->Set(position);
 		this->direction->Set(direction);

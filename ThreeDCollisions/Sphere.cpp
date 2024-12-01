@@ -1,10 +1,10 @@
 #include "Shapes.h"
 
 class ShapeSphere : Shape {
-private:
+public:
 	Vector3* position;
 	float radius;
-public:
+
 	void Set(const Vector3* position, float radius) {
 		this->position->Set(position);
 		this->radius = radius;

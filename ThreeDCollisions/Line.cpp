@@ -1,10 +1,10 @@
 #include "Shapes.h"
 
 class ShapeLine : Shape {
-private:
+public:
 	Vector3* start;
 	Vector3* end;
-public:
+
 	void Set(const Vector3* start, const Vector3* end) {
 		this->start->Set(start);
 		this->end->Set(end);

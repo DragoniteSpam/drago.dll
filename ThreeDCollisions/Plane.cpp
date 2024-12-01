@@ -1,10 +1,10 @@
 #include "Shapes.h"
 
 class ShapePlane : Shape {
-private:
+public:
 	Vector3* normal;
 	float distance;
-public:
+
 	void Set(const Vector3* normal, float distance) {
 		this->normal->Set(normal);
 		this->distance = distance;

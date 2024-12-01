@@ -1,10 +1,10 @@
 #include "Shapes.h"
 
 class ShapeAABB : Shape {
-private:
+public:
 	Vector3* position;
 	Vector3* half;
-public:
+
 	void Set(const Vector3* position, const Vector3* half) {
 		this->position->Set(position);
 		this->half->Set(half);

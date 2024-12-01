@@ -1,11 +1,11 @@
 #include "Shapes.h"
 
 class ShapeTriangle : Shape {
-private:
+public:
 	Vector3* a;
 	Vector3* b;
 	Vector3* c;
-public:
+
 	void Set(const Vector3* a, const Vector3* b, const Vector3* c) {
 		this->a->Set(a);
 		this->b->Set(b);
