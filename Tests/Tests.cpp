@@ -73,21 +73,20 @@ void test_vector_stuff() {
 	cout << a.x << ", " << a.y << ", " << a.z << ", " << a.w << endl;
 	cout << b.x << ", " << b.y << ", " << b.z << ", " << b.w << endl;
 
-	Vector4 c = a + b;
-	cout << c.x << ", " << c.y << ", " << c.z << ", " << c.w << endl;
+	cout << a.Magnitude() << endl;
+	cout << a.Distance(&b) << endl;
 
-	c = a - b;
-	cout << c.x << ", " << c.y << ", " << c.z << ", " << c.w << endl;
+	Vector3 c{ 1.0, 2.0, 3.0 };
+	Vector3 d{ 1.0, 10.0, 100.0 };
 
-	c = a * b;
-	cout << c.x << ", " << c.y << ", " << c.z << ", " << c.w << endl;
+	cout << c.Magnitude() << endl;
+	cout << c.Distance(&d) << endl;
 
-	c = a / b;
-	cout << c.x << ", " << c.y << ", " << c.z << ", " << c.w << endl;
+	Vector2 e{ 1.0, 2.0 };
+	Vector2 f{ 1.0, 10.0 };
 
-	c = a.Normalize();
-	cout << a.x << ", " << a.y << ", " << a.z << ", " << a.w << endl;
-	cout << c.x << ", " << c.y << ", " << c.z << ", " << c.w << endl;
+	cout << e.Magnitude() << endl;
+	cout << e.Distance(&f) << endl;
 }
 
 int main() {

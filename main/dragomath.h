@@ -89,6 +89,14 @@ struct Vector4 {
 		return Vector4{ this->x / mag, this->y / mag, this->z / mag, this->w / mag };
 	}
 
+	inline float Magnitude() const {
+		return sqrtf(this->x * this->x + this->y * this->y + this->z * this->z + this->w * this->w);
+	}
+
+	inline float Distance(const Vector4* other) const {
+		return sqrtf(this->x * other->x + this->y * other->y + this->z * other->z + this->w * other->w);
+	}
+
 	// some methods that act on the struct itself
 	void TransformInPlace(Matrix4x4*);
 
@@ -123,6 +131,14 @@ struct Vector3 {
 	inline Vector3 Normalize() {
 		float mag = sqrtf(this->Dot(this));
 		return Vector3{ this->x / mag, this->y / mag, this->z / mag };
+	}
+
+	inline float Magnitude() const {
+		return sqrtf(this->x * this->x + this->y * this->y + this->z * this->z);
+	}
+
+	inline float Distance(const Vector3* other) const {
+		return sqrtf(this->x * other->x + this->y * other->y + this->z * other->z);
 	}
 
 	inline void NormalizeInPlace() {
@@ -161,6 +177,14 @@ struct Vector2 {
 	inline Vector2 Normalize() {
 		float mag = sqrtf(this->Dot(this));
 		return Vector2{ this->x / mag, this->y / mag };
+	}
+
+	inline float Magnitude() const {
+		return sqrtf(this->x * this->x + this->y * this->y);
+	}
+
+	inline float Distance(const Vector2* other) const {
+		return sqrtf(this->x * other->x + this->y * other->y);
 	}
 
 	inline void Remap(Vector2* start1, Vector2* start2, Vector2* end1, Vector2* end2) {
