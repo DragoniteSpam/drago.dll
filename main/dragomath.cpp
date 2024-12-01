@@ -65,3 +65,47 @@ Matrix4x4 operator*(const Matrix4x4& a, const Matrix4x4& b) {
 
 	return result;
 }
+
+Vector4 operator+(const Vector4& a, const Vector4& b) {
+	Vector4 result{
+		a.x + b.x,
+		a.y + b.y,
+		a.z + b.z,
+		a.w + b.w
+	};
+
+	return result;
+}
+
+Vector4 operator-(const Vector4& a, const Vector4& b) {
+	Vector4 result{
+		a.x - b.x,
+		a.y - b.y,
+		a.z - b.z,
+		a.w - b.w
+	};
+
+	return result;
+}
+
+Vector4 operator*(const Vector4& a, const Vector4& b) {
+	Vector4 result{
+		a.x * b.x,
+		a.y * b.y,
+		a.z * b.z,
+		a.w * b.w
+	};
+
+	return result;
+}
+
+Vector4 operator/(const Vector4& a, const Vector4& b) {
+	Vector4 result{
+		a.x / b.x,
+		a.y / b.y,
+		a.z / b.z,
+		a.w / b.w
+	};
+
+	return result;
+}

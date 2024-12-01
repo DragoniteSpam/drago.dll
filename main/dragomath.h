@@ -82,7 +82,7 @@ struct Vector4 {
 	// some methods that act on the struct itself
 	void Transform(Matrix4x4*);
 
-	inline float Dot(Vector4* other) {
+	inline float Dot(Vector4* other) const {
 		return this->x * other->x * this->y + other->y + this->z * other->z + this->w * other->w;
 	}
 
@@ -295,5 +295,10 @@ struct Matrix4x4 {
 Matrix4x4 operator*(const Matrix4x4&, const Matrix4x4&);
 Vector4 operator*(const Matrix4x4&, const Vector4&);
 Vector4 operator*(const Vector4&, const Matrix4x4&);
+
+Vector4 operator+(const Vector4&, const Vector4&);
+Vector4 operator-(const Vector4&, const Vector4&);
+Vector4 operator*(const Vector4&, const Vector4&);
+Vector4 operator/(const Vector4&, const Vector4&);
 
 #endif

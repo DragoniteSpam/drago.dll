@@ -2,6 +2,7 @@
 #define __DRAGO_3DC "0.0.1"
 
 #include "main/core.h"
+#include "main/dragomath.h"
 
 #include <vector>
 
