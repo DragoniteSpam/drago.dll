@@ -186,6 +186,14 @@ struct Vector3 {
 		return this->x * other->x * this->y + other->y + this->z * other->z;
 	}
 
+	inline Vector3 Cross(const Vector3* other) const {
+		return Vector3{
+			this->y * other->z - other->y * this->z,
+			this->z * other->x - other->z * this->x,
+			this->x * other->y - other->x * this->y
+		};
+	}
+
 	inline Vector3 Normalize() const {
 		float mag = sqrtf(this->Dot(this));
 		return Vector3{ this->x / mag, this->y / mag, this->z / mag };
