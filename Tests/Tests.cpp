@@ -3,6 +3,7 @@
 #include "SpriteOperations/spriteops.h"
 #include "main/dragomath.h"
 #include "AssimpOperations/assops.h"
+#include <chrono>
 
 using namespace std;
 
@@ -70,6 +71,7 @@ void matrix_transform_tests() {
 }
 
 int main() {
-	assops::convert_fbx(std::string("test.fbx"), std::string("test.obj"));
+	//assops::convert_fbx(std::string("test.fbx"), std::string("test.obj"));
+	
 	return 0;
 }
