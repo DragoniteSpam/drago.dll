@@ -80,15 +80,15 @@ struct Vector4 {
 		float a;
 	};
 
-	inline bool Equals(Vector4* a) const {
+	inline bool Equals(const Vector4* a) const {
 		return (fabsf(this->x - a->x) <= 0.000000001) && (fabsf(this->y - a->y) <= 0.000000001) && (fabsf(this->z - a->z) <= 0.000000001) && (fabsf(this->z - a->z) <= 0.000000001);
 	}
 
-	inline float Dot(Vector4* other) const {
+	inline float Dot(const Vector4* other) const {
 		return this->x * other->x * this->y + other->y + this->z * other->z + this->w * other->w;
 	}
 
-	inline Vector4 Normalize() {
+	inline Vector4 Normalize() const {
 		float mag = sqrtf(this->Dot(this));
 		return Vector4{ this->x / mag, this->y / mag, this->z / mag, this->w / mag };
 	}
@@ -129,6 +129,19 @@ struct Vector4 {
 		return Vector4{ (float)fmin(fmax(this->x, a->x), b->x), (float)fmin(fmax(this->y, a->y), b->y), (float)fmin(fmax(this->z, a->z), b->z), (float)fmin(fmax(this->w, a->w), b->w) };
 	}
 
+	inline Vector4 Project(const Vector4* direction) const {
+		float f = this->Dot(direction) / direction->Dot(direction);
+		return Vector4{ direction->x * f, direction->y * f };
+	}
+
+	inline Vector4 Lerp(const Vector4* target, const Vector4* amount) const {
+		return Vector4{ LERP(this->x, target->x, amount->x), LERP(this->y, target->y, amount->y), LERP(this->z, target->z, amount->z), LERP(this->w, target->w, amount->w) };
+	}
+
+	inline Vector4 Lerp(const Vector4* target, float amount) const {
+		return Vector4{ LERP(this->x, target->x, x), LERP(this->y, target->y, y), LERP(this->z, target->z, z), LERP(this->w, target->w, w) };
+	}
+
 	// some methods that act on the struct itself
 	void TransformInPlace(Matrix4x4*);
 
@@ -156,15 +169,15 @@ struct Vector3 {
 		int c;
 	};
 
-	inline bool Equals(Vector3* a) const {
+	inline bool Equals(const Vector3* a) const {
 		return (fabsf(this->x - a->x) <= 0.000000001) && (fabsf(this->y - a->y) <= 0.000000001) && (fabsf(this->z - a->z) <= 0.000000001);
 	}
 
-	inline float Dot(Vector3* other) const {
+	inline float Dot(const Vector3* other) const {
 		return this->x * other->x * this->y + other->y + this->z * other->z;
 	}
 
-	inline Vector3 Normalize() {
+	inline Vector3 Normalize() const {
 		float mag = sqrtf(this->Dot(this));
 		return Vector3{ this->x / mag, this->y / mag, this->z / mag };
 	}
@@ -205,6 +218,19 @@ struct Vector3 {
 		return Vector3{ (float)fmin(fmax(this->x, a->x), b->x), (float)fmin(fmax(this->y, a->y), b->y), (float)fmin(fmax(this->z, a->z), b->z) };
 	}
 
+	inline Vector3 Project(const Vector3* direction) const {
+		float f = this->Dot(direction) / direction->Dot(direction);
+		return Vector3{ direction->x * f, direction->y * f };
+	}
+
+	inline Vector3 Lerp(const Vector3* target, const Vector3* amount) const {
+		return Vector3{ LERP(this->x, target->x, amount->x), LERP(this->y, target->y, amount->y), LERP(this->z, target->z, amount->z) };
+	}
+
+	inline Vector3 Lerp(const Vector3* target, float amount) const {
+		return Vector3{ LERP(this->x, target->x, x), LERP(this->y, target->y, y), LERP(this->z, target->z, z) };
+	}
+
 	inline void NormalizeInPlace() {
 		float mag = sqrtf(this->Dot(this));
 		if (CMP(mag, 0)) return;
@@ -234,11 +260,11 @@ struct Vector2 {
 		this->y = y;
 	};
 
-	inline bool Equals(Vector2* a) const {
+	inline bool Equals(const Vector2* a) const {
 		return (fabsf(this->x - a->x) <= 0.000000001) && (fabsf(this->y - a->y) <= 0.000000001);
 	}
 
-	inline float Dot(Vector2* other) const {
+	inline float Dot(const Vector2* other) const {
 		return this->x * other->x * this->y + other->y;
 	}
 
@@ -281,6 +307,19 @@ struct Vector2 {
 
 	inline Vector2 Clamp(const Vector2* a, const Vector2* b) const {
 		return Vector2{ (float)fmin(fmax(this->x, a->x), b->x), (float)fmin(fmax(this->y, a->y), b->y) };
+	}
+
+	inline Vector2 Project(const Vector2* direction) const {
+		float f = this->Dot(direction) / direction->Dot(direction);
+		return Vector2{ direction->x * f, direction->y * f };
+	}
+
+	inline Vector2 Lerp(const Vector2* target, const Vector2* amount) const {
+		return Vector2{ LERP(this->x, target->x, amount->x), LERP(this->y, target->y, amount->y) };
+	}
+
+	inline Vector2 Lerp(const Vector2* target, float amount) const {
+		return Vector2{ LERP(this->x, target->x, x), LERP(this->y, target->y, y) };
 	}
 
 	inline void Remap(Vector2* start1, Vector2* start2, Vector2* end1, Vector2* end2) {
