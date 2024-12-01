@@ -302,4 +302,14 @@ Vector4 operator-(const Vector4&, const Vector4&);
 Vector4 operator*(const Vector4&, const Vector4&);
 Vector4 operator/(const Vector4&, const Vector4&);
 
+Vector3 operator+(const Vector3&, const Vector3&);
+Vector3 operator-(const Vector3&, const Vector3&);
+Vector3 operator*(const Vector3&, const Vector3&);
+Vector3 operator/(const Vector3&, const Vector3&);
+
+Vector2 operator+(const Vector2&, const Vector2&);
+Vector2 operator-(const Vector2&, const Vector2&);
+Vector2 operator*(const Vector2&, const Vector2&);
+Vector2 operator/(const Vector2&, const Vector2&);
+
 #endif
