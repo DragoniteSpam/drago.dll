@@ -6,9 +6,7 @@ private:
 	float radius;
 public:
 	void Set(const Vector3* position, float radius) {
-		this->position->x = position->x;
-		this->position->y = position->y;
-		this->position->z = position->z;
+		this->position->Set(position);
 		this->radius = radius;
 	}
 

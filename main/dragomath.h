@@ -80,6 +80,20 @@ struct Vector4 {
 		float a;
 	};
 
+	inline Vector4(const Vector4* source) {
+		this->x = source->x;
+		this->y = source->y;
+		this->z = source->z;
+		this->w = source->w;
+	}
+
+	inline void Set(const Vector4* source) {
+		this->x = source->x;
+		this->y = source->y;
+		this->z = source->z;
+		this->w = source->w;
+	}
+
 	inline bool Equals(const Vector4* a) const {
 		return (fabsf(this->x - a->x) <= 0.000000001) && (fabsf(this->y - a->y) <= 0.000000001) && (fabsf(this->z - a->z) <= 0.000000001) && (fabsf(this->z - a->z) <= 0.000000001);
 	}
@@ -178,6 +192,18 @@ struct Vector3 {
 		int c;
 	};
 
+	inline Vector3(const Vector3* source) {
+		this->x = source->x;
+		this->y = source->y;
+		this->z = source->z;
+	}
+
+	inline void Set(const Vector3* source) {
+		this->x = source->x;
+		this->y = source->y;
+		this->z = source->z;
+	}
+
 	inline bool Equals(const Vector3* a) const {
 		return (fabsf(this->x - a->x) <= 0.000000001) && (fabsf(this->y - a->y) <= 0.000000001) && (fabsf(this->z - a->z) <= 0.000000001);
 	}
@@ -275,15 +301,15 @@ struct Vector2 {
 		int b;
 	};
 
-	inline Vector2() {
-		this->x = 0.0;
-		this->y = 0.0;
+	inline Vector2(const Vector2* source) {
+		this->x = source->x;
+		this->y = source->y;
 	}
 
-	inline Vector2(float x, float y) {
-		this->x = x;
-		this->y = y;
-	};
+	inline void Set(const Vector2* source) {
+		this->x = source->x;
+		this->y = source->y;
+	}
 
 	inline bool Equals(const Vector2* a) const {
 		return (fabsf(this->x - a->x) <= 0.000000001) && (fabsf(this->y - a->y) <= 0.000000001);
@@ -425,6 +451,12 @@ struct Matrix4x4 {
 		v21 = f21; v22 = f22; v23 = f23; v24 = f24;
 		v31 = f31; v32 = f32; v33 = f33; v34 = f34;
 		v41 = f41; v42 = f42; v43 = f43; v44 = f44;
+	}
+
+	inline void Set(const Matrix4x4* source) {
+		for (int i = 0; i < 16; i++) {
+			this[i] = source[i];
+		}
 	}
 
 	inline float* operator[](int i) {

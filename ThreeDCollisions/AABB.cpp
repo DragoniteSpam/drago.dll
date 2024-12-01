@@ -6,12 +6,8 @@ private:
 	Vector3* half;
 public:
 	void Set(const Vector3* position, const Vector3* half) {
-		this->position->x = position->x;
-		this->position->y = position->y;
-		this->position->z = position->z;
-		this->half->x = half->x;
-		this->half->y = half->y;
-		this->half->z = half->z;
+		this->position->Set(position);
+		this->half->Set(half);
 	}
 
 	bool CheckPoint(const ShapePoint* point) override {

@@ -5,9 +5,7 @@ private:
 	Vector3* position;
 public:
 	void Set(const Vector3* position) {
-		this->position->x = position->x;
-		this->position->y = position->y;
-		this->position->z = position->z;
+		this->position->Set(position);
 	}
 
 	bool CheckPoint(const ShapePoint* point) override {
