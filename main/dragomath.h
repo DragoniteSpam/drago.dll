@@ -146,6 +146,11 @@ struct Vector4 {
 		return Vector4{ LERP(this->x, target->x, x), LERP(this->y, target->y, y), LERP(this->z, target->z, z), LERP(this->w, target->w, w) };
 	}
 
+	inline Vector4 Approach(const Vector4* target, float amount) const {
+		float f = (float)fmax(this->Distance(target) - amount, 0) / amount;
+		return this->Lerp(target, f);
+	}
+
 	// some methods that act on the struct itself
 	void TransformInPlace(Matrix4x4*);
 
@@ -236,6 +241,11 @@ struct Vector3 {
 
 	inline Vector3 Lerp(const Vector3* target, float amount) const {
 		return Vector3{ LERP(this->x, target->x, x), LERP(this->y, target->y, y), LERP(this->z, target->z, z) };
+	}
+
+	inline Vector3 Approach(const Vector3* target, float amount) const {
+		float f = (float)fmax(this->Distance(target) - amount, 0) / amount;
+		return this->Lerp(target, f);
 	}
 
 	inline void NormalizeInPlace() {
@@ -329,6 +339,11 @@ struct Vector2 {
 
 	inline Vector2 Lerp(const Vector2* target, float amount) const {
 		return Vector2{ LERP(this->x, target->x, x), LERP(this->y, target->y, y) };
+	}
+
+	inline Vector2 Approach(const Vector2* target, float amount) const {
+		float f = (float)fmax(this->Distance(target) - amount, 0) / amount;
+		return this->Lerp(target, f);
 	}
 
 	inline void Remap(Vector2* start1, Vector2* start2, Vector2* end1, Vector2* end2) {
