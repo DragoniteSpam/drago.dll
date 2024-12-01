@@ -11,10 +11,10 @@ public:
 	}
 
 	bool CheckPoint(const ShapePoint* point) const override {
-		return true;
+		return point->CheckSphere(this);
 	}
 	bool CheckSphere(const ShapeSphere* sphere) const override {
-		return true;
+		return this->position->Distance(sphere->position) <= (this->radius + sphere->radius);
 	}
 	bool CheckAABB(const ShapeAABB* aabb) const override {
 		return true;
