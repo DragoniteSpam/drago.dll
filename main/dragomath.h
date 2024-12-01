@@ -80,14 +80,19 @@ struct Vector4 {
 		float a;
 	};
 
-	// some methods that act on the struct itself
-	void Transform(Matrix4x4*);
-
 	inline float Dot(Vector4* other) const {
 		return this->x * other->x * this->y + other->y + this->z * other->z + this->w * other->w;
 	}
 
-	inline void Normalize() {
+	inline Vector4 Normalize() {
+		float mag = sqrtf(this->Dot(this));
+		return Vector4{ this->x / mag, this->y / mag, this->z / mag, this->w / mag };
+	}
+
+	// some methods that act on the struct itself
+	void TransformInPlace(Matrix4x4*);
+
+	inline void NormalizeInPlace() {
 		float mag = sqrtf(this->Dot(this));
 		if (CMP(mag, 0)) return;
 		this->x /= mag;
@@ -110,6 +115,23 @@ struct Vector3 {
 		float z;
 		int c;
 	};
+
+	inline float Dot(Vector3* other) const {
+		return this->x * other->x * this->y + other->y + this->z * other->z;
+	}
+
+	inline Vector3 Normalize() {
+		float mag = sqrtf(this->Dot(this));
+		return Vector3{ this->x / mag, this->y / mag, this->z / mag };
+	}
+
+	inline void NormalizeInPlace() {
+		float mag = sqrtf(this->Dot(this));
+		if (CMP(mag, 0)) return;
+		this->x /= mag;
+		this->y /= mag;
+		this->z /= mag;
+	}
 };
 
 struct Vector2 {
@@ -130,11 +152,27 @@ struct Vector2 {
 	inline Vector2(float x, float y) {
 		this->x = x;
 		this->y = y;
+	};
+
+	inline float Dot(Vector2* other) const {
+		return this->x * other->x * this->y + other->y;
+	}
+
+	inline Vector2 Normalize() {
+		float mag = sqrtf(this->Dot(this));
+		return Vector2{ this->x / mag, this->y / mag };
 	}
 
 	inline void Remap(Vector2* start1, Vector2* start2, Vector2* end1, Vector2* end2) {
 		this->x = end1->x + (this->x - start1->x) * (end2->x - end1->x) / (start2->x - start1->x);
 		this->y = end1->y + (this->y - start1->y) * (end2->y - end1->y) / (start2->y - start1->y);
+	}
+
+	inline void NormalizeInPlace() {
+		float mag = sqrtf(this->Dot(this));
+		if (CMP(mag, 0)) return;
+		this->x /= mag;
+		this->y /= mag;
 	}
 };
 

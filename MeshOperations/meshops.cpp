@@ -108,13 +108,13 @@ namespace meshops {
 			bitangent.y = data[i + 13];
 			bitangent.z = data[i + 14];
 
-			position.Transform(&mat);
-			normal.Transform(&mat);
-			tangent.Transform(&mat);
-			bitangent.Transform(&mat);
-			normal.Normalize();
-			tangent.Normalize();
-			bitangent.Normalize();
+			position.TransformInPlace(&mat);
+			normal.TransformInPlace(&mat);
+			tangent.TransformInPlace(&mat);
+			bitangent.TransformInPlace(&mat);
+			normal.NormalizeInPlace();
+			tangent.NormalizeInPlace();
+			bitangent.NormalizeInPlace();
 
 			data[i + 0] = position.x;
 			data[i + 1] = position.y;

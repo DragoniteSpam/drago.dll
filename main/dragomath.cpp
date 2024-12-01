@@ -2,7 +2,7 @@
 
 // See here: https://github.com/gszauer/GamePhysicsCookbook/blob/master/Code/matrices.cpp
 
-void Vector4::Transform(Matrix4x4* transform) {
+void Vector4::TransformInPlace(Matrix4x4* transform) {
 	float newx = this->x * transform->v11 + this->y * transform->v21 + this->z * transform->v31 + this->w * transform->v41;
 	float newy = this->x * transform->v12 + this->y * transform->v22 + this->z * transform->v32 + this->w * transform->v42;
 	float newz = this->x * transform->v13 + this->y * transform->v23 + this->z * transform->v33 + this->w * transform->v43;

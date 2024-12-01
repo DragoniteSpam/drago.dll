@@ -74,19 +74,19 @@ void test_vector_stuff() {
 	cout << b.x << ", " << b.y << ", " << b.z << ", " << b.w << endl;
 
 	Vector4 c = a + b;
-
 	cout << c.x << ", " << c.y << ", " << c.z << ", " << c.w << endl;
 
 	c = a - b;
-
 	cout << c.x << ", " << c.y << ", " << c.z << ", " << c.w << endl;
 
 	c = a * b;
-
 	cout << c.x << ", " << c.y << ", " << c.z << ", " << c.w << endl;
 
 	c = a / b;
+	cout << c.x << ", " << c.y << ", " << c.z << ", " << c.w << endl;
 
+	c = a.Normalize();
+	cout << a.x << ", " << a.y << ", " << a.z << ", " << a.w << endl;
 	cout << c.x << ", " << c.y << ", " << c.z << ", " << c.w << endl;
 }
 
