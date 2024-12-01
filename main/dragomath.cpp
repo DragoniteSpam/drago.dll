@@ -67,45 +67,41 @@ Matrix4x4 operator*(const Matrix4x4& a, const Matrix4x4& b) {
 }
 
 Vector4 operator+(const Vector4& a, const Vector4& b) {
-	Vector4 result{
-		a.x + b.x,
-		a.y + b.y,
-		a.z + b.z,
-		a.w + b.w
-	};
-
-	return result;
+	return Vector4{ a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w };
+	
+	__m256 va = _mm256_set_ps(a.x, a.y, a.z, a.w, 0, 0, 0, 0);
+	__m256 vb = _mm256_set_ps(b.x, b.y, b.z, b.w, 0, 0, 0, 0);
+	__m256 result = _mm256_add_ps(va, vb);
+	float* out = (float*)&result;
+	return Vector4{ out[7], out[6], out[5], out[4] };
 }
 
 Vector4 operator-(const Vector4& a, const Vector4& b) {
-	Vector4 result{
-		a.x - b.x,
-		a.y - b.y,
-		a.z - b.z,
-		a.w - b.w
-	};
-
-	return result;
+	//return Vector4{ a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w };
+	
+	__m256 va = _mm256_set_ps(a.x, a.y, a.z, a.w, 0, 0, 0, 0);
+	__m256 vb = _mm256_set_ps(b.x, b.y, b.z, b.w, 0, 0, 0, 0);
+	__m256 result = _mm256_sub_ps(va, vb);
+	float* out = (float*)&result;
+	return Vector4{ out[7], out[6], out[5], out[4] };
 }
 
 Vector4 operator*(const Vector4& a, const Vector4& b) {
-	Vector4 result{
-		a.x * b.x,
-		a.y * b.y,
-		a.z * b.z,
-		a.w * b.w
-	};
-
-	return result;
+	//return Vector4{ a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w };
+	
+	__m256 va = _mm256_set_ps(a.x, a.y, a.z, a.w, 0, 0, 0, 0);
+	__m256 vb = _mm256_set_ps(b.x, b.y, b.z, b.w, 0, 0, 0, 0);
+	__m256 result = _mm256_mul_ps(va, vb);
+	float* out = (float*)&result;
+	return Vector4{ out[7], out[6], out[5], out[4] };
 }
 
 Vector4 operator/(const Vector4& a, const Vector4& b) {
-	Vector4 result{
-		a.x / b.x,
-		a.y / b.y,
-		a.z / b.z,
-		a.w / b.w
-	};
+	//return Vector4{ a.x / b.x, a.y / b.y, a.z / b.z, a.w / b.w };
 
-	return result;
+	__m256 va = _mm256_set_ps(a.x, a.y, a.z, a.w, 0, 0, 0, 0);
+	__m256 vb = _mm256_set_ps(b.x, b.y, b.z, b.w, 0, 0, 0, 0);
+	__m256 result = _mm256_div_ps(va, vb);
+	float* out = (float*)&result;
+	return Vector4{ out[7], out[6], out[5], out[4] };
 }

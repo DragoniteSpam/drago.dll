@@ -51,11 +51,7 @@ void matrix_building_tests(Matrix4x4 printme) {
 
 void matrix_transform_tests() {
 	Matrix4x4 transform = Matrix4x4::Transform(10, 10, 10, 15, 20, 30, 1, 2, 1);
-	Vector4 point;
-	point.x = 5;
-	point.y = 5;
-	point.z = 0;
-	point.w = 1;
+	Vector4 point{ 5, 5, 0, 1 };
 
 	point = transform * point;
 
@@ -70,8 +66,34 @@ void matrix_transform_tests() {
 	cout << endl;
 }
 
+void test_vector_stuff() {
+	Vector4 a{ 1.0, 2.0, 3.0, 4.0 };
+	Vector4 b{ 1.0, 10.0, 100.0, 1000.0 };
+
+	cout << a.x << ", " << a.y << ", " << a.z << ", " << a.w << endl;
+	cout << b.x << ", " << b.y << ", " << b.z << ", " << b.w << endl;
+
+	Vector4 c = a + b;
+
+	cout << c.x << ", " << c.y << ", " << c.z << ", " << c.w << endl;
+
+	c = a - b;
+
+	cout << c.x << ", " << c.y << ", " << c.z << ", " << c.w << endl;
+
+	c = a * b;
+
+	cout << c.x << ", " << c.y << ", " << c.z << ", " << c.w << endl;
+
+	c = a / b;
+
+	cout << c.x << ", " << c.y << ", " << c.z << ", " << c.w << endl;
+}
+
 int main() {
 	//assops::convert_fbx(std::string("test.fbx"), std::string("test.obj"));
+
+	test_vector_stuff();
 	
 	return 0;
 }

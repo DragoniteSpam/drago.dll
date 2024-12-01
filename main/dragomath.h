@@ -2,6 +2,7 @@
 #define __DRAGO_CORE_MATH
 
 #include <math.h>
+#include <immintrin.h>
 
 // helpers
 constexpr float PI = 3.14159265358f;
