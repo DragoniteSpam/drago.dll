@@ -98,7 +98,11 @@ struct Vector4 {
 	}
 
 	inline float Distance(const Vector4* other) const {
-		return sqrtf(this->x * other->x + this->y * other->y + this->z * other->z + this->w * other->w);
+		float a = this->x - other->x;
+		float b = this->y - other->y;
+		float c = this->z - other->z;
+		float d = this->w - other->w;
+		return sqrtf(a * a + b * b + c * c + d * d);
 	}
 
 	inline Vector4 Abs() const {
@@ -187,7 +191,10 @@ struct Vector3 {
 	}
 
 	inline float Distance(const Vector3* other) const {
-		return sqrtf(this->x * other->x + this->y * other->y + this->z * other->z);
+		float a = this->x - other->x;
+		float b = this->y - other->y;
+		float c = this->z - other->z;
+		return sqrtf(a * a + b * b + c * c);
 	}
 
 	inline Vector3 Abs() const {
@@ -268,7 +275,7 @@ struct Vector2 {
 		return this->x * other->x * this->y + other->y;
 	}
 
-	inline Vector2 Normalize() {
+	inline Vector2 Normalize() const {
 		float mag = sqrtf(this->Dot(this));
 		return Vector2{ this->x / mag, this->y / mag };
 	}
@@ -278,7 +285,9 @@ struct Vector2 {
 	}
 
 	inline float Distance(const Vector2* other) const {
-		return sqrtf(this->x * other->x + this->y * other->y);
+		float a = this->x - other->x;
+		float b = this->y - other->y;
+		return sqrtf(a * a + b * b);
 	}
 
 	inline Vector2 Abs() const {
