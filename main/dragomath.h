@@ -80,7 +80,7 @@ struct Vector4 {
 		float a;
 	};
 
-	inline bool Equals(Vector4* a) {
+	inline bool Equals(Vector4* a) const {
 		return (fabsf(this->x - a->x) <= 0.000000001) && (fabsf(this->y - a->y) <= 0.000000001) && (fabsf(this->z - a->z) <= 0.000000001) && (fabsf(this->z - a->z) <= 0.000000001);
 	}
 
@@ -99,6 +99,34 @@ struct Vector4 {
 
 	inline float Distance(const Vector4* other) const {
 		return sqrtf(this->x * other->x + this->y * other->y + this->z * other->z + this->w * other->w);
+	}
+
+	inline Vector4 Abs() const {
+		return Vector4{ (float)fabs(this->x), (float)fabs(this->y), (float)fabs(this->z), (float)fabs(this->w) };
+	}
+
+	inline Vector4 Floor() const {
+		return Vector4{ (float)floor(this->x), (float)floor(this->y), (float)floor(this->z), (float)floor(this->w) };
+	}
+
+	inline Vector4 Ceil() const {
+		return Vector4{ (float)ceil(this->x), (float)ceil(this->y), (float)ceil(this->z), (float)ceil(this->w) };
+	}
+
+	inline Vector4 Frac() const {
+		return Vector4{ (float)fmod(this->x, 1.0), (float)fmod(this->y, 1.0), (float)fmod(this->z, 1.0), (float)fmod(this->w, 1.0) };
+	}
+
+	inline Vector4 Min(const Vector4* other) const {
+		return Vector4{ (float)fmin(this->x, other->x), (float)fmin(this->y, other->y), (float)fmin(this->z, other->z), (float)fmin(this->w, other->w) };
+	}
+
+	inline Vector4 Max(const Vector4* other) const {
+		return Vector4{ (float)fmax(this->x, other->x), (float)fmax(this->y, other->y), (float)fmax(this->z, other->z), (float)fmax(this->w, other->w) };
+	}
+
+	inline Vector4 Clamp(const Vector4* a, const Vector4* b) const {
+		return Vector4{ (float)fmin(fmax(this->x, a->x), b->x), (float)fmin(fmax(this->y, a->y), b->y), (float)fmin(fmax(this->z, a->z), b->z), (float)fmin(fmax(this->w, a->w), b->w) };
 	}
 
 	// some methods that act on the struct itself
@@ -128,7 +156,7 @@ struct Vector3 {
 		int c;
 	};
 
-	inline bool Equals(Vector3* a) {
+	inline bool Equals(Vector3* a) const {
 		return (fabsf(this->x - a->x) <= 0.000000001) && (fabsf(this->y - a->y) <= 0.000000001) && (fabsf(this->z - a->z) <= 0.000000001);
 	}
 
@@ -147,6 +175,34 @@ struct Vector3 {
 
 	inline float Distance(const Vector3* other) const {
 		return sqrtf(this->x * other->x + this->y * other->y + this->z * other->z);
+	}
+
+	inline Vector3 Abs() const {
+		return Vector3{ (float)fabs(this->x), (float)fabs(this->y), (float)fabs(this->z) };
+	}
+
+	inline Vector3 Floor() const {
+		return Vector3{ (float)floor(this->x), (float)floor(this->y), (float)floor(this->z) };
+	}
+
+	inline Vector3 Ceil() const {
+		return Vector3{ (float)ceil(this->x), (float)ceil(this->y), (float)ceil(this->z) };
+	}
+
+	inline Vector3 Frac() const {
+		return Vector3{ (float)fmod(this->x, 1.0), (float)fmod(this->y, 1.0), (float)fmod(this->z, 1.0) };
+	}
+
+	inline Vector3 Min(const Vector3* other) const {
+		return Vector3{ (float)fmin(this->x, other->x), (float)fmin(this->y, other->y), (float)fmin(this->z, other->z) };
+	}
+
+	inline Vector3 Max(const Vector3* other) const {
+		return Vector3{ (float)fmax(this->x, other->x), (float)fmax(this->y, other->y), (float)fmax(this->z, other->z) };
+	}
+
+	inline Vector3 Clamp(const Vector3* a, const Vector3* b) const {
+		return Vector3{ (float)fmin(fmax(this->x, a->x), b->x), (float)fmin(fmax(this->y, a->y), b->y), (float)fmin(fmax(this->z, a->z), b->z) };
 	}
 
 	inline void NormalizeInPlace() {
@@ -178,7 +234,7 @@ struct Vector2 {
 		this->y = y;
 	};
 
-	inline bool Equals(Vector2* a) {
+	inline bool Equals(Vector2* a) const {
 		return (fabsf(this->x - a->x) <= 0.000000001) && (fabsf(this->y - a->y) <= 0.000000001);
 	}
 
@@ -197,6 +253,34 @@ struct Vector2 {
 
 	inline float Distance(const Vector2* other) const {
 		return sqrtf(this->x * other->x + this->y * other->y);
+	}
+
+	inline Vector2 Abs() const {
+		return Vector2{ (float)fabs(this->x), (float)fabs(this->y) };
+	}
+
+	inline Vector2 Floor() const {
+		return Vector2{ (float)floor(this->x), (float)floor(this->y) };
+	}
+
+	inline Vector2 Ceil() const {
+		return Vector2{ (float)ceil(this->x), (float)ceil(this->y) };
+	}
+
+	inline Vector2 Frac() const {
+		return Vector2{ (float)fmod(this->x, 1.0), (float)fmod(this->y, 1.0) };
+	}
+
+	inline Vector2 Min(const Vector2* other) const {
+		return Vector2{ (float)fmin(this->x, other->x), (float)fmin(this->y, other->y) };
+	}
+
+	inline Vector2 Max(const Vector2* other) const {
+		return Vector2{ (float)fmax(this->x, other->x), (float)fmax(this->y, other->y) };
+	}
+
+	inline Vector2 Clamp(const Vector2* a, const Vector2* b) const {
+		return Vector2{ (float)fmin(fmax(this->x, a->x), b->x), (float)fmin(fmax(this->y, a->y), b->y) };
 	}
 
 	inline void Remap(Vector2* start1, Vector2* start2, Vector2* end1, Vector2* end2) {
