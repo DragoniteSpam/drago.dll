@@ -149,7 +149,7 @@ struct Vector4 {
 
 	inline Vector4 Project(const Vector4* direction) const {
 		float f = this->Dot(direction) / direction->Dot(direction);
-		return Vector4{ direction->x * f, direction->y * f };
+		return Vector4{ direction->x * f, direction->y * f, direction->z * f, direction->w * f };
 	}
 
 	inline Vector4 Lerp(const Vector4* target, const Vector4* amount) const {
@@ -266,7 +266,7 @@ struct Vector3 {
 
 	inline Vector3 Project(const Vector3* direction) const {
 		float f = this->Dot(direction) / direction->Dot(direction);
-		return Vector3{ direction->x * f, direction->y * f };
+		return Vector3{ direction->x * f, direction->y * f, direction->z * f };
 	}
 
 	inline Vector3 Lerp(const Vector3* target, const Vector3* amount) const {
