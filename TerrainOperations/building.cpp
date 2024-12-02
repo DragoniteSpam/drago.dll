@@ -333,32 +333,34 @@ namespace terrainops {
 		Triangle positions{ }, normals{ }, texcoords{ };
 
 		for (long long i = 0; i < float_count; i += COMMON_VERTEX_SIZE_FLOATS * 3) {
-			positions.a.x = raw[i + 0 * COMMON_VERTEX_SIZE_FLOATS + 0];
-			positions.a.y = raw[i + 0 * COMMON_VERTEX_SIZE_FLOATS + 1];
-			positions.a.z = raw[i + 0 * COMMON_VERTEX_SIZE_FLOATS + 2];
-			normals.a.x = raw[i + 0 * COMMON_VERTEX_SIZE_FLOATS + 3];
-			normals.a.y = raw[i + 0 * COMMON_VERTEX_SIZE_FLOATS + 4];
-			normals.a.z = raw[i + 0 * COMMON_VERTEX_SIZE_FLOATS + 5];
-			texcoords.a.x = raw[i + 0 * COMMON_VERTEX_SIZE_FLOATS + 6];
-			texcoords.a.y = raw[i + 0 * COMMON_VERTEX_SIZE_FLOATS + 7];
+			// i dont know why the compiler is warning me about possible
+			// overflow if i dont make the multiplier a long long but w/e
+			positions.a.x = raw[i + 0LL * COMMON_VERTEX_SIZE_FLOATS + 0];
+			positions.a.y = raw[i + 0LL * COMMON_VERTEX_SIZE_FLOATS + 1];
+			positions.a.z = raw[i + 0LL * COMMON_VERTEX_SIZE_FLOATS + 2];
+			normals.a.x = raw[i + 0LL * COMMON_VERTEX_SIZE_FLOATS + 3];
+			normals.a.y = raw[i + 0LL * COMMON_VERTEX_SIZE_FLOATS + 4];
+			normals.a.z = raw[i + 0LL * COMMON_VERTEX_SIZE_FLOATS + 5];
+			texcoords.a.x = raw[i + 0LL * COMMON_VERTEX_SIZE_FLOATS + 6];
+			texcoords.a.y = raw[i + 0LL * COMMON_VERTEX_SIZE_FLOATS + 7];
 
-			positions.b.x = raw[i + 1 * COMMON_VERTEX_SIZE_FLOATS + 0];
-			positions.b.y = raw[i + 1 * COMMON_VERTEX_SIZE_FLOATS + 1];
-			positions.b.z = raw[i + 1 * COMMON_VERTEX_SIZE_FLOATS + 2];
-			normals.b.x = raw[i + 1 * COMMON_VERTEX_SIZE_FLOATS + 3];
-			normals.b.y = raw[i + 1 * COMMON_VERTEX_SIZE_FLOATS + 4];
-			normals.b.z = raw[i + 1 * COMMON_VERTEX_SIZE_FLOATS + 5];
-			texcoords.b.x = raw[i + 1 * COMMON_VERTEX_SIZE_FLOATS + 6];
-			texcoords.b.y = raw[i + 1 * COMMON_VERTEX_SIZE_FLOATS + 7];
+			positions.b.x = raw[i + 1LL * COMMON_VERTEX_SIZE_FLOATS + 0];
+			positions.b.y = raw[i + 1LL * COMMON_VERTEX_SIZE_FLOATS + 1];
+			positions.b.z = raw[i + 1LL * COMMON_VERTEX_SIZE_FLOATS + 2];
+			normals.b.x = raw[i + 1LL * COMMON_VERTEX_SIZE_FLOATS + 3];
+			normals.b.y = raw[i + 1LL * COMMON_VERTEX_SIZE_FLOATS + 4];
+			normals.b.z = raw[i + 1LL * COMMON_VERTEX_SIZE_FLOATS + 5];
+			texcoords.b.x = raw[i + 1LL * COMMON_VERTEX_SIZE_FLOATS + 6];
+			texcoords.b.y = raw[i + 1LL * COMMON_VERTEX_SIZE_FLOATS + 7];
 
-			positions.c.x = raw[i + 2 * COMMON_VERTEX_SIZE_FLOATS + 0];
-			positions.c.y = raw[i + 2 * COMMON_VERTEX_SIZE_FLOATS + 1];
-			positions.c.z = raw[i + 2 * COMMON_VERTEX_SIZE_FLOATS + 2];
-			normals.c.x = raw[i + 2 * COMMON_VERTEX_SIZE_FLOATS + 3];
-			normals.c.y = raw[i + 2 * COMMON_VERTEX_SIZE_FLOATS + 4];
-			normals.c.z = raw[i + 2 * COMMON_VERTEX_SIZE_FLOATS + 5];
-			texcoords.c.x = raw[i + 2 * COMMON_VERTEX_SIZE_FLOATS + 6];
-			texcoords.c.y = raw[i + 2 * COMMON_VERTEX_SIZE_FLOATS + 7];
+			positions.c.x = raw[i + 2LL * COMMON_VERTEX_SIZE_FLOATS + 0];
+			positions.c.y = raw[i + 2LL * COMMON_VERTEX_SIZE_FLOATS + 1];
+			positions.c.z = raw[i + 2LL * COMMON_VERTEX_SIZE_FLOATS + 2];
+			normals.c.x = raw[i + 2LL * COMMON_VERTEX_SIZE_FLOATS + 3];
+			normals.c.y = raw[i + 2LL * COMMON_VERTEX_SIZE_FLOATS + 4];
+			normals.c.z = raw[i + 2LL * COMMON_VERTEX_SIZE_FLOATS + 5];
+			texcoords.c.x = raw[i + 2LL * COMMON_VERTEX_SIZE_FLOATS + 6];
+			texcoords.c.y = raw[i + 2LL * COMMON_VERTEX_SIZE_FLOATS + 7];
 
 			char line[100];
 			sprintf_s(line, FORMATTED_POSITION, positions.a.x, positions.a.y, positions.a.z);
