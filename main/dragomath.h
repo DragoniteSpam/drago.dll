@@ -80,6 +80,20 @@ struct Vector4 {
 		float a;
 	};
 
+	inline Vector4() {
+		this->x = 0;
+		this->y = 0;
+		this->z = 0;
+		this->w = 0;
+	}
+
+	inline Vector4(float x, float y, float z, float w) {
+		this->x = x;
+		this->y = y;
+		this->z = z;
+		this->w = w;
+	}
+
 	inline Vector4(const Vector4* source) {
 		this->x = source->x;
 		this->y = source->y;
@@ -192,10 +206,22 @@ struct Vector3 {
 		int c;
 	};
 
+	inline Vector3() {
+		this->x = 0;
+		this->y = 0;
+		this->z = 0;
+	}
+
 	inline Vector3(const Vector3* source) {
 		this->x = source->x;
 		this->y = source->y;
 		this->z = source->z;
+	}
+
+	inline Vector3(float x, float y, float z) {
+		this->x = x;
+		this->y = y;
+		this->z = z;
 	}
 
 	inline void Set(const Vector3* source) {
@@ -301,9 +327,19 @@ struct Vector2 {
 		int b;
 	};
 
+	inline Vector2() {
+		this->x = 0;
+		this->y = 0;
+	}
+
 	inline Vector2(const Vector2* source) {
 		this->x = source->x;
 		this->y = source->y;
+	}
+
+	inline Vector2(float x, float y) {
+		this->x = x;
+		this->y = y;
 	}
 
 	inline void Set(const Vector2* source) {

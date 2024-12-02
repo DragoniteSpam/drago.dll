@@ -12,7 +12,7 @@ public:
 		return this->position->Equals(point->position);
 	}
 	bool CheckSphere(const ShapeSphere* sphere) const override {
-		return this->position->Distance(sphere->position) <= sphere.radius;
+		return this->position->Distance(sphere->position) <= sphere->radius;
 	}
 	bool CheckAABB(const ShapeAABB* aabb) const override {
 		return true;
@@ -21,7 +21,7 @@ public:
 		return true;
 	}
 	bool CheckPlane(const ShapePlane* plane) const override {
-		return true;
+		return fabsf(plane->position->Dot(plane->normal) - 0.0) <= 0.000000001;
 	}
 	bool CheckCapsule(const ShapeCapsule* capsule) const override {
 		return true;
