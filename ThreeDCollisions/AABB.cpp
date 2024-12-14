@@ -1,46 +1,40 @@
 #include "Shapes.h"
 
-class ShapeAABB : Shape {
-public:
-	Vector3* position;
-	Vector3* half;
+void ShapeAABB::Set(const Vector3* position, const Vector3* half) {
+	this->position->Set(position);
+	this->half->Set(half);
+}
 
-	void Set(const Vector3* position, const Vector3* half) {
-		this->position->Set(position);
-		this->half->Set(half);
-	}
-
-	bool CheckPoint(const ShapePoint* point) const override {
-		return true;
-	}
-	bool CheckSphere(const ShapeSphere* sphere) const override {
-		return true;
-	}
-	bool CheckAABB(const ShapeAABB* aabb) const override {
-		return true;
-	}
-	bool CheckOBB(const ShapeOBB* obb) const override {
-		return true;
-	}
-	bool CheckPlane(const ShapePlane* plane) const override {
-		return true;
-	}
-	bool CheckCapsule(const ShapeCapsule* capsule) const override {
-		return true;
-	}
-	bool CheckTriangle(const ShapeTriangle* triangle) const override {
-		return true;
-	}
-	bool CheckMesh(const ShapeMesh* mesh) const override {
-		return true;
-	}
-	bool CheckModel(const ShapeModel* model) const override {
-		return true;
-	}
-	bool CheckLine(const ShapeLine* line) const override {
-		return true;
-	}
-	bool CheckRay(const ShapeRay* ray) const override {
-		return true;
-	}
-};
+bool ShapeAABB::CheckPoint(const ShapePoint* point) const {
+	return true;
+}
+bool ShapeAABB::CheckSphere(const ShapeSphere* sphere) const {
+	return true;
+}
+bool ShapeAABB::CheckAABB(const ShapeAABB* aabb) const {
+	return true;
+}
+bool ShapeAABB::CheckOBB(const ShapeOBB* obb) const {
+	return true;
+}
+bool ShapeAABB::CheckPlane(const ShapePlane* plane) const {
+	return true;
+}
+bool ShapeAABB::CheckCapsule(const ShapeCapsule* capsule) const {
+	return true;
+}
+bool ShapeAABB::CheckTriangle(const ShapeTriangle* triangle) const {
+	return true;
+}
+bool ShapeAABB::CheckMesh(const ShapeMesh* mesh) const {
+	return true;
+}
+bool ShapeAABB::CheckModel(const ShapeModel* model) const {
+	return true;
+}
+bool ShapeAABB::CheckLine(const ShapeLine* line) const {
+	return true;
+}
+bool ShapeAABB::CheckRay(const ShapeRay* ray) const {
+	return true;
+}

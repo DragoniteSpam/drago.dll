@@ -1,48 +1,41 @@
 #include "Shapes.h"
 
-class ShapeTriangle : Shape {
-public:
-	Vector3* a;
-	Vector3* b;
-	Vector3* c;
+void ShapeTriangle::Set(const Vector3* a, const Vector3* b, const Vector3* c) {
+	this->a->Set(a);
+	this->b->Set(b);
+	this->c->Set(c);
+}
 
-	void Set(const Vector3* a, const Vector3* b, const Vector3* c) {
-		this->a->Set(a);
-		this->b->Set(b);
-		this->c->Set(c);
-	}
-
-	bool CheckPoint(const ShapePoint* point) const override {
-		return true;
-	}
-	bool CheckSphere(const ShapeSphere* sphere) const override {
-		return true;
-	}
-	bool CheckAABB(const ShapeAABB* aabb) const override {
-		return true;
-	}
-	bool CheckOBB(const ShapeOBB* obb) const override {
-		return true;
-	}
-	bool CheckPlane(const ShapePlane* plane) const override {
-		return true;
-	}
-	bool CheckCapsule(const ShapeCapsule* capsule) const override {
-		return true;
-	}
-	bool CheckTriangle(const ShapeTriangle* triangle) const override {
-		return true;
-	}
-	bool CheckMesh(const ShapeMesh* mesh) const override {
-		return true;
-	}
-	bool CheckModel(const ShapeModel* model) const override {
-		return true;
-	}
-	bool CheckLine(const ShapeLine* line) const override {
-		return true;
-	}
-	bool CheckRay(const ShapeRay* ray) const override {
-		return true;
-	}
-};
+bool ShapeTriangle::CheckPoint(const ShapePoint* point) const {
+	return true;
+}
+bool ShapeTriangle::CheckSphere(const ShapeSphere* sphere) const {
+	return true;
+}
+bool ShapeTriangle::CheckAABB(const ShapeAABB* aabb) const {
+	return true;
+}
+bool ShapeTriangle::CheckOBB(const ShapeOBB* obb) const {
+	return true;
+}
+bool ShapeTriangle::CheckPlane(const ShapePlane* plane) const {
+	return true;
+}
+bool ShapeTriangle::CheckCapsule(const ShapeCapsule* capsule) const {
+	return true;
+}
+bool ShapeTriangle::CheckTriangle(const ShapeTriangle* triangle) const {
+	return true;
+}
+bool ShapeTriangle::CheckMesh(const ShapeMesh* mesh) const {
+	return true;
+}
+bool ShapeTriangle::CheckModel(const ShapeModel* model) const {
+	return true;
+}
+bool ShapeTriangle::CheckLine(const ShapeLine* line) const {
+	return true;
+}
+bool ShapeTriangle::CheckRay(const ShapeRay* ray) const {
+	return true;
+}

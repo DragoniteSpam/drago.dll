@@ -1,46 +1,40 @@
 #include "Shapes.h"
 
-class ShapePlane : Shape {
-public:
-	Vector3* normal;
-	float distance;
+void ShapePlane::Set(const Vector3* normal, float distance) {
+	this->normal->Set(normal);
+	this->distance = distance;
+}
 
-	void Set(const Vector3* normal, float distance) {
-		this->normal->Set(normal);
-		this->distance = distance;
-	}
-
-	bool CheckPoint(const ShapePoint* point) const override {
-		return true;
-	}
-	bool CheckSphere(const ShapeSphere* sphere) const override {
-		return true;
-	}
-	bool CheckAABB(const ShapeAABB* aabb) const override {
-		return true;
-	}
-	bool CheckOBB(const ShapeOBB* obb) const override {
-		return true;
-	}
-	bool CheckPlane(const ShapePlane* plane) const override {
-		return true;
-	}
-	bool CheckCapsule(const ShapeCapsule* capsule) const override {
-		return true;
-	}
-	bool CheckTriangle(const ShapeTriangle* triangle) const override {
-		return true;
-	}
-	bool CheckMesh(const ShapeMesh* mesh) const override {
-		return true;
-	}
-	bool CheckModel(const ShapeModel* model) const override {
-		return true;
-	}
-	bool CheckLine(const ShapeLine* line) const override {
-		return true;
-	}
-	bool CheckRay(const ShapeRay* ray) const override {
-		return true;
-	}
-};
+bool ShapePlane::CheckPoint(const ShapePoint* point) const {
+	return true;
+}
+bool ShapePlane::CheckSphere(const ShapeSphere* sphere) const {
+	return true;
+}
+bool ShapePlane::CheckAABB(const ShapeAABB* aabb) const {
+	return true;
+}
+bool ShapePlane::CheckOBB(const ShapeOBB* obb) const {
+	return true;
+}
+bool ShapePlane::CheckPlane(const ShapePlane* plane) const {
+	return true;
+}
+bool ShapePlane::CheckCapsule(const ShapeCapsule* capsule) const {
+	return true;
+}
+bool ShapePlane::CheckTriangle(const ShapeTriangle* triangle) const {
+	return true;
+}
+bool ShapePlane::CheckMesh(const ShapeMesh* mesh) const {
+	return true;
+}
+bool ShapePlane::CheckModel(const ShapeModel* model) const {
+	return true;
+}
+bool ShapePlane::CheckLine(const ShapeLine* line) const {
+	return true;
+}
+bool ShapePlane::CheckRay(const ShapeRay* ray) const {
+	return true;
+}

@@ -1,46 +1,40 @@
 #include "Shapes.h"
 
-class ShapeSphere : Shape {
-public:
-	Vector3* position;
-	float radius;
+void ShapeSphere::Set(const Vector3* position, float radius) {
+	this->position->Set(position);
+	this->radius = radius;
+}
 
-	void Set(const Vector3* position, float radius) {
-		this->position->Set(position);
-		this->radius = radius;
-	}
-
-	bool CheckPoint(const ShapePoint* point) const override {
-		return point->CheckSphere(this);
-	}
-	bool CheckSphere(const ShapeSphere* sphere) const override {
-		return this->position->Distance(sphere->position) <= (this->radius + sphere->radius);
-	}
-	bool CheckAABB(const ShapeAABB* aabb) const override {
-		return true;
-	}
-	bool CheckOBB(const ShapeOBB* obb) const override {
-		return true;
-	}
-	bool CheckPlane(const ShapePlane* plane) const override {
-		return true;
-	}
-	bool CheckCapsule(const ShapeCapsule* capsule) const override {
-		return true;
-	}
-	bool CheckTriangle(const ShapeTriangle* triangle) const override {
-		return true;
-	}
-	bool CheckMesh(const ShapeMesh* mesh) const override {
-		return true;
-	}
-	bool CheckModel(const ShapeModel* model) const override {
-		return true;
-	}
-	bool CheckLine(const ShapeLine* line) const override {
-		return true;
-	}
-	bool CheckRay(const ShapeRay* ray) const override {
-		return true;
-	}
-};
+bool ShapeSphere::CheckPoint(const ShapePoint* point) const {
+	return point->CheckSphere(this);
+}
+bool ShapeSphere::CheckSphere(const ShapeSphere* sphere) const {
+	return this->position->Distance(sphere->position) <= (this->radius + sphere->radius);
+}
+bool ShapeSphere::CheckAABB(const ShapeAABB* aabb) const {
+	return true;
+}
+bool ShapeSphere::CheckOBB(const ShapeOBB* obb) const {
+	return true;
+}
+bool ShapeSphere::CheckPlane(const ShapePlane* plane) const {
+	return true;
+}
+bool ShapeSphere::CheckCapsule(const ShapeCapsule* capsule) const {
+	return true;
+}
+bool ShapeSphere::CheckTriangle(const ShapeTriangle* triangle) const {
+	return true;
+}
+bool ShapeSphere::CheckMesh(const ShapeMesh* mesh) const {
+	return true;
+}
+bool ShapeSphere::CheckModel(const ShapeModel* model) const {
+	return true;
+}
+bool ShapeSphere::CheckLine(const ShapeLine* line) const {
+	return true;
+}
+bool ShapeSphere::CheckRay(const ShapeRay* ray) const {
+	return true;
+}
