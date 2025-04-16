@@ -113,7 +113,7 @@ struct Vector4 {
 	}
 
 	inline float Dot(const Vector4* other) const {
-		return this->x * other->x * this->y + other->y + this->z * other->z + this->w * other->w;
+		return this->x * other->x + this->y * other->y + this->z * other->z + this->w * other->w;
 	}
 
 	inline Vector4 Normalize() const {
@@ -235,7 +235,7 @@ struct Vector3 {
 	}
 
 	inline float Dot(const Vector3* other) const {
-		return this->x * other->x * this->y + other->y + this->z * other->z;
+		return this->x * other->x + this->y * other->y + this->z * other->z;
 	}
 
 	inline Vector3 Cross(const Vector3* other) const {
@@ -352,7 +352,7 @@ struct Vector2 {
 	}
 
 	inline float Dot(const Vector2* other) const {
-		return this->x * other->x * this->y + other->y;
+		return this->x * other->x + this->y * other->y;
 	}
 
 	inline Vector2 Normalize() const {
