@@ -14,7 +14,12 @@ bool ShapeAABB::CheckSphere(const ShapeSphere* sphere) const {
 	return true;
 }
 bool ShapeAABB::CheckAABB(const ShapeAABB* aabb) const {
-	return true;
+	return this->min->x <= aabb->max->x &&
+		this->max->x <= aabb->min->x &&
+		this->min->y <= aabb->max->y &&
+		this->max->y <= aabb->min->y &&
+		this->min->z <= aabb->max->z &&
+		this->max->z <= aabb->min->z;
 }
 bool ShapeAABB::CheckOBB(const ShapeOBB* obb) const {
 	return true;
