@@ -3,6 +3,7 @@
 
 #include <math.h>
 #include <immintrin.h>
+#include <algorithm>
 
 // helpers
 constexpr float PI = 3.14159265358f;
@@ -13,6 +14,8 @@ constexpr float PI = 3.14159265358f;
 #define BYTES2DOUBLES(bytes) (((int)(bytes)) / 8)
 #define DOUBLES2BYTES(floats) (((int)(floats)) * 8)
 #define CMP(a, b) (fabsf(a - b) <= 0.000000001 * fmaxf(1.0f, fmaxf(fabsf(a), fabsf(b))))
+
+#define CLAMP(x, lower, upper) (std::max(std::min(x, upper), lower))
 
 #define LERP(a, b, f) ((a) * 1.0f + (f) * ((b) * 1.0f - (a) * 1.0f))
 #define LERP_CUBIC(a, b, f) (((float)(b) - (float)(a)) * (3.0f - (float)(f) * 2.0f) * (float)(f) * (float)(f) + (float)(a))
