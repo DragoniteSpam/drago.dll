@@ -6,4 +6,12 @@
 
 #include <vector>
 
+namespace collisions {
+	extern float epsilon;
+
+	const char* version();
+	const void set_epsilon(float epsilon);
+	const inline bool compare_epsilon(float a, float b);
+}
+
 #endif
