@@ -11,7 +11,7 @@ bool ShapeAABB::CheckPoint(const ShapePoint* point) const {
 	return point->CheckAABB(this);
 }
 bool ShapeAABB::CheckSphere(const ShapeSphere* sphere) const {
-	return true;
+	return sphere->CheckAABB(this);
 }
 bool ShapeAABB::CheckAABB(const ShapeAABB* aabb) const {
 	return this->min->x <= aabb->max->x &&

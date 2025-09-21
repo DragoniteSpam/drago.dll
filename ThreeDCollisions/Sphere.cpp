@@ -12,7 +12,13 @@ bool ShapeSphere::CheckSphere(const ShapeSphere* sphere) const {
 	return this->position->Distance(sphere->position) <= (this->radius + sphere->radius);
 }
 bool ShapeSphere::CheckAABB(const ShapeAABB* aabb) const {
-	return true;
+	Vector3 nearest{
+		CLAMP(this->position->x, aabb->min->x, aabb->max->x),
+		CLAMP(this->position->y, aabb->min->y, aabb->max->y),
+		CLAMP(this->position->z, aabb->min->z, aabb->max->z)
+	};
+
+	return nearest.Distance(this->position) <= this->radius;
 }
 bool ShapeSphere::CheckOBB(const ShapeOBB* obb) const {
 	return true;
