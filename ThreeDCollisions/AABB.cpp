@@ -3,6 +3,8 @@
 void ShapeAABB::Set(const Vector3* position, const Vector3* half) {
 	this->position->Set(position);
 	this->half->Set(half);
+	PSUB(this->min, position, half);
+	PADD(this->max, position, half);
 }
 
 bool ShapeAABB::CheckPoint(const ShapePoint* point) const {

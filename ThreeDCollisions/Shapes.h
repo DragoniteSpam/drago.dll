@@ -69,6 +69,8 @@ class ShapeAABB: Shape {
 public:
 	Vector3* position;
 	Vector3* half;
+	Vector3* min;
+	Vector3* max;
 	void Set(const Vector3* position, const Vector3* half);
 	bool CheckPoint(const ShapePoint* point) const override;
 	bool CheckSphere(const ShapeSphere* sphere) const override;
