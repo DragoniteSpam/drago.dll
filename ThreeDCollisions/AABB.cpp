@@ -8,7 +8,7 @@ void ShapeAABB::Set(const Vector3* position, const Vector3* half) {
 }
 
 bool ShapeAABB::CheckPoint(const ShapePoint* point) const {
-	return true;
+	return point->CheckAABB(this);
 }
 bool ShapeAABB::CheckSphere(const ShapeSphere* sphere) const {
 	return true;

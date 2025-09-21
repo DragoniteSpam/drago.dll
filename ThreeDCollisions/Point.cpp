@@ -11,7 +11,13 @@ bool ShapePoint::CheckSphere(const ShapeSphere* sphere) const {
 	return this->position->Distance(sphere->position) <= sphere->radius;
 }
 bool ShapePoint::CheckAABB(const ShapeAABB* aabb) const {
-	return true;
+	return
+		this->position->x >= aabb->min->x &&
+		this->position->x <= aabb->max->x &&
+		this->position->y >= aabb->min->y &&
+		this->position->y <= aabb->max->y &&
+		this->position->z >= aabb->min->z &&
+		this->position->z <= aabb->max->z;
 }
 bool ShapePoint::CheckOBB(const ShapeOBB* obb) const {
 	return true;
