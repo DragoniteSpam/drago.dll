@@ -24,7 +24,7 @@ bool ShapeSphere::CheckOBB(const ShapeOBB* obb) const {
 	return true;
 }
 bool ShapeSphere::CheckPlane(const ShapePlane* plane) const {
-	return true;
+	float dist = plane->normal->Dot(this->position) - plane->distance;
 }
 bool ShapeSphere::CheckCapsule(const ShapeCapsule* capsule) const {
 	return true;
