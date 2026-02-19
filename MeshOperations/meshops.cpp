@@ -9,6 +9,10 @@ namespace meshops {
 	Vector2* uvEnd1 = new Vector2();
 	Vector2* uvEnd2 = new Vector2();
 
+	unsigned int light_color = 0xffffff;
+	unsigned int light_ambient = 0xffffff;
+	Vector3* light_direction = new Vector3();
+
 	const char* version() {
 		return __DRAGO_MESH_OP;
 	}
@@ -415,6 +419,41 @@ namespace meshops {
 			unsigned int a = color & 0xff000000;
 			color &= 0x00ffffff;
 			((unsigned int*)data)[i + 8] = a | (b << 16) | (g << 8) | r;
+		}
+	}
+
+	void set_baked_lighting_params(float light_nx, float light_ny, float light_nz, unsigned int color, unsigned int ambient) {
+		meshops::light_color = color;
+		meshops::light_ambient = ambient;
+		meshops::light_direction->x = light_nx;
+		meshops::light_direction->y = light_ny;
+		meshops::light_direction->z = light_nz;
+	}
+
+	void bake_lighting(float* data, int len) {
+		int vsize = meshops::vertex_size;
+
+		int cr = meshops::light_color & 0x0000ff;
+		int cg = (meshops::light_color & 0x00ff00) >> 8;
+		int cb = (meshops::light_color & 0xff0000) >> 16;
+		int ar = meshops::light_ambient & 0x0000ff;
+		int ag = (meshops::light_ambient & 0x00ff00) >> 8;
+		int ab = (meshops::light_ambient & 0xff0000) >> 16;
+
+		for (int i = 0; i < len; i += vsize) {
+			float nx = data[i + 3];
+			float ny = data[i + 4];
+			float nz = data[i + 5];
+			float dot = std::max(0.0f, (nx * meshops::light_direction->x + ny * meshops::light_direction->y + nz * meshops::light_direction->z));
+
+			int r = std::min(ar + (int)(dot * (float)cr), 255);
+			int g = std::min(ag + (int)(dot * (float)cg), 255);
+			int b = std::min(ab + (int)(dot * (float)cb), 255);
+			
+			// keep the old alpha
+			unsigned int color = (((unsigned int*)data)[i + 8] & 0xff000000) | (b << 16) | (g << 8) | r;
+
+			((unsigned int*)data)[i + 8] = color;
 		}
 	}
 

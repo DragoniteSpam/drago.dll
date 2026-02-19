@@ -1,5 +1,5 @@
 #ifndef __DRAGO_MESH_OP
-#define __DRAGO_MESH_OP "1.0.1"
+#define __DRAGO_MESH_OP "1.0.2"
 
 #include "main/core.h"
 #include "main/dragomath.h"
@@ -18,6 +18,10 @@ namespace meshops {
 	extern Vector2* uvStart2;
 	extern Vector2* uvEnd1;
 	extern Vector2* uvEnd2;
+
+	extern unsigned int light_color;
+	extern unsigned int light_ambient;
+	extern Vector3* light_direction;
 	
 	const char* version();
 	void init(int);
@@ -52,6 +56,9 @@ namespace meshops {
 	void invert_alpha(float*, int);
 	void blend_colour(float*, int, unsigned int, float);
 	void multiply_colour(float*, int, unsigned int);
+
+	void set_baked_lighting_params(float, float, float, unsigned int, unsigned int);
+	void bake_lighting(float*, int);
 
 	// normals
 	void set_normals_flat(float*, int);

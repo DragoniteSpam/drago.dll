@@ -115,6 +115,16 @@ dllex double meshops_blend_colour(float* data, double len, double target, double
 	return 1.0;
 }
 
+dllex double meshops_set_baked_lighting_params(double light_nx, double light_ny, double light_nz, double light_color, double ambient_color) {
+	meshops::set_baked_lighting_params((float)light_nx, (float)light_ny, (float)light_nz, (unsigned int)light_color, (unsigned int)ambient_color);
+	return 1.0;
+}
+
+dllex double meshops_bake_lighting(float* data, double len) {
+	meshops::bake_lighting(data, BYTES2FLOATS(len));
+	return 1.0;
+}
+
 dllex double meshops_multiply_colour(float* data, double len, double target) {
 	meshops::multiply_colour(data, BYTES2FLOATS(len), (unsigned int)target);
 	return 1.0;
