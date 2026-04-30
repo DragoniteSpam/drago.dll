@@ -142,6 +142,50 @@ namespace meshops {
 		mirror_axis_generic(data, len, 1.0, 1.0, 1.0);
 	}
 
+	void merge_vertices(float* data, int len, float threshold) {
+		int vsize = meshops::vertex_size;
+		std::vector<int> nearby;
+
+		// This could be sped up MASSIVELY by using some kind of clustering algorithm, but that is a future drago problem
+		// (which I may use just use GM's collision system for)
+		for (int i = 0; i < len; i += vsize) {
+			float x = data[i + 0];
+			float y = data[i + 1];
+			float z = data[i + 2];
+
+			float tx = 0;
+			float ty = 0;
+			float tz = 0;
+			float count = 0;
+
+			nearby.clear();
+
+			for (int j = 0; j < len; j += vsize) {
+				float cx = data[j + 0];
+				float cy = data[j + 1];
+				float cz = data[j + 2];
+				if (sqrt(pow(cx - x, 2) + pow(cy - y, 2) + pow(cz - z, 2)) < threshold) {
+					tx += cx;
+					ty += cy;
+					tz += cz;
+					count++;
+					nearby.push_back(j);
+				}
+			}
+
+			tx /= count;
+			ty /= count;
+			tz /= count;
+
+			for (int j = 0; j < nearby.size(); j++) {
+				int index = nearby[j];
+				data[index + 0] = tx;
+				data[index + 1] = ty;
+				data[index + 2] = tz;
+			}
+		}
+	}
+
 	// UV transform
 	void transform_set_uvs(float startx1, float starty1, float startx2, float starty2, float endx1, float endy1, float endx2, float endy2) {
 		meshops::uvStart1->x = startx1;

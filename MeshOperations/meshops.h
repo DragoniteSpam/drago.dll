@@ -9,6 +9,7 @@
 #include <string>
 #include <format>
 #include <sstream>
+#include <vector>
 
 namespace meshops {
 	extern Matrix4x4* transform_data;
@@ -35,6 +36,7 @@ namespace meshops {
 	void transform_set_matrix_raw(float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float);
 	void transform(float*, int);
 	void reverse(float*, int);
+	void merge_vertices(float*, int, float);
 	// UV transform
 	void transform_set_uvs(float, float, float, float, float, float, float, float);
 	void transform_uvs(float*, int, int);

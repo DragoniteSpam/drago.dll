@@ -45,6 +45,11 @@ dllex double meshops_reverse(float* data, double len) {
 	return 1.0;
 }
 
+dllex double meshops_merge_vertices(float* data, double len, double threshold) {
+	meshops::merge_vertices(data, BYTES2FLOATS(len), (float)threshold);
+	return 1.0;
+}
+
 // UV transformations
 
 dllex double meshops_transform_set_uvs(double startx1, double starty1, double startx2, double starty2, double endx1, double endy1, double endx2, double endy2) {
