@@ -36,7 +36,7 @@ namespace sprite_atlas {
 	inline void place_sprite(int* sprite_data, int ints, int index, int maxx, int stride) {
 		int limit = maxx - sprite_data[index + SPRITE_DATA_W];
 		for (int y = 0; true; y += stride) {
-			for (int x = 0; x < limit; x += stride) {
+			for (int x = 0; x <= limit; x += stride) {
 				if (!collide_sprite(sprite_data, ints, index, x, y)) {
 					sprite_data[index + SPRITE_DATA_X] = x;
 					sprite_data[index + SPRITE_DATA_Y] = y;
