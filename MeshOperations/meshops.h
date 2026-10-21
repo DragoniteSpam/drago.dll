@@ -19,6 +19,9 @@ namespace meshops {
 	extern Vector2* uvStart2;
 	extern Vector2* uvEnd1;
 	extern Vector2* uvEnd2;
+	extern Vector2* uvTranslate;
+	extern Vector2* uvTranslateStart;
+	extern Vector2* uvTranslateEnd;
 
 	extern unsigned int light_color;
 	extern unsigned int light_ambient;
@@ -40,6 +43,8 @@ namespace meshops {
 	// UV transform
 	void transform_set_uvs(float, float, float, float, float, float, float, float);
 	void transform_uvs(float*, int, int);
+	void transform_set_uvs_translate(float, float, float, float, float, float);
+	void transform_uvs_translate(float*, int, int);
 	// axes
 	void rotate_up(float*, int);
 	void mirror_axis_generic(float*, int, float, float, float);

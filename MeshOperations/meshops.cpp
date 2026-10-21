@@ -8,6 +8,9 @@ namespace meshops {
 	Vector2* uvStart2 = new Vector2();
 	Vector2* uvEnd1 = new Vector2();
 	Vector2* uvEnd2 = new Vector2();
+	Vector2* uvTranslate = new Vector2();
+	Vector2* uvTranslateStart = new Vector2();
+	Vector2* uvTranslateEnd = new Vector2();
 
 	unsigned int light_color = 0xffffff;
 	unsigned int light_ambient = 0xffffff;
@@ -198,8 +201,16 @@ namespace meshops {
 		meshops::uvEnd2->y = endy2;
 	}
 
+	void transform_set_uvs_translate(float dx, float dy, float translateX1, float translateY1, float translateX2, float translateY2) {
+		meshops::uvTranslate->x = dx;
+		meshops::uvTranslate->y = dy;
+		meshops::uvTranslateStart->x = translateX1;
+		meshops::uvTranslateStart->y = translateY1;
+		meshops::uvTranslateEnd->x = translateX2;
+		meshops::uvTranslateEnd->y = translateY2;
+	}
+
 	void transform_uvs(float* data, int offset, int length) {
-		//Vector2* uv;
 		float uvStart1x = meshops::uvStart1->x;
 		float uvStart1y = meshops::uvStart1->y;
 		float uvStart2x = meshops::uvStart2->x;
@@ -219,6 +230,25 @@ namespace meshops {
 			//uv->Remap(uvStart1, uvStart2, uvEnd1, uvEnd2);
 			data[i + 6] = uvEnd1x + (data[i + 6] - uvStart1x) * diffEndX / diffStartX;
 			data[i + 7] = uvEnd1y + (data[i + 7] - uvStart1y) * diffEndY / diffStartY;
+		}
+	}
+
+	void transform_uvs_translate(float* data, int offset, int length) {
+		float dx = meshops::uvTranslate->x;
+		float dy = meshops::uvTranslate->y;
+		float uvStartX = meshops::uvTranslateStart->x;
+		float uvStartY = meshops::uvTranslateStart->y;
+		float uvEndX = meshops::uvTranslateEnd->x;
+		float uvEndY = meshops::uvTranslateEnd->y;
+		int vsize = meshops::vertex_size;
+
+		for (int i = offset; i < offset + length; i += vsize) {
+			float u = data[i + 6];
+			float v = data[i + 7];
+			if (u >= uvStartX && u <= uvEndX && v >= uvStartY && v <= uvEndY) {
+				data[i + 6] += dx;
+				data[i + 7] += dy;
+			}
 		}
 	}
 

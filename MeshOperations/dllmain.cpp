@@ -62,6 +62,16 @@ dllex double meshops_transform_uvs(float* data, double offset, double length) {
 	return 1.0;
 }
 
+dllex double transform_set_uvs_translate(double dx, double dy, double translateX1, double translateY1, double translateX2, double translateY2) {
+	meshops::transform_set_uvs_translate((float)dx, (float)dy, (float)translateX1, (float)translateY1, (float)translateX2, (float)translateY2);
+	return 1.0;
+}
+
+dllex double meshops_transform_uvs_translate(float* data, double offset, double length) {
+	meshops::transform_uvs_translate(data, (int)offset, (int)length);
+	return 1.0;
+}
+
 // axes
 dllex double meshops_rotate_up(float* data, double len) {
 	meshops::rotate_up(data, BYTES2FLOATS(len));
