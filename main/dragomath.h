@@ -33,7 +33,7 @@ constexpr float PI = 3.14159265358f;
 #define PDIV(result, a, b) { (result)->x = a->x / b->x; (result)->y = a->y / b->y; (result)->z = a->z / b->z; }
 
 #define DOT(a, b) (a.x * b.x + a.y * b.y + a.z * b.z)
-#define CROSS(result, a, b) { (result).x = a.y * b.z - a.z * b.y; (result).y = -a.x * b.z + a.z * b.x; (result).z = a.x * b.y - a.y * b.x; }
+#define CROSS(result, a, b) { (result).x = a.y * b.z - a.z * b.y; (result).y = a.z * b.x - a.x * b.z; (result).z = a.x * b.y - a.y * b.x; }
 #define MAGNITUDE(vec3) sqrtf(DOT(vec3, vec3))
 #define NORMALIZE(vec3) { float mag = MAGNITUDE((vec3)); (vec3).x /= mag; (vec3).y /= mag; (vec3).z /= mag; }
 

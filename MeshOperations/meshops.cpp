@@ -646,9 +646,9 @@ namespace meshops {
 			cached = (*normal_cache)[std::format("{},{},{}", vertex.x, vertex.y, vertex.z)];
 			NORMALIZE(cached);
 			if (DOT(normal, cached) > threshold) {
-				data[i + 3] = cached.z;
+				data[i + 3] = cached.x;
 				data[i + 4] = cached.y;
-				data[i + 5] = cached.x;
+				data[i + 5] = cached.z;
 			}
 		}
 	}
